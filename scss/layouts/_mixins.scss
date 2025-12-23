@@ -1,0 +1,21 @@
+@mixin border-radius($radius) {
+    border-radius: $radius;
+}
+
+@mixin input-placeholder($color) {
+    &::placeholder {
+        color: $color;
+    }
+}
+
+@mixin transform($value) {
+    transform: $value;
+}
+
+@mixin display-flex {
+    display: flex;
+}
+
+@mixin align-items($value) {
+    align-items: $value;
+}
