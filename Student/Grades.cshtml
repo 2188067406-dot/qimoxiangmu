@@ -1,0 +1,544 @@
+@{
+    ViewData["Title"] = "My Grades";
+    Layout = "_StudentLayout";
+}
+
+<div class="container-fluid px-4 py-4">
+    <!-- Page Header -->
+    <div class="page-header row align-items-center mb-4">
+        <div class="col-md-6">
+            <h1 class="page-title">@ViewData["Title"]</h1>
+            <p class="page-subtitle">View your academic performance across all courses</p>
+        </div>
+        <div class="col-md-6 text-md-end">
+            <div class="btn-group" role="group">
+                <button type="button" class="btn btn-outline-primary active">Current Semester</button>
+                <button type="button" class="btn btn-outline-primary">All Courses</button>
+            </div>
+        </div>
+    </div>
+
+    <!-- GPA Overview -->
+    <div class="row mb-4">
+        <div class="col-xl-3 col-md-6 mb-4">
+            <div class="stat-card bg-primary text-white">
+                <div class="stat-card-body">
+                    <div class="stat-card-icon">
+                        <i class="fas fa-chart-line"></i>
+                    </div>
+                    <div class="stat-card-info">
+                        <h5 class="stat-card-title">3.8</h5>
+                        <p class="stat-card-text">Current GPA</p>
+                    </div>
+                </div>
+            </div>
+        </div>
+        <div class="col-xl-3 col-md-6 mb-4">
+            <div class="stat-card bg-success text-white">
+                <div class="stat-card-body">
+                    <div class="stat-card-icon">
+                        <i class="fas fa-medal"></i>
+                    </div>
+                    <div class="stat-card-info">
+                        <h5 class="stat-card-title">3.7</h5>
+                        <p class="stat-card-text">Cumulative GPA</p>
+                    </div>
+                </div>
+            </div>
+        </div>
+        <div class="col-xl-3 col-md-6 mb-4">
+            <div class="stat-card bg-info text-white">
+                <div class="stat-card-body">
+                    <div class="stat-card-icon">
+                        <i class="fas fa-graduation-cap"></i>
+                    </div>
+                    <div class="stat-card-info">
+                        <h5 class="stat-card-title">18</h5>
+                        <p class="stat-card-text">Credits This Semester</p>
+                    </div>
+                </div>
+            </div>
+        </div>
+        <div class="col-xl-3 col-md-6 mb-4">
+            <div class="stat-card bg-warning text-white">
+                <div class="stat-card-body">
+                    <div class="stat-card-icon">
+                        <i class="fas fa-book"></i>
+                    </div>
+                    <div class="stat-card-info">
+                        <h5 class="stat-card-title">54</h5>
+                        <p class="stat-card-text">Total Credits Earned</p>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- Current Courses & Grades -->
+    <div class="dashboard-card mb-4">
+        <h3 class="section-title">Current Semester Grades</h3>
+        <div class="table-responsive">
+            <table class="table table-hover align-middle">
+                <thead>
+                    <tr>
+                        <th>Course</th>
+                        <th>Code</th>
+                        <th>Credits</th>
+                        <th>Instructor</th>
+                        <th>Grade</th>
+                        <th>Details</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    <tr>
+                        <td>
+                            <div class="d-flex align-items-center">
+                                <div class="course-icon me-3 bg-primary text-white">
+                                    <i class="fas fa-laptop-code"></i>
+                                </div>
+                                <div>
+                                    <h6 class="mb-0">Advanced Web Development</h6>
+                                    <small class="text-muted">Required</small>
+                                </div>
+                            </div>
+                        </td>
+                        <td>CS 401</td>
+                        <td>4</td>
+                        <td>Dr. Sarah Johnson</td>
+                        <td>
+                            <span class="grade-circle-sm bg-success text-white">A</span>
+                        </td>
+                        <td>
+                            <a href="@Url.Action("CourseGradeDetails", "Student", new { 
+                                id = 1, 
+                                courseName = "Advanced Web Development",
+                                courseCode = "CS 401",
+                                credits = "4",
+                                instructor = "Dr. Sarah Johnson",
+                                finalGrade = "A",
+                                currentGradePercentage = "93%",
+                                status = "Excellent",
+                                gradeClass = "bg-success",
+                                gradeColorClass = "text-success",
+                                gradeTextClass = "text-success"
+                            })" class="btn btn-sm btn-outline-primary">View Details</a>
+                        </td>
+                    </tr>
+                    <tr>
+                        <td>
+                            <div class="d-flex align-items-center">
+                                <div class="course-icon me-3 bg-info text-white">
+                                    <i class="fas fa-database"></i>
+                                </div>
+                                <div>
+                                    <h6 class="mb-0">Data Structures</h6>
+                                    <small class="text-muted">Required</small>
+                                </div>
+                            </div>
+                        </td>
+                        <td>CS 301</td>
+                        <td>3</td>
+                        <td>Prof. Michael Chen</td>
+                        <td>
+                            <span class="grade-circle-sm bg-primary text-white">B+</span>
+                        </td>
+                        <td>
+                            <a href="@Url.Action("CourseGradeDetails", "Student", new { 
+                                id = 2, 
+                                courseName = "Data Structures",
+                                courseCode = "CS 301",
+                                credits = "3",
+                                instructor = "Prof. Michael Chen",
+                                finalGrade = "B+",
+                                currentGradePercentage = "87%",
+                                status = "Good",
+                                gradeClass = "bg-primary",
+                                gradeColorClass = "text-primary",
+                                gradeTextClass = "text-primary"
+                            })" class="btn btn-sm btn-outline-primary">View Details</a>
+                        </td>
+                    </tr>
+                    <tr>
+                        <td>
+                            <div class="d-flex align-items-center">
+                                <div class="course-icon me-3 bg-success text-white">
+                                    <i class="fas fa-brain"></i>
+                                </div>
+                                <div>
+                                    <h6 class="mb-0">Machine Learning Fundamentals</h6>
+                                    <small class="text-muted">Elective</small>
+                                </div>
+                            </div>
+                        </td>
+                        <td>CS 450</td>
+                        <td>4</td>
+                        <td>Dr. Robert Lee</td>
+                        <td>
+                            <span class="grade-circle-sm bg-success text-white">A-</span>
+                        </td>
+                        <td>
+                            <a href="@Url.Action("CourseGradeDetails", "Student", new { 
+                                id = 3, 
+                                courseName = "Machine Learning Fundamentals",
+                                courseCode = "CS 450",
+                                credits = "4",
+                                instructor = "Dr. Robert Lee",
+                                finalGrade = "A-",
+                                currentGradePercentage = "91%",
+                                status = "Very Good",
+                                gradeClass = "bg-success",
+                                gradeColorClass = "text-success",
+                                gradeTextClass = "text-success"
+                            })" class="btn btn-sm btn-outline-primary">View Details</a>
+                        </td>
+                    </tr>
+                    <tr>
+                        <td>
+                            <div class="d-flex align-items-center">
+                                <div class="course-icon me-3 bg-warning text-white">
+                                    <i class="fas fa-code-branch"></i>
+                                </div>
+                                <div>
+                                    <h6 class="mb-0">Introduction to Algorithms</h6>
+                                    <small class="text-muted">Required</small>
+                                </div>
+                            </div>
+                        </td>
+                        <td>CS 320</td>
+                        <td>3</td>
+                        <td>Prof. Emily Rodriguez</td>
+                        <td>
+                            <span class="grade-circle-sm bg-primary text-white">B</span>
+                        </td>
+                        <td>
+                            <a href="@Url.Action("CourseGradeDetails", "Student", new { 
+                                id = 4, 
+                                courseName = "Introduction to Algorithms",
+                                courseCode = "CS 320",
+                                credits = "3",
+                                instructor = "Prof. Emily Rodriguez",
+                                finalGrade = "B",
+                                currentGradePercentage = "83%",
+                                status = "Good",
+                                gradeClass = "bg-primary",
+                                gradeColorClass = "text-primary",
+                                gradeTextClass = "text-primary"
+                            })" class="btn btn-sm btn-outline-primary">View Details</a>
+                        </td>
+                    </tr>
+                    <tr>
+                        <td>
+                            <div class="d-flex align-items-center">
+                                <div class="course-icon me-3 bg-danger text-white">
+                                    <i class="fas fa-atom"></i>
+                                </div>
+                                <div>
+                                    <h6 class="mb-0">Physics 101</h6>
+                                    <small class="text-muted">General Education</small>
+                                </div>
+                            </div>
+                        </td>
+                        <td>PHY 101</td>
+                        <td>4</td>
+                        <td>Dr. James Wilson</td>
+                        <td>
+                            <span class="grade-circle-sm bg-success text-white">A</span>
+                        </td>
+                        <td>
+                            <a href="@Url.Action("CourseGradeDetails", "Student", new { 
+                                id = 5, 
+                                courseName = "Physics 101",
+                                courseCode = "PHY 101",
+                                credits = "4",
+                                instructor = "Dr. James Wilson",
+                                finalGrade = "A",
+                                currentGradePercentage = "95%",
+                                status = "Excellent",
+                                gradeClass = "bg-success",
+                                gradeColorClass = "text-success",
+                                gradeTextClass = "text-success"
+                            })" class="btn btn-sm btn-outline-primary">View Details</a>
+                        </td>
+                    </tr>
+                </tbody>
+            </table>
+        </div>
+    </div>
+
+    <!-- Grade History -->
+    <div class="dashboard-card">
+        <h3 class="section-title">Grade History</h3>
+        <div class="row">
+            <div class="col-md-8">
+                <div class="chart-container mb-4">
+                    <canvas id="gradeHistoryChart" width="800" height="400"></canvas>
+                </div>
+            </div>
+            <div class="col-md-4">
+                <div class="card h-100">
+                    <div class="card-header">
+                        <h4 class="mb-0">Summary</h4>
+                    </div>
+                    <div class="card-body">
+                        <div class="mb-3">
+                            <div class="d-flex justify-content-between">
+                                <span>Highest GPA:</span>
+                                <span class="text-success">3.9 (Spring 2023)</span>
+                            </div>
+                        </div>
+                        <div class="mb-3">
+                            <div class="d-flex justify-content-between">
+                                <span>Lowest GPA:</span>
+                                <span class="text-primary">3.5 (Fall 2022)</span>
+                            </div>
+                        </div>
+                        <div class="mb-3">
+                            <div class="d-flex justify-content-between">
+                                <span>Average GPA:</span>
+                                <span class="text-primary">3.7</span>
+                            </div>
+                        </div>
+                        <div class="mb-3">
+                            <div class="d-flex justify-content-between">
+                                <span>Total Credits:</span>
+                                <span>54</span>
+                            </div>
+                        </div>
+                        <div class="mb-3">
+                            <div class="d-flex justify-content-between">
+                                <span>Grade Distribution:</span>
+                            </div>
+                            <div class="grade-distribution mt-2">
+                                <div class="progress mb-2" style="height: 20px;">
+                                    <div class="progress-bar bg-success" role="progressbar" style="width: 45%" aria-valuenow="45" aria-valuemin="0" aria-valuemax="100">A (45%)</div>
+                                </div>
+                                <div class="progress mb-2" style="height: 20px;">
+                                    <div class="progress-bar bg-primary" role="progressbar" style="width: 30%" aria-valuenow="30" aria-valuemin="0" aria-valuemax="100">B (30%)</div>
+                                </div>
+                                <div class="progress mb-2" style="height: 20px;">
+                                    <div class="progress-bar bg-info" role="progressbar" style="width: 20%" aria-valuenow="20" aria-valuemin="0" aria-valuemax="100">C (20%)</div>
+                                </div>
+                                <div class="progress mb-2" style="height: 20px;">
+                                    <div class="progress-bar bg-warning" role="progressbar" style="width: 5%" aria-valuenow="5" aria-valuemin="0" aria-valuemax="100">D (5%)</div>
+                                </div>
+                                <div class="progress" style="height: 20px;">
+                                    <div class="progress-bar bg-danger" role="progressbar" style="width: 0%" aria-valuenow="0" aria-valuemin="0" aria-valuemax="100">F (0%)</div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+        
+        <!-- Previous Semesters Grades -->
+        <div class="accordion mt-4" id="previousSemestersAccordion">
+            <div class="accordion-item">
+                <h2 class="accordion-header">
+                    <button class="accordion-button collapsed" type="button" data-bs-toggle="collapse" data-bs-target="#spring2023" aria-expanded="false" aria-controls="spring2023">
+                        Spring 2023 (GPA: 3.9)
+                    </button>
+                </h2>
+                <div id="spring2023" class="accordion-collapse collapse" data-bs-parent="#previousSemestersAccordion">
+                    <div class="accordion-body p-0">
+                        <div class="table-responsive">
+                            <table class="table table-hover mb-0">
+                                <thead>
+                                    <tr>
+                                        <th>Course</th>
+                                        <th>Code</th>
+                                        <th>Credits</th>
+                                        <th>Grade</th>
+                                    </tr>
+                                </thead>
+                                <tbody>
+                                    <tr>
+                                        <td>Introduction to Programming</td>
+                                        <td>CS 101</td>
+                                        <td>3</td>
+                                        <td><span class="badge bg-success">A</span></td>
+                                    </tr>
+                                    <tr>
+                                        <td>Calculus I</td>
+                                        <td>MATH 201</td>
+                                        <td>4</td>
+                                        <td><span class="badge bg-success">A</span></td>
+                                    </tr>
+                                    <tr>
+                                        <td>Database Systems</td>
+                                        <td>CS 310</td>
+                                        <td>3</td>
+                                        <td><span class="badge bg-success">A-</span></td>
+                                    </tr>
+                                    <tr>
+                                        <td>Technical Writing</td>
+                                        <td>ENG 210</td>
+                                        <td>3</td>
+                                        <td><span class="badge bg-primary">B+</span></td>
+                                    </tr>
+                                </tbody>
+                            </table>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            <div class="accordion-item">
+                <h2 class="accordion-header">
+                    <button class="accordion-button collapsed" type="button" data-bs-toggle="collapse" data-bs-target="#fall2022" aria-expanded="false" aria-controls="fall2022">
+                        Fall 2022 (GPA: 3.5)
+                    </button>
+                </h2>
+                <div id="fall2022" class="accordion-collapse collapse" data-bs-parent="#previousSemestersAccordion">
+                    <div class="accordion-body p-0">
+                        <div class="table-responsive">
+                            <table class="table table-hover mb-0">
+                                <thead>
+                                    <tr>
+                                        <th>Course</th>
+                                        <th>Code</th>
+                                        <th>Credits</th>
+                                        <th>Grade</th>
+                                    </tr>
+                                </thead>
+                                <tbody>
+                                    <tr>
+                                        <td>Discrete Mathematics</td>
+                                        <td>MATH 210</td>
+                                        <td>3</td>
+                                        <td><span class="badge bg-primary">B+</span></td>
+                                    </tr>
+                                    <tr>
+                                        <td>Computer Architecture</td>
+                                        <td>CS 220</td>
+                                        <td>3</td>
+                                        <td><span class="badge bg-success">A-</span></td>
+                                    </tr>
+                                    <tr>
+                                        <td>Web Development Basics</td>
+                                        <td>CS 240</td>
+                                        <td>3</td>
+                                        <td><span class="badge bg-success">A</span></td>
+                                    </tr>
+                                    <tr>
+                                        <td>Introduction to Psychology</td>
+                                        <td>PSY 101</td>
+                                        <td>3</td>
+                                        <td><span class="badge bg-primary">B</span></td>
+                                    </tr>
+                                </tbody>
+                            </table>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+
+@section Styles {
+    <style>
+        .course-icon {
+            width: 40px;
+            height: 40px;
+            border-radius: 8px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 1.25rem;
+        }
+        
+        .grade-circle-sm {
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            width: 35px;
+            height: 35px;
+            border-radius: 50%;
+            font-weight: bold;
+        }
+        
+        .chart-container {
+            position: relative;
+            height: 400px;
+        }
+    </style>
+}
+
+@section Scripts {
+    <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+    <script>
+        $(document).ready(function() {
+            // Filter buttons functionality
+            $('.btn-group .btn').click(function() {
+                $('.btn-group .btn').removeClass('active');
+                $(this).addClass('active');
+                
+                // Here you would add logic to filter the grades based on the selected button
+            });
+            
+            // Grade History Chart
+            var ctx = document.getElementById('gradeHistoryChart').getContext('2d');
+            var gradeHistoryChart = new Chart(ctx, {
+                type: 'line',
+                data: {
+                    labels: ['Fall 2021', 'Spring 2022', 'Fall 2022', 'Spring 2023', 'Fall 2023'],
+                    datasets: [{
+                        label: 'GPA',
+                        data: [3.6, 3.7, 3.5, 3.9, 3.8],
+                        backgroundColor: 'rgba(54, 162, 235, 0.2)',
+                        borderColor: 'rgba(54, 162, 235, 1)',
+                        borderWidth: 2,
+                        pointBackgroundColor: 'rgba(54, 162, 235, 1)',
+                        pointBorderColor: '#fff',
+                        pointHoverBackgroundColor: '#fff',
+                        pointHoverBorderColor: 'rgba(54, 162, 235, 1)',
+                        pointRadius: 5,
+                        pointHoverRadius: 7,
+                        tension: 0.1
+                    }]
+                },
+                QuizOptions: {
+                    responsive: true,
+                    maintainAspectRatio: false,
+                    plugins: {
+                        legend: {
+                            display: false
+                        },
+                        tooltip: {
+                            mode: 'index',
+                            intersect: false,
+                            callbacks: {
+                                title: function(tooltipItems) {
+                                    return tooltipItems[0].label;
+                                },
+                                label: function(context) {
+                                    return 'GPA: ' + context.raw;
+                                }
+                            }
+                        }
+                    },
+                    scales: {
+                        y: {
+                            beginAtZero: false,
+                            min: 2.0,
+                            max: 4.0,
+                            ticks: {
+                                stepSize: 0.5
+                            },
+                            title: {
+                                display: true,
+                                text: 'GPA'
+                            }
+                        },
+                        x: {
+                            title: {
+                                display: true,
+                                text: 'Semester'
+                            }
+                        }
+                    }
+                }
+            });
+        });
+    </script>
+} 

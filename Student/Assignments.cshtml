@@ -1,0 +1,420 @@
+@{
+    ViewData["Title"] = "My Assignments";
+    Layout = "_StudentLayout";
+}
+
+<div class="container-fluid px-4 py-4">
+    <!-- Page Header -->
+    <div class="page-header row align-items-center mb-4">
+        <div class="col-md-6">
+            <h1 class="page-title">@ViewData["Title"]</h1>
+            <p class="page-subtitle">Track and manage your course assignments</p>
+        </div>
+        <div class="col-md-6 text-md-end">
+            <div class="btn-group" role="group">
+                <button type="button" class="btn btn-outline-primary active">All</button>
+                <button type="button" class="btn btn-outline-primary">Upcoming</button>
+                <button type="button" class="btn btn-outline-primary">Completed</button>
+                <button type="button" class="btn btn-outline-primary">Overdue</button>
+            </div>
+        </div>
+    </div>
+
+    <!-- Success Message -->
+    @if (TempData["SuccessMessage"] != null)
+    {
+        <div class="alert alert-success alert-dismissible fade show mb-4" role="alert">
+            <i class="fas fa-check-circle me-2"></i> @TempData["SuccessMessage"]
+            <button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close"></button>
+        </div>
+    }
+
+    <!-- Assignment Stats -->
+    <div class="row mb-4">
+        <div class="col-xl-3 col-md-6 mb-4">
+            <div class="stat-card bg-primary text-white">
+                <div class="stat-card-body">
+                    <div class="stat-card-icon">
+                        <i class="fas fa-tasks"></i>
+                    </div>
+                    <div class="stat-card-info">
+                        <h5 class="stat-card-title">12</h5>
+                        <p class="stat-card-text">Total Assignments</p>
+                    </div>
+                </div>
+            </div>
+        </div>
+        <div class="col-xl-3 col-md-6 mb-4">
+            <div class="stat-card bg-success text-white">
+                <div class="stat-card-body">
+                    <div class="stat-card-icon">
+                        <i class="fas fa-check-circle"></i>
+                    </div>
+                    <div class="stat-card-info">
+                        <h5 class="stat-card-title">7</h5>
+                        <p class="stat-card-text">Completed</p>
+                    </div>
+                </div>
+            </div>
+        </div>
+        <div class="col-xl-3 col-md-6 mb-4">
+            <div class="stat-card bg-warning text-white">
+                <div class="stat-card-body">
+                    <div class="stat-card-icon">
+                        <i class="fas fa-clock"></i>
+                    </div>
+                    <div class="stat-card-info">
+                        <h5 class="stat-card-title">3</h5>
+                        <p class="stat-card-text">Upcoming</p>
+                    </div>
+                </div>
+            </div>
+        </div>
+        <div class="col-xl-3 col-md-6 mb-4">
+            <div class="stat-card bg-danger text-white">
+                <div class="stat-card-body">
+                    <div class="stat-card-icon">
+                        <i class="fas fa-exclamation-circle"></i>
+                    </div>
+                    <div class="stat-card-info">
+                        <h5 class="stat-card-title">2</h5>
+                        <p class="stat-card-text">Overdue</p>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- Upcoming Assignments -->
+    <div class="dashboard-card mb-4">
+        <h3 class="section-title">Upcoming Assignments</h3>
+        <div class="table-responsive">
+            <table class="table table-hover">
+                <thead>
+                    <tr>
+                        <th>Assignment</th>
+                        <th>Course</th>
+                        <th>Due Date</th>
+                        <th>Status</th>
+                        <th>Actions</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    <tr>
+                        <td>
+                            <div class="d-flex align-items-center">
+                                <div class="assignment-icon me-3 bg-primary text-white">
+                                    <i class="fas fa-file-alt"></i>
+                                </div>
+                                <div>
+                                    <h6 class="mb-0">Final Project Submission</h6>
+                                    <small class="text-muted">Worth 30% of final grade</small>
+                                </div>
+                            </div>
+                        </td>
+                        <td>Advanced Web Development</td>
+                        <td>
+                            <span class="text-warning">
+                                <i class="fas fa-clock me-1"></i> 2 days left
+                            </span>
+                            <br>
+                            <small class="text-muted">Dec 15, 2023</small>
+                        </td>
+                        <td><span class="badge bg-warning">In Progress</span></td>
+                        <td>
+                            <a href="@Url.Action("AssignmentSubmission", "Student", new { 
+                                id = 1, 
+                                assignmentName = "Final Project Submission", 
+                                courseName = "Advanced Web Development",
+                                dueDate = "Dec 15, 2023",
+                                worth = "30% of final grade"
+                            })" class="btn btn-sm btn-primary">Continue</a>
+                        </td>
+                    </tr>
+                    <tr>
+                        <td>
+                            <div class="d-flex align-items-center">
+                                <div class="assignment-icon me-3 bg-info text-white">
+                                    <i class="fas fa-tasks"></i>
+                                </div>
+                                <div>
+                                    <h6 class="mb-0">Weekly Quiz</h6>
+                                    <small class="text-muted">Worth 5% of final grade</small>
+                                </div>
+                            </div>
+                        </td>
+                        <td>Data Structures</td>
+                        <td>
+                            <span class="text-warning">
+                                <i class="fas fa-clock me-1"></i> 5 days left
+                            </span>
+                            <br>
+                            <small class="text-muted">Dec 18, 2023</small>
+                        </td>
+                        <td><span class="badge bg-secondary">Not Started</span></td>
+                        <td>
+                            <a href="@Url.Action("AssignmentSubmission", "Student", new { 
+                                id = 2, 
+                                assignmentName = "Weekly Quiz", 
+                                courseName = "Data Structures",
+                                dueDate = "Dec 18, 2023",
+                                worth = "5% of final grade"
+                            })" class="btn btn-sm btn-primary">Start</a>
+                        </td>
+                    </tr>
+                    <tr>
+                        <td>
+                            <div class="d-flex align-items-center">
+                                <div class="assignment-icon me-3 bg-success text-white">
+                                    <i class="fas fa-book"></i>
+                                </div>
+                                <div>
+                                    <h6 class="mb-0">Research Paper</h6>
+                                    <small class="text-muted">Worth 20% of final grade</small>
+                                </div>
+                            </div>
+                        </td>
+                        <td>Machine Learning Fundamentals</td>
+                        <td>
+                            <span class="text-muted">
+                                <i class="fas fa-calendar me-1"></i> 2 weeks left
+                            </span>
+                            <br>
+                            <small class="text-muted">Dec 30, 2023</small>
+                        </td>
+                        <td><span class="badge bg-warning">In Progress</span></td>
+                        <td>
+                            <a href="@Url.Action("AssignmentSubmission", "Student", new { 
+                                id = 3, 
+                                assignmentName = "Research Paper", 
+                                courseName = "Machine Learning Fundamentals",
+                                dueDate = "Dec 30, 2023",
+                                worth = "20% of final grade"
+                            })" class="btn btn-sm btn-primary">Continue</a>
+                        </td>
+                    </tr>
+                </tbody>
+            </table>
+        </div>
+    </div>
+
+    <!-- Overdue Assignments -->
+    <div class="dashboard-card mb-4">
+        <h3 class="section-title">Overdue Assignments</h3>
+        <div class="table-responsive">
+            <table class="table table-hover">
+                <thead>
+                    <tr>
+                        <th>Assignment</th>
+                        <th>Course</th>
+                        <th>Due Date</th>
+                        <th>Status</th>
+                        <th>Actions</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    <tr>
+                        <td>
+                            <div class="d-flex align-items-center">
+                                <div class="assignment-icon me-3 bg-danger text-white">
+                                    <i class="fas fa-exclamation-triangle"></i>
+                                </div>
+                                <div>
+                                    <h6 class="mb-0">Midterm Exam</h6>
+                                    <small class="text-muted">Worth 25% of final grade</small>
+                                </div>
+                            </div>
+                        </td>
+                        <td>Introduction to Algorithms</td>
+                        <td>
+                            <span class="text-danger">
+                                <i class="fas fa-exclamation-circle me-1"></i> 2 days overdue
+                            </span>
+                            <br>
+                            <small class="text-muted">Dec 10, 2023</small>
+                        </td>
+                        <td><span class="badge bg-danger">Overdue</span></td>
+                        <td>
+                            <a href="@Url.Action("AssignmentSubmission", "Student", new { 
+                                id = 4, 
+                                assignmentName = "Midterm Exam", 
+                                courseName = "Introduction to Algorithms",
+                                dueDate = "Dec 10, 2023",
+                                worth = "25% of final grade",
+                                isOverdue = true
+                            })" class="btn btn-sm btn-danger">Submit Now</a>
+                        </td>
+                    </tr>
+                    <tr>
+                        <td>
+                            <div class="d-flex align-items-center">
+                                <div class="assignment-icon me-3 bg-danger text-white">
+                                    <i class="fas fa-exclamation-triangle"></i>
+                                </div>
+                                <div>
+                                    <h6 class="mb-0">Lab Report</h6>
+                                    <small class="text-muted">Worth 10% of final grade</small>
+                                </div>
+                            </div>
+                        </td>
+                        <td>Physics 101</td>
+                        <td>
+                            <span class="text-danger">
+                                <i class="fas fa-exclamation-circle me-1"></i> 1 day overdue
+                            </span>
+                            <br>
+                            <small class="text-muted">Dec 11, 2023</small>
+                        </td>
+                        <td><span class="badge bg-danger">Overdue</span></td>
+                        <td>
+                            <a href="@Url.Action("AssignmentSubmission", "Student", new { 
+                                id = 5, 
+                                assignmentName = "Lab Report", 
+                                courseName = "Physics 101",
+                                dueDate = "Dec 11, 2023",
+                                worth = "10% of final grade",
+                                isOverdue = true
+                            })" class="btn btn-sm btn-danger">Submit Now</a>
+                        </td>
+                    </tr>
+                </tbody>
+            </table>
+        </div>
+    </div>
+
+    <!-- Recently Completed Assignments -->
+    <div class="dashboard-card">
+        <h3 class="section-title">Recently Completed</h3>
+        <div class="table-responsive">
+            <table class="table table-hover">
+                <thead>
+                    <tr>
+                        <th>Assignment</th>
+                        <th>Course</th>
+                        <th>Submitted</th>
+                        <th>Grade</th>
+                        <th>Actions</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    <tr>
+                        <td>
+                            <div class="d-flex align-items-center">
+                                <div class="assignment-icon me-3 bg-success text-white">
+                                    <i class="fas fa-check-circle"></i>
+                                </div>
+                                <div>
+                                    <h6 class="mb-0">Programming Assignment #3</h6>
+                                    <small class="text-muted">Worth 15% of final grade</small>
+                                </div>
+                            </div>
+                        </td>
+                        <td>Java Programming</td>
+                        <td>
+                            <span class="text-muted">
+                                <i class="fas fa-calendar-check me-1"></i> 3 days ago
+                            </span>
+                            <br>
+                            <small class="text-muted">Dec 9, 2023</small>
+                        </td>
+                        <td><span class="badge bg-success">95%</span></td>
+                        <td>
+                            <a href="@Url.Action("AssignmentFeedback", "Student", new { 
+                                id = 6, 
+                                assignmentName = "Programming Assignment #3", 
+                                courseName = "Java Programming",
+                                submittedDate = "Dec 9, 2023",
+                                dueDate = "Dec 9, 2023",
+                                worth = "15% of final grade",
+                                grade = "95%",
+                                instructorName = "Dr. James Wilson"
+                            })" class="btn btn-sm btn-outline-secondary">View Feedback</a>
+                        </td>
+                    </tr>
+                    <tr>
+                        <td>
+                            <div class="d-flex align-items-center">
+                                <div class="assignment-icon me-3 bg-success text-white">
+                                    <i class="fas fa-check-circle"></i>
+                                </div>
+                                <div>
+                                    <h6 class="mb-0">Case Study Analysis</h6>
+                                    <small class="text-muted">Worth 20% of final grade</small>
+                                </div>
+                            </div>
+                        </td>
+                        <td>Business Ethics</td>
+                        <td>
+                            <span class="text-muted">
+                                <i class="fas fa-calendar-check me-1"></i> 1 week ago
+                            </span>
+                            <br>
+                            <small class="text-muted">Dec 5, 2023</small>
+                        </td>
+                        <td><span class="badge bg-success">88%</span></td>
+                        <td>
+                            <a href="@Url.Action("AssignmentFeedback", "Student", new { 
+                                id = 7, 
+                                assignmentName = "Case Study Analysis", 
+                                courseName = "Business Ethics",
+                                submittedDate = "Dec 5, 2023",
+                                dueDate = "Dec 5, 2023",
+                                worth = "20% of final grade",
+                                grade = "88%",
+                                instructorName = "Dr. Sarah Johnson"
+                            })" class="btn btn-sm btn-outline-secondary">View Feedback</a>
+                        </td>
+                    </tr>
+                    <tr>
+                        <td>
+                            <div class="d-flex align-items-center">
+                                <div class="assignment-icon me-3 bg-success text-white">
+                                    <i class="fas fa-check-circle"></i>
+                                </div>
+                                <div>
+                                    <h6 class="mb-0">Group Presentation</h6>
+                                    <small class="text-muted">Worth 15% of final grade</small>
+                                </div>
+                            </div>
+                        </td>
+                        <td>Communication Skills</td>
+                        <td>
+                            <span class="text-muted">
+                                <i class="fas fa-calendar-check me-1"></i> 2 weeks ago
+                            </span>
+                            <br>
+                            <small class="text-muted">Nov 28, 2023</small>
+                        </td>
+                        <td><span class="badge bg-success">92%</span></td>
+                        <td>
+                            <a href="@Url.Action("AssignmentFeedback", "Student", new { 
+                                id = 8, 
+                                assignmentName = "Group Presentation", 
+                                courseName = "Communication Skills",
+                                submittedDate = "Nov 28, 2023",
+                                dueDate = "Nov 28, 2023",
+                                worth = "15% of final grade",
+                                grade = "92%",
+                                instructorName = "Prof. Michael Brown"
+                            })" class="btn btn-sm btn-outline-secondary">View Feedback</a>
+                        </td>
+                    </tr>
+                </tbody>
+            </table>
+        </div>
+    </div>
+</div>
+
+@section Scripts {
+    <script>
+        $(document).ready(function() {
+            // Filter buttons functionality
+            $('.btn-group .btn').click(function() {
+                $('.btn-group .btn').removeClass('active');
+                $(this).addClass('active');
+                
+                // Here you would add logic to filter the assignments based on the selected button
+            });
+        });
+    </script>
+} 

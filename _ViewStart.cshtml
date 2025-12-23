@@ -1,0 +1,32 @@
+﻿@using System.Security.Claims
+@{
+    Layout = "_Layout";
+
+    // Check if the user is authenticated
+    if (Context.User.Identity.IsAuthenticated)
+    {
+        // Get the role from the user's claims
+        var role = Context.User.Claims.FirstOrDefault(c => c.Type == ClaimTypes.Role)?.Value;
+
+        if (role == "Admin")
+        {
+            Layout = "~/Views/Shared/_AdminLayout.cshtml";
+        }
+        else if (role == "Teacher")
+        {
+            Layout = "~/Views/Shared/_TeacherLayout.cshtml";
+        }
+        else if (role == "Student")
+        {
+            Layout = "~/Views/Shared/_StudentLayout.cshtml";
+        }
+        else
+        {
+            Layout = "~/Views/Shared/_Layout.cshtml"; // Default layout
+        }
+    }
+    else
+    {
+        Layout = "~/Views/Shared/_Layout.cshtml"; // Default layout for unauthenticated users
+    }
+}

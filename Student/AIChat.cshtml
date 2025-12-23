@@ -1,0 +1,25 @@
+@{
+    ViewData["Title"] = "AI 助教";
+}
+
+<h2>🤖 AI 助教</h2>
+
+<form method="post" action="@Url.Action("AIChat", "Student")">
+    <div class="mb-3">
+        <label for="QuizQuestion" class="form-label">向 AI 提问：</label>
+        <textarea 
+            name="userQuizQuestion" 
+            class="form-control" 
+            rows="4" 
+            placeholder="例如：什么是光合作用？">@ViewBag.UserQuizQuestion</textarea>
+    </div>
+    <button type="submit" class="btn btn-primary">发送提问</button>
+</form>
+
+@if (!string.IsNullOrEmpty(ViewBag.AiResponse as string))
+{
+    <div class="mt-4 p-3 border rounded bg-light">
+        <h5>💡 AI 回答：</h5>
+        <p>@ViewBag.AiResponse</p>
+    </div>
+}

@@ -1,0 +1,235 @@
+@{
+    ViewData["Title"] = "My Calendar";
+    Layout = "_StudentLayout";
+}
+
+<div class="container-fluid px-4 py-4">
+    <!-- Page Header -->
+    <div class="page-header row align-items-center mb-4">
+        <div class="col-md-6">
+            <h1 class="page-title">@ViewData["Title"]</h1>
+            <p class="page-subtitle">Track your academic schedule and deadlines</p>
+        </div>
+        <div class="col-md-6 text-md-end">
+            <div class="btn-group me-2" role="group">
+                <button type="button" class="btn btn-outline-primary active" id="monthView">Month</button>
+                <button type="button" class="btn btn-outline-primary" id="weekView">Week</button>
+                <button type="button" class="btn btn-outline-primary" id="dayView">Day</button>
+            </div>
+            <button class="btn btn-primary" id="addEvent">
+                <i class="fas fa-plus me-2"></i> Add Event
+            </button>
+        </div>
+    </div>
+
+    <div class="row">
+        <!-- Calendar Main View -->
+        <div class="col-lg-8 mb-4">
+            <div class="dashboard-card h-100">
+                <div class="calendar-header d-flex justify-content-between align-items-center mb-4">
+                    <div class="calendar-nav">
+                        <button class="btn btn-sm btn-outline-secondary me-2" id="prevMonth">
+                            <i class="fas fa-chevron-left"></i>
+                        </button>
+                        <span class="calendar-current-month">December 2023</span>
+                        <button class="btn btn-sm btn-outline-secondary ms-2" id="nextMonth">
+                            <i class="fas fa-chevron-right"></i>
+                        </button>
+                    </div>
+                    <button class="btn btn-sm btn-outline-primary" id="todayBtn">Today</button>
+                </div>
+                
+                <div class="calendar-container">
+                    <div class="calendar-weekdays">
+                        <div>Sun</div>
+                        <div>Mon</div>
+                        <div>Tue</div>
+                        <div>Wed</div>
+                        <div>Thu</div>
+                        <div>Fri</div>
+                        <div>Sat</div>
+                    </div>
+                    <div class="calendar-days">
+                        <!-- Previous Month Days -->
+                        <div class="calendar-day prev-month">26</div>
+                        <div class="calendar-day prev-month">27</div>
+                        <div class="calendar-day prev-month">28</div>
+                        <div class="calendar-day prev-month">29</div>
+                        <div class="calendar-day prev-month">30</div>
+                        
+                        <!-- Current Month Days -->
+                        <div class="calendar-day">1</div>
+                        <div class="calendar-day">2</div>
+                        <div class="calendar-day">3</div>
+                        <div class="calendar-day">4</div>
+                        <div class="calendar-day">5</div>
+                        <div class="calendar-day">6</div>
+                        <div class="calendar-day">7</div>
+                        <div class="calendar-day">8</div>
+                        <div class="calendar-day">9</div>
+                        <div class="calendar-day">10</div>
+                        <div class="calendar-day">11</div>
+                        <div class="calendar-day has-events">
+                            12
+                            <div class="event-dot bg-danger"></div>
+                        </div>
+                        <div class="calendar-day">13</div>
+                        <div class="calendar-day">14</div>
+                        <div class="calendar-day has-events current-day">
+                            15
+                            <div class="event-dot bg-primary"></div>
+                            <div class="event-dot bg-success"></div>
+                        </div>
+                        <div class="calendar-day">16</div>
+                        <div class="calendar-day">17</div>
+                        <div class="calendar-day has-events">
+                            18
+                            <div class="event-dot bg-warning"></div>
+                        </div>
+                        <div class="calendar-day">19</div>
+                        <div class="calendar-day">20</div>
+                        <div class="calendar-day">21</div>
+                        <div class="calendar-day">22</div>
+                        <div class="calendar-day">23</div>
+                        <div class="calendar-day">24</div>
+                        <div class="calendar-day">25</div>
+                        <div class="calendar-day">26</div>
+                        <div class="calendar-day">27</div>
+                        <div class="calendar-day">28</div>
+                        <div class="calendar-day">29</div>
+                        <div class="calendar-day">30</div>
+                        <div class="calendar-day">31</div>
+                        
+                        <!-- Next Month Days -->
+                        <div class="calendar-day next-month">1</div>
+                        <div class="calendar-day next-month">2</div>
+                        <div class="calendar-day next-month">3</div>
+                        <div class="calendar-day next-month">4</div>
+                        <div class="calendar-day next-month">5</div>
+                        <div class="calendar-day next-month">6</div>
+                    </div>
+                </div>
+            </div>
+        </div>
+        
+        <!-- Upcoming Events -->
+        <div class="col-lg-4">
+            <div class="dashboard-card mb-4">
+                <h3 class="section-title">Today's Schedule</h3>
+                <div class="today-date text-center mb-3">
+                    <div class="today-day">Friday</div>
+                    <div class="today-number">15</div>
+                    <div class="today-month">December 2023</div>
+                </div>
+                
+                <div class="timeline">
+                    <div class="timeline-item">
+                        <div class="timeline-time">9:00 AM</div>
+                        <div class="timeline-content">
+                            <div class="timeline-title">Data Structures Lecture</div>
+                            <div class="timeline-info">Room 302, CS Building</div>
+                        </div>
+                    </div>
+                    <div class="timeline-item">
+                        <div class="timeline-time">11:30 AM</div>
+                        <div class="timeline-content">
+                            <div class="timeline-title">Study Group Meeting</div>
+                            <div class="timeline-info">Library, 2nd Floor</div>
+                        </div>
+                    </div>
+                    <div class="timeline-item active">
+                        <div class="timeline-time">2:00 PM</div>
+                        <div class="timeline-content">
+                            <div class="timeline-title">Final Project Submission</div>
+                            <div class="timeline-info">Advanced Web Development</div>
+                        </div>
+                    </div>
+                    <div class="timeline-item">
+                        <div class="timeline-time">4:30 PM</div>
+                        <div class="timeline-content">
+                            <div class="timeline-title">Office Hours</div>
+                            <div class="timeline-info">Prof. Johnson, Room 405</div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            
+            <div class="dashboard-card">
+                <h3 class="section-title">Upcoming Deadlines</h3>
+                <ul class="deadline-list">
+                    <li class="deadline-item">
+                        <div class="deadline-date">
+                            <span class="deadline-day">15</span>
+                            <span class="deadline-month">Dec</span>
+                        </div>
+                        <div class="deadline-content">
+                            <div class="deadline-title">Final Project Submission</div>
+                            <div class="deadline-course">Advanced Web Development</div>
+                            <div class="deadline-time"><i class="fas fa-clock me-1"></i> Due today at 11:59 PM</div>
+                        </div>
+                    </li>
+                    <li class="deadline-item">
+                        <div class="deadline-date">
+                            <span class="deadline-day">18</span>
+                            <span class="deadline-month">Dec</span>
+                        </div>
+                        <div class="deadline-content">
+                            <div class="deadline-title">Weekly Quiz</div>
+                            <div class="deadline-course">Data Structures</div>
+                            <div class="deadline-time"><i class="fas fa-clock me-1"></i> Due in 3 days</div>
+                        </div>
+                    </li>
+                    <li class="deadline-item">
+                        <div class="deadline-date">
+                            <span class="deadline-day">20</span>
+                            <span class="deadline-month">Dec</span>
+                        </div>
+                        <div class="deadline-content">
+                            <div class="deadline-title">Final Exam</div>
+                            <div class="deadline-course">Introduction to Algorithms</div>
+                            <div class="deadline-time"><i class="fas fa-clock me-1"></i> Due in 5 days</div>
+                        </div>
+                    </li>
+                    <li class="deadline-item">
+                        <div class="deadline-date">
+                            <span class="deadline-day">30</span>
+                            <span class="deadline-month">Dec</span>
+                        </div>
+                        <div class="deadline-content">
+                            <div class="deadline-title">Research Paper</div>
+                            <div class="deadline-course">Machine Learning Fundamentals</div>
+                            <div class="deadline-time"><i class="fas fa-clock me-1"></i> Due in 2 weeks</div>
+                        </div>
+                    </li>
+                </ul>
+            </div>
+        </div>
+    </div>
+</div>
+
+@section Scripts {
+    <script>
+        $(document).ready(function() {
+            // View toggle functionality
+            $('.btn-group .btn').click(function() {
+                $('.btn-group .btn').removeClass('active');
+                $(this).addClass('active');
+                
+                // Here you would add logic to switch between calendar views
+            });
+            
+            // Calendar navigation
+            $('#prevMonth, #nextMonth, #todayBtn').click(function() {
+                // Here you would add logic to navigate between months
+            });
+            
+            // Calendar day click event
+            $('.calendar-day').click(function() {
+                $('.calendar-day').removeClass('selected');
+                $(this).addClass('selected');
+                
+                // Here you would add logic to show events for the selected day
+            });
+        });
+    </script>
+} 

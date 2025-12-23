@@ -1,0 +1,14 @@
+@model Lesson
+
+<h1>@Model.Title</h1>
+
+<div class="lesson-content">
+    @if (!string.IsNullOrEmpty(Model.Content))
+    {
+        @Html.Raw(Model.Content) <!-- 关键：用 Html.Raw 渲染 HTML -->
+    }
+    else
+    {
+        <p>暂无内容。</p>
+    }
+</div>

@@ -1,0 +1,489 @@
+@{
+    ViewData["Title"] = "Course Grade Details";
+    Layout = "_StudentLayout";
+}
+
+<div class="container-fluid px-4 py-4">
+    <!-- Page Header -->
+    <div class="page-header row align-items-center mb-4">
+        <div class="col-md-6">
+            <h1 class="page-title">@ViewData["CourseName"]</h1>
+            <p class="page-subtitle">@ViewData["CourseCode"] • Detailed Grade Overview</p>
+        </div>
+        <div class="col-md-6 text-md-end">
+            <a href="@Url.Action("Grades", "Student")" class="btn btn-outline-secondary">
+                <i class="fas fa-arrow-left me-2"></i>Back to Grades
+            </a>
+        </div>
+    </div>
+
+    <!-- Course Grade Overview -->
+    <div class="row mb-4">
+        <div class="col-md-6 mb-4 mb-md-0">
+            <div class="card h-100">
+                <div class="card-header d-flex justify-content-between align-items-center">
+                    <h4 class="mb-0">Grade Summary</h4>
+                    <span class="badge @(ViewData["GradeClass"] != null ? ViewData["GradeClass"].ToString() : "bg-success")">@ViewData["FinalGrade"]</span>
+                </div>
+                <div class="card-body">
+                    <div class="row mb-4">
+                        <div class="col-sm-6 text-center mb-3 mb-sm-0">
+                            <div class="grade-circle @(ViewData["GradeColorClass"] != null ? ViewData["GradeColorClass"].ToString() : "text-success")">
+                                <span>@ViewData["FinalGrade"]</span>
+                            </div>
+                        </div>
+                        <div class="col-sm-6">
+                            <div class="mb-3">
+                                <div class="d-flex justify-content-between">
+                                    <span>Status:</span>
+                                    <span class="@(ViewData["GradeTextClass"] != null ? ViewData["GradeTextClass"].ToString() : "text-success")">@ViewData["Status"]</span>
+                                </div>
+                            </div>
+                            <div class="mb-3">
+                                <div class="d-flex justify-content-between">
+                                    <span>Credits:</span>
+                                    <span>@ViewData["Credits"]</span>
+                                </div>
+                            </div>
+                            <div class="mb-3">
+                                <div class="d-flex justify-content-between">
+                                    <span>Instructor:</span>
+                                    <span>@ViewData["Instructor"]</span>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+
+                    <h5 class="mb-3">Grade Breakdown</h5>
+                    <div class="table-responsive">
+                        <table class="table table-bordered">
+                            <thead class="table-light">
+                                <tr>
+                                    <th>Category</th>
+                                    <th>Weight</th>
+                                    <th>Score</th>
+                                </tr>
+                            </thead>
+                            <tbody>
+                                <tr>
+                                    <td>Assignments</td>
+                                    <td>40%</td>
+                                    <td>92%</td>
+                                </tr>
+                                <tr>
+                                    <td>Quizzes</td>
+                                    <td>20%</td>
+                                    <td>88%</td>
+                                </tr>
+                                <tr>
+                                    <td>Midterm Exam</td>
+                                    <td>20%</td>
+                                    <td>95%</td>
+                                </tr>
+                                <tr>
+                                    <td>Final Exam</td>
+                                    <td>20%</td>
+                                    <td>Pending</td>
+                                </tr>
+                            </tbody>
+                            <tfoot class="table-light">
+                                <tr>
+                                    <th colspan="2">Current Grade</th>
+                                    <th>@ViewData["CurrentGradePercentage"]</th>
+                                </tr>
+                            </tfoot>
+                        </table>
+                    </div>
+                </div>
+            </div>
+        </div>
+        <div class="col-md-6">
+            <div class="card h-100">
+                <div class="card-header">
+                    <h4 class="mb-0">Grade Distribution</h4>
+                </div>
+                <div class="card-body">
+                    <div class="mb-4">
+                        <canvas id="gradeDistributionChart" width="400" height="250"></canvas>
+                    </div>
+                    <div class="statistics-summary">
+                        <div class="row">
+                            <div class="col-6 mb-3">
+                                <div class="statistic-item">
+                                    <span class="statistic-label">Class Average</span>
+                                    <span class="statistic-value">86%</span>
+                                </div>
+                            </div>
+                            <div class="col-6 mb-3">
+                                <div class="statistic-item">
+                                    <span class="statistic-label">Your Rank</span>
+                                    <span class="statistic-value">Top 15%</span>
+                                </div>
+                            </div>
+                            <div class="col-6 mb-3">
+                                <div class="statistic-item">
+                                    <span class="statistic-label">Class Median</span>
+                                    <span class="statistic-value">84%</span>
+                                </div>
+                            </div>
+                            <div class="col-6 mb-3">
+                                <div class="statistic-item">
+                                    <span class="statistic-label">Class Size</span>
+                                    <span class="statistic-value">45</span>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- Detailed Assignments List -->
+    <div class="dashboard-card mb-4">
+        <h3 class="section-title">Assignment Grades</h3>
+        <div class="table-responsive">
+            <table class="table table-hover">
+                <thead>
+                    <tr>
+                        <th>Assignment</th>
+                        <th>Due Date</th>
+                        <th>Submission Date</th>
+                        <th>Weight</th>
+                        <th>Grade</th>
+                        <th>Actions</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    <tr>
+                        <td>
+                            <div class="d-flex align-items-center">
+                                <div class="assignment-icon me-3 bg-success text-white">
+                                    <i class="fas fa-check-circle"></i>
+                                </div>
+                                <div>
+                                    <h6 class="mb-0">Assignment 1: Introduction</h6>
+                                    <small class="text-muted">Worth 10% of assignments</small>
+                                </div>
+                            </div>
+                        </td>
+                        <td>Sep 15, 2023</td>
+                        <td>Sep 14, 2023</td>
+                        <td>4%</td>
+                        <td><span class="badge bg-success">98%</span></td>
+                        <td>
+                            <a href="@Url.Action("AssignmentFeedback", "Student", new { 
+                                id = 10, 
+                                assignmentName = "Assignment 1: Introduction", 
+                                courseName = ViewData["CourseName"].ToString(),
+                                submittedDate = "Sep 14, 2023",
+                                dueDate = "Sep 15, 2023",
+                                worth = "4% of final grade",
+                                grade = "98%",
+                                instructorName = ViewData["Instructor"].ToString()
+                            })" class="btn btn-sm btn-outline-secondary">View Feedback</a>
+                        </td>
+                    </tr>
+                    <tr>
+                        <td>
+                            <div class="d-flex align-items-center">
+                                <div class="assignment-icon me-3 bg-success text-white">
+                                    <i class="fas fa-check-circle"></i>
+                                </div>
+                                <div>
+                                    <h6 class="mb-0">Assignment 2: Core Concepts</h6>
+                                    <small class="text-muted">Worth 15% of assignments</small>
+                                </div>
+                            </div>
+                        </td>
+                        <td>Oct 10, 2023</td>
+                        <td>Oct 9, 2023</td>
+                        <td>6%</td>
+                        <td><span class="badge bg-success">95%</span></td>
+                        <td>
+                            <a href="@Url.Action("AssignmentFeedback", "Student", new { 
+                                id = 11, 
+                                assignmentName = "Assignment 2: Core Concepts", 
+                                courseName = ViewData["CourseName"].ToString(),
+                                submittedDate = "Oct 9, 2023",
+                                dueDate = "Oct 10, 2023",
+                                worth = "6% of final grade",
+                                grade = "95%",
+                                instructorName = ViewData["Instructor"].ToString()
+                            })" class="btn btn-sm btn-outline-secondary">View Feedback</a>
+                        </td>
+                    </tr>
+                    <tr>
+                        <td>
+                            <div class="d-flex align-items-center">
+                                <div class="assignment-icon me-3 bg-success text-white">
+                                    <i class="fas fa-check-circle"></i>
+                                </div>
+                                <div>
+                                    <h6 class="mb-0">Assignment 3: Advanced Implementation</h6>
+                                    <small class="text-muted">Worth 15% of assignments</small>
+                                </div>
+                            </div>
+                        </td>
+                        <td>Nov 5, 2023</td>
+                        <td>Nov 4, 2023</td>
+                        <td>6%</td>
+                        <td><span class="badge bg-success">90%</span></td>
+                        <td>
+                            <a href="@Url.Action("AssignmentFeedback", "Student", new { 
+                                id = 12, 
+                                assignmentName = "Assignment 3: Advanced Implementation", 
+                                courseName = ViewData["CourseName"].ToString(),
+                                submittedDate = "Nov 4, 2023",
+                                dueDate = "Nov 5, 2023",
+                                worth = "6% of final grade",
+                                grade = "90%",
+                                instructorName = ViewData["Instructor"].ToString()
+                            })" class="btn btn-sm btn-outline-secondary">View Feedback</a>
+                        </td>
+                    </tr>
+                    <tr>
+                        <td>
+                            <div class="d-flex align-items-center">
+                                <div class="assignment-icon me-3 bg-info text-white">
+                                    <i class="fas fa-clock"></i>
+                                </div>
+                                <div>
+                                    <h6 class="mb-0">Final Project</h6>
+                                    <small class="text-muted">Worth 60% of assignments</small>
+                                </div>
+                            </div>
+                        </td>
+                        <td>Dec 15, 2023</td>
+                        <td>In Progress</td>
+                        <td>24%</td>
+                        <td><span class="badge bg-secondary">Pending</span></td>
+                        <td>
+                            <a href="@Url.Action("AssignmentSubmission", "Student", new { 
+                                id = 1, 
+                                assignmentName = "Final Project", 
+                                courseName = ViewData["CourseName"].ToString(),
+                                dueDate = "Dec 15, 2023",
+                                worth = "24% of final grade"
+                            })" class="btn btn-sm btn-primary">Continue</a>
+                        </td>
+                    </tr>
+                </tbody>
+            </table>
+        </div>
+    </div>
+
+    <!-- Quiz & Exam Grades -->
+    <div class="dashboard-card">
+        <h3 class="section-title">Quiz & Exam Grades</h3>
+        <div class="table-responsive">
+            <table class="table table-hover">
+                <thead>
+                    <tr>
+                        <th>Assessment</th>
+                        <th>Date</th>
+                        <th>Weight</th>
+                        <th>Score</th>
+                        <th>Class Average</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    <tr>
+                        <td>
+                            <div class="d-flex align-items-center">
+                                <div class="assignment-icon me-3 bg-success text-white">
+                                    <i class="fas fa-check-circle"></i>
+                                </div>
+                                <div>
+                                    <h6 class="mb-0">Quiz 1: Fundamentals</h6>
+                                </div>
+                            </div>
+                        </td>
+                        <td>Sep 20, 2023</td>
+                        <td>5%</td>
+                        <td><span class="badge bg-success">92%</span></td>
+                        <td>85%</td>
+                    </tr>
+                    <tr>
+                        <td>
+                            <div class="d-flex align-items-center">
+                                <div class="assignment-icon me-3 bg-success text-white">
+                                    <i class="fas fa-check-circle"></i>
+                                </div>
+                                <div>
+                                    <h6 class="mb-0">Quiz 2: Advanced Topics</h6>
+                                </div>
+                            </div>
+                        </td>
+                        <td>Oct 25, 2023</td>
+                        <td>5%</td>
+                        <td><span class="badge bg-success">88%</span></td>
+                        <td>82%</td>
+                    </tr>
+                    <tr>
+                        <td>
+                            <div class="d-flex align-items-center">
+                                <div class="assignment-icon me-3 bg-success text-white">
+                                    <i class="fas fa-check-circle"></i>
+                                </div>
+                                <div>
+                                    <h6 class="mb-0">Quiz 3: Case Studies</h6>
+                                </div>
+                            </div>
+                        </td>
+                        <td>Nov 22, 2023</td>
+                        <td>10%</td>
+                        <td><span class="badge bg-success">85%</span></td>
+                        <td>80%</td>
+                    </tr>
+                    <tr>
+                        <td>
+                            <div class="d-flex align-items-center">
+                                <div class="assignment-icon me-3 bg-success text-white">
+                                    <i class="fas fa-check-circle"></i>
+                                </div>
+                                <div>
+                                    <h6 class="mb-0">Midterm Exam</h6>
+                                </div>
+                            </div>
+                        </td>
+                        <td>Oct 30, 2023</td>
+                        <td>20%</td>
+                        <td><span class="badge bg-success">95%</span></td>
+                        <td>83%</td>
+                    </tr>
+                    <tr>
+                        <td>
+                            <div class="d-flex align-items-center">
+                                <div class="assignment-icon me-3 bg-warning text-white">
+                                    <i class="fas fa-hourglass-half"></i>
+                                </div>
+                                <div>
+                                    <h6 class="mb-0">Final Exam</h6>
+                                </div>
+                            </div>
+                        </td>
+                        <td>Dec 20, 2023</td>
+                        <td>20%</td>
+                        <td><span class="badge bg-secondary">Upcoming</span></td>
+                        <td>-</td>
+                    </tr>
+                </tbody>
+            </table>
+        </div>
+    </div>
+</div>
+
+@section Styles {
+    <style>
+        .grade-circle {
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            width: 120px;
+            height: 120px;
+            margin: 0 auto;
+            border-radius: 50%;
+            border: 8px solid;
+            font-size: 32px;
+            font-weight: bold;
+        }
+        
+        .text-success.grade-circle {
+            border-color: #28a745;
+        }
+        
+        .text-primary.grade-circle {
+            border-color: #007bff;
+        }
+        
+        .text-warning.grade-circle {
+            border-color: #ffc107;
+        }
+        
+        .text-danger.grade-circle {
+            border-color: #dc3545;
+        }
+        
+        .statistics-summary .statistic-item {
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            text-align: center;
+        }
+        
+        .statistics-summary .statistic-label {
+            color: #6c757d;
+            font-size: 14px;
+            margin-bottom: 5px;
+        }
+        
+        .statistics-summary .statistic-value {
+            font-size: 18px;
+            font-weight: 600;
+        }
+    </style>
+}
+
+@section Scripts {
+    <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+    <script>
+        $(document).ready(function() {
+            // Grade Distribution Chart
+            var ctx = document.getElementById('gradeDistributionChart').getContext('2d');
+            var gradeDistributionChart = new Chart(ctx, {
+                type: 'bar',
+                data: {
+                    labels: ['0-59', '60-69', '70-79', '80-89', '90-100'],
+                    datasets: [{
+                        label: 'Students',
+                        data: [2, 5, 12, 18, 8],
+                        backgroundColor: [
+                            'rgba(220, 53, 69, 0.6)',
+                            'rgba(255, 193, 7, 0.6)',
+                            'rgba(23, 162, 184, 0.6)',
+                            'rgba(0, 123, 255, 0.6)',
+                            'rgba(40, 167, 69, 0.6)'
+                        ],
+                        borderColor: [
+                            'rgba(220, 53, 69, 1)',
+                            'rgba(255, 193, 7, 1)',
+                            'rgba(23, 162, 184, 1)',
+                            'rgba(0, 123, 255, 1)',
+                            'rgba(40, 167, 69, 1)'
+                        ],
+                        borderWidth: 1
+                    }]
+                },
+                QuizOptions: {
+                    responsive: true,
+                    plugins: {
+                        legend: {
+                            display: false
+                        },
+                        tooltip: {
+                            callbacks: {
+                                title: function(tooltipItems) {
+                                    return 'Grade Range: ' + tooltipItems[0].label;
+                                }
+                            }
+                        }
+                    },
+                    scales: {
+                        y: {
+                            beginAtZero: true,
+                            ticks: {
+                                precision: 0
+                            }
+                        }
+                    }
+                }
+            });
+            
+            // Highlight your position in the chart
+            var yourGradeRange = 4; // 0-based index for 90-100 range
+            gradeDistributionChart.data.datasets[0].backgroundColor[yourGradeRange] = 'rgba(40, 167, 69, 1)';
+            gradeDistributionChart.update();
+        });
+    </script>
+} 

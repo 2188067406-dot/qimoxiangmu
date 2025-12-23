@@ -1,0 +1,1023 @@
+﻿@*
+    For more information on enabling MVC for empty projects, visit https://go.microsoft.com/fwlink/?LinkID=397860
+*@
+@{
+    ViewData["Title"] = "Teacher Dashboard";
+    ViewData["ShowSearch"] = true;
+}
+
+<!-- Welcome Section -->
+<div class="dashboard-welcome mb-4">
+    <div class="row align-items-center">
+        <div class="col-md-8">
+            <h1 class="welcome-title">Welcome back, <span class="text-primary">Professor</span></h1>
+            <p class="welcome-subtitle">Here's what's happening with your courses today</p>
+        </div>
+        <div class="col-md-4 text-md-end">
+            <a asp-controller="Teacher" asp-action="CreateCourse" class="btn btn-primary create-course-btn">
+                <i class="fas fa-plus me-2"></i>Create New Course
+            </a>
+        </div>
+    </div>
+</div>
+
+<!-- Stats Overview -->
+<div class="row mb-4">
+    <div class="col-md-3 col-sm-6 mb-4 mb-md-0">
+        <a asp-controller="Teacher" asp-action="Courses" class="text-decoration-none">
+            <div class="dashboard-card">
+                <div class="icon" style="background: var(--gradient-1);">
+                    <i class="fas fa-book"></i>
+                </div>
+                <h3>@ViewBag.ActiveCourses</h3>
+                <p>Active Courses</p>
+                <div class="progress">
+                    <div class="progress-bar" role="progressbar" style="width: 75%;" aria-valuenow="75" aria-valuemin="0" aria-valuemax="100"></div>
+                </div>
+            </div>
+        </a>
+    </div>
+    <div class="col-md-3 col-sm-6 mb-4 mb-md-0">
+        <a asp-controller="Teacher" asp-action="Students" class="text-decoration-none">
+            <div class="dashboard-card">
+                <div class="icon" style="background: var(--gradient-2);">
+                    <i class="fas fa-users"></i>
+                </div>
+                <h3>@ViewBag.TotalStudents</h3>
+                <p>Total Students</p>
+                <div class="progress">
+                    <div class="progress-bar" role="progressbar" style="width: 65%;" aria-valuenow="65" aria-valuemin="0" aria-valuemax="100"></div>
+                </div>
+            </div>
+        </a>
+    </div>
+    <div class="col-md-3 col-sm-6 mb-4 mb-md-0">
+        <a asp-controller="Teacher" asp-action="Assignments" class="text-decoration-none">
+            <div class="dashboard-card">
+                <div class="icon" style="background: var(--gradient-3);">
+                    <i class="fas fa-tasks"></i>
+                </div>
+                <h3>@ViewBag.PendingAssignments</h3>
+                <p>Pending Assignments</p>
+                <div class="progress">
+                    <div class="progress-bar" role="progressbar" style="width: 45%;" aria-valuenow="45" aria-valuemin="0" aria-valuemax="100"></div>
+                </div>
+            </div>
+        </a>
+    </div>
+    <div class="col-md-3 col-sm-6">
+        <a asp-controller="Teacher" asp-action="Messages" class="text-decoration-none">
+            <div class="dashboard-card">
+                <div class="icon" style="background: var(--gradient-4);">
+                    <i class="fas fa-comment-alt"></i>
+                </div>
+                <h3>@ViewBag.NewMessages</h3>
+                <p>New Messages</p>
+                <div class="progress">
+                    <div class="progress-bar" role="progressbar" style="width: 85%;" aria-valuenow="85" aria-valuemin="0" aria-valuemax="100"></div>
+                </div>
+            </div>
+        </a>
+    </div>
+</div>
+
+<!-- Main Dashboard Content -->
+<div class="row">
+    <!-- Left Column -->
+    <div class="col-lg-8">
+        <!-- Course Performance -->
+        <div class="dashboard-section mb-4">
+            <div class="section-header d-flex justify-content-between align-items-center mb-4">
+                <h2 class="section-title">Course Performance</h2>
+                <div class="dropdown">
+                    <button class="btn btn-sm btn-outline-secondary dropdown-toggle" type="button" id="coursePerformanceDropdown" data-bs-toggle="dropdown" aria-expanded="false">
+                        Last 30 Days
+                    </button>
+                    <ul class="dropdown-menu" aria-labelledby="coursePerformanceDropdown">
+                        <li><a class="dropdown-item" href="#">Last 7 Days</a></li>
+                        <li><a class="dropdown-item" href="#">Last 30 Days</a></li>
+                        <li><a class="dropdown-item" href="#">Last 90 Days</a></li>
+                    </ul>
+                </div>
+            </div>
+            <div class="chart-container">
+                <canvas id="coursePerformanceChart"></canvas>
+            </div>
+        </div>
+
+        <!-- Active Courses -->
+        <div class="dashboard-section mb-4">
+            <div class="section-header d-flex justify-content-between align-items-center mb-4">
+                <h2 class="section-title">Active Courses</h2>
+                <a asp-action="Courses" class="btn btn-sm btn-outline-primary">View All</a>
+            </div>
+            <div class="row">
+                <div class="col-md-6 mb-4">
+                    <div class="course-management-card">
+                        <div class="course-header">
+                            <h3 class="course-title">Introduction to AI</h3>
+                            <p class="course-meta">32 Students • 12 Weeks</p>
+                        </div>
+                        <div class="course-content">
+                            <div class="course-stats">
+                                <div class="stat-item">
+                                    <h4>87%</h4>
+                                    <p>Attendance</p>
+                                </div>
+                                <div class="stat-item">
+                                    <h4>92%</h4>
+                                    <p>Completion</p>
+                                </div>
+                                <div class="stat-item">
+                                    <h4>4.8</h4>
+                                    <p>Rating</p>
+                                </div>
+                            </div>
+                            <div class="course-actions">
+                                <a asp-action="CourseDetails" asp-route-id="1" class="btn btn-sm btn-outline-primary">Manage</a>
+                                <a asp-action="EditCourse" asp-route-id="1" class="btn btn-sm btn-outline-secondary">Edit</a>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                <div class="col-md-6 mb-4">
+                    <div class="course-management-card">
+                        <div class="course-header" style="background: var(--gradient-3);">
+                            <h3 class="course-title">Machine Learning Fundamentals</h3>
+                            <p class="course-meta">28 Students • 16 Weeks</p>
+                        </div>
+                        <div class="course-content">
+                            <div class="course-stats">
+                                <div class="stat-item">
+                                    <h4>92%</h4>
+                                    <p>Attendance</p>
+                                </div>
+                                <div class="stat-item">
+                                    <h4>78%</h4>
+                                    <p>Completion</p>
+                                </div>
+                                <div class="stat-item">
+                                    <h4>4.6</h4>
+                                    <p>Rating</p>
+                                </div>
+                            </div>
+                            <div class="course-actions">
+                                <a asp-action="CourseDetails" asp-route-id="2" class="btn btn-sm btn-outline-primary">Manage</a>
+                                <a asp-action="EditCourse" asp-route-id="2" class="btn btn-sm btn-outline-secondary">Edit</a>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <!-- Upcoming Assignments -->
+        <div class="dashboard-section mb-4">
+            <div class="section-header d-flex justify-content-between align-items-center mb-4">
+                <h2 class="section-title">Upcoming Assignments</h2>
+                <a asp-action="CreateAssignment" class="btn btn-sm btn-outline-primary">Create New</a>
+            </div>
+            <div class="assignment-list">
+                <div class="assignment-management-card">
+                    <div class="assignment-header">
+                        <h3 class="assignment-title">AI Ethics Case Study</h3>
+                        <span class="badge bg-warning">Due Tomorrow</span>
+                    </div>
+                    <p class="assignment-course">Introduction to AI</p>
+                    <p class="assignment-due"><i class="far fa-calendar-alt me-2"></i>Due: May 15, 2023</p>
+                    <div class="assignment-stats">
+                        <div class="assignment-stat">
+                            <i class="fas fa-users me-2 text-primary"></i>
+                            Assigned to: <span>32 students</span>
+                        </div>
+                        <div class="assignment-stat">
+                            <i class="fas fa-check-circle me-2 text-success"></i>
+                            Submitted: <span>18 (56%)</span>
+                        </div>
+                    </div>
+                    <div class="d-flex justify-content-between">
+                        <a asp-action="AssignmentDetails" asp-route-id="1" class="btn btn-sm btn-outline-primary">View Submissions</a>
+                        <a href="#" class="btn btn-sm btn-outline-secondary">Edit Assignment</a>
+                    </div>
+                </div>
+                <div class="assignment-management-card">
+                    <div class="assignment-header">
+                        <h3 class="assignment-title">Neural Networks Project</h3>
+                        <span class="badge bg-info">Due in 3 days</span>
+                    </div>
+                    <p class="assignment-course">Machine Learning Fundamentals</p>
+                    <p class="assignment-due"><i class="far fa-calendar-alt me-2"></i>Due: May 18, 2023</p>
+                    <div class="assignment-stats">
+                        <div class="assignment-stat">
+                            <i class="fas fa-users me-2 text-primary"></i>
+                            Assigned to: <span>28 students</span>
+                        </div>
+                        <div class="assignment-stat">
+                            <i class="fas fa-check-circle me-2 text-success"></i>
+                            Submitted: <span>12 (43%)</span>
+                        </div>
+                    </div>
+                    <div class="d-flex justify-content-between">
+                        <a asp-action="AssignmentDetails" asp-route-id="2" class="btn btn-sm btn-outline-primary">View Submissions</a>
+                        <a href="#" class="btn btn-sm btn-outline-secondary">Edit Assignment</a>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- Right Column -->
+    <div class="col-lg-4">
+        <!-- Teacher Profile Card -->
+        <div class="profile-card mb-4">
+            <div class="profile-header">
+                <div class="profile-avatar">
+                    <img src="https://randomuser.me/api/portraits/men/42.jpg" alt="Teacher Profile">
+                </div>
+                <div class="profile-info">
+                    <h3>Dr. John Smith</h3>
+                    <p>AI & Machine Learning Professor</p>
+                </div>
+            </div>
+            <div class="profile-stats">
+                <div class="stat-item">
+                    <h4>5</h4>
+                    <p>Courses</p>
+                </div>
+                <div class="stat-item">
+                    <h4>128</h4>
+                    <p>Students</p>
+                </div>
+                <div class="stat-item">
+                    <h4>4.9</h4>
+                    <p>Rating</p>
+                </div>
+            </div>
+            <div class="profile-actions">
+                <a asp-controller="Teacher" asp-action="Profile" class="btn btn-sm btn-outline-primary w-100 mb-2">Edit Profile</a>
+                <a asp-controller="Teacher" asp-action="Profile" class="btn btn-sm btn-outline-secondary w-100">View Public Profile</a>
+            </div>
+        </div>
+
+        <!-- Recent Activity -->
+        <div class="dashboard-section mb-4">
+            <div class="section-header mb-3">
+                <h2 class="section-title">Recent Activity</h2>
+            </div>
+            <div class="activity-timeline">
+                <div class="activity-item">
+                    <div class="activity-icon bg-primary">
+                        <i class="fas fa-comment-alt"></i>
+                    </div>
+                    <div class="activity-content">
+                        <p class="activity-text">Emma Johnson submitted an assignment</p>
+                        <p class="activity-time">10 minutes ago</p>
+                    </div>
+                </div>
+                <div class="activity-item">
+                    <div class="activity-icon bg-success">
+                        <i class="fas fa-user-plus"></i>
+                    </div>
+                    <div class="activity-content">
+                        <p class="activity-text">3 new students enrolled in "Introduction to AI"</p>
+                        <p class="activity-time">1 hour ago</p>
+                    </div>
+                </div>
+                <div class="activity-item">
+                    <div class="activity-icon bg-info">
+                        <i class="fas fa-book"></i>
+                    </div>
+                    <div class="activity-content">
+                        <p class="activity-text">You published a new lecture "Neural Networks"</p>
+                        <p class="activity-time">3 hours ago</p>
+                    </div>
+                </div>
+                <div class="activity-item">
+                    <div class="activity-icon bg-warning">
+                        <i class="fas fa-star"></i>
+                    </div>
+                    <div class="activity-content">
+                        <p class="activity-text">You received a 5-star rating from Michael Chen</p>
+                        <p class="activity-time">Yesterday</p>
+                    </div>
+                </div>
+                <div class="activity-item">
+                    <div class="activity-icon bg-danger">
+                        <i class="fas fa-exclamation-circle"></i>
+                    </div>
+                    <div class="activity-content">
+                        <p class="activity-text">Assignment deadline reminder: "AI Ethics Case Study"</p>
+                        <p class="activity-time">Yesterday</p>
+                    </div>
+                </div>
+            </div>
+            <div class="text-center mt-3">
+                <a href="#" class="btn btn-sm btn-link">View All Activities</a>
+            </div>
+        </div>
+
+        <!-- Quick Actions -->
+        <div class="dashboard-section mb-4">
+            <div class="section-header mb-3">
+                <h2 class="section-title">Quick Actions</h2>
+            </div>
+            <div class="quick-actions">
+                <a asp-controller="Teacher" asp-action="CreateCourse" class="quick-action-btn" id="newCourseBtn">
+                    <div class="quick-action-icon">
+                        <i class="fas fa-plus-circle"></i>
+                    </div>
+                    <span>New Course</span>
+                </a>
+                <a asp-action="CreateAssignment" class="quick-action-btn" id="newAssignmentBtn">
+                    <div class="quick-action-icon">
+                        <i class="fas fa-tasks"></i>
+                    </div>
+                    <span>New Assignment</span>
+                </a>
+                <button type="button" class="quick-action-btn" id="newQuizBtn">
+                    <div class="quick-action-icon">
+                        <i class="fas fa-file-alt"></i>
+                    </div>
+                    <span>New Quiz</span>
+                </button>
+                <button type="button" class="quick-action-btn" id="newLectureBtn">
+                    <div class="quick-action-icon">
+                        <i class="fas fa-video"></i>
+                    </div>
+                    <span>New Lecture</span>
+                </button>
+                <button type="button" class="quick-action-btn" id="messageStudentsBtn">
+                    <div class="quick-action-icon">
+                        <i class="fas fa-envelope"></i>
+                    </div>
+                    <span>Message Students</span>
+                </button>
+                <button type="button" class="quick-action-btn" id="viewReportsBtn">
+                    <div class="quick-action-icon">
+                        <i class="fas fa-chart-bar"></i>
+                    </div>
+                    <span>View Reports</span>
+                </button>
+            </div>
+        </div>
+
+        <!-- Calendar -->
+        <div class="dashboard-section">
+            <div class="section-header mb-3">
+                <h2 class="section-title">Upcoming Schedule</h2>
+            </div>
+            <div class="calendar-events">
+                <div class="calendar-event">
+                    <div class="event-date">
+                        <span class="event-day">15</span>
+                        <span class="event-month">May</span>
+                    </div>
+                    <div class="event-info">
+                        <h4 class="event-title">Introduction to AI Lecture</h4>
+                        <p class="event-time"><i class="far fa-clock me-2"></i>10:00 AM - 12:00 PM</p>
+                    </div>
+                </div>
+                <div class="calendar-event">
+                    <div class="event-date">
+                        <span class="event-day">16</span>
+                        <span class="event-month">May</span>
+                    </div>
+                    <div class="event-info">
+                        <h4 class="event-title">Office Hours</h4>
+                        <p class="event-time"><i class="far fa-clock me-2"></i>2:00 PM - 4:00 PM</p>
+                    </div>
+                </div>
+                <div class="calendar-event">
+                    <div class="event-date">
+                        <span class="event-day">18</span>
+                        <span class="event-month">May</span>
+                    </div>
+                    <div class="event-info">
+                        <h4 class="event-title">Machine Learning Lab Session</h4>
+                        <p class="event-time"><i class="far fa-clock me-2"></i>1:00 PM - 3:00 PM</p>
+                    </div>
+                </div>
+            </div>
+            <div class="text-center mt-3">
+                <a href="#" class="btn btn-sm btn-link">View Full Calendar</a>
+            </div>
+        </div>
+    </div>
+</div>
+
+@section Scripts {
+    <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+    <script>
+        document.addEventListener('DOMContentLoaded', function() {
+            // Course Performance Chart
+            const coursePerformanceCtx = document.getElementById('coursePerformanceChart').getContext('2d');
+            const coursePerformanceChart = new Chart(coursePerformanceCtx, {
+                type: 'line',
+                data: {
+                    labels: ['Week 1', 'Week 2', 'Week 3', 'Week 4', 'Week 5', 'Week 6', 'Week 7', 'Week 8'],
+                    datasets: [
+                        {
+                            label: 'Introduction to AI',
+                            data: [65, 70, 75, 72, 80, 82, 85, 87],
+                            borderColor: 'rgba(247, 37, 133, 1)',
+                            backgroundColor: 'rgba(247, 37, 133, 0.1)',
+                            tension: 0.4,
+                            fill: true
+                        },
+                        {
+                            label: 'Machine Learning Fundamentals',
+                            data: [60, 65, 70, 75, 78, 80, 85, 92],
+                            borderColor: 'rgba(76, 201, 240, 1)',
+                            backgroundColor: 'rgba(76, 201, 240, 0.1)',
+                            tension: 0.4,
+                            fill: true
+                        },
+                        {
+                            label: 'Deep Learning Applications',
+                            data: [55, 60, 65, 70, 75, 80, 82, 85],
+                            borderColor: 'rgba(67, 97, 238, 1)',
+                            backgroundColor: 'rgba(67, 97, 238, 0.1)',
+                            tension: 0.4,
+                            fill: true
+                        }
+                    ]
+                },
+                QuizOptions: {
+                    responsive: true,
+                    maintainAspectRatio: false,
+                    scales: {
+                        y: {
+                            beginAtZero: false,
+                            min: 50,
+                            max: 100,
+                            ticks: {
+                                callback: function(value) {
+                                    return value + '%';
+                                }
+                            }
+                        }
+                    },
+                    plugins: {
+                        legend: {
+                            position: 'top',
+                        },
+                        tooltip: {
+                            callbacks: {
+                                label: function(context) {
+                                    return context.dataset.label + ': ' + context.raw + '%';
+                                }
+                            }
+                        }
+                    }
+                }
+            });
+            
+            // Quick Actions Functionality
+            // Add hover effects to all quick action buttons
+            const quickActionBtns = document.querySelectorAll('.quick-action-btn');
+            quickActionBtns.forEach(btn => {
+                btn.addEventListener('mouseenter', function() {
+                    const icon = this.querySelector('.quick-action-icon i');
+                    if (icon) {
+                        icon.classList.add('fa-bounce');
+                    }
+                });
+                
+                btn.addEventListener('mouseleave', function() {
+                    const icon = this.querySelector('.quick-action-icon i');
+                    if (icon) {
+                        icon.classList.remove('fa-bounce');
+                    }
+                });
+            });
+            
+            // Add click effects for direct links (Course and Assignment)
+            document.getElementById('newCourseBtn').addEventListener('click', function(e) {
+                e.preventDefault(); // Prevent immediate navigation
+                showLoadingOverlay('Creating new course form...');
+                // Simulate a delay before navigating
+                setTimeout(() => {
+                    window.location.href = this.getAttribute('href');
+                }, 800);
+            });
+            
+            document.getElementById('newAssignmentBtn').addEventListener('click', function(e) {
+                e.preventDefault(); // Prevent immediate navigation
+                showLoadingOverlay('Creating new assignment form...');
+                // Simulate a delay before navigating
+                setTimeout(() => {
+                    window.location.href = this.getAttribute('href');
+                }, 800);
+            });
+            
+            // Modal-based quick actions
+            document.getElementById('newQuizBtn').addEventListener('click', function(e) {
+                showQuickActionModal('Create New Quiz', 'quiz');
+            });
+            
+            document.getElementById('newLectureBtn').addEventListener('click', function(e) {
+                showQuickActionModal('Create New Lecture', 'lecture');
+            });
+            
+            document.getElementById('messageStudentsBtn').addEventListener('click', function(e) {
+                showQuickActionModal('Message Students', 'message');
+            });
+            
+            document.getElementById('viewReportsBtn').addEventListener('click', function(e) {
+                showQuickActionModal('View Reports', 'reports');
+            });
+            
+            function showLoadingOverlay(message) {
+                // Remove any existing overlay
+                const existingOverlay = document.getElementById('loadingOverlay');
+                if (existingOverlay) {
+                    existingOverlay.remove();
+                }
+                
+                // Create and show a loading overlay
+                const loadingHTML = `
+                <div id="loadingOverlay" style="position: fixed; top: 0; left: 0; width: 100%; height: 100%; background-color: rgba(0,0,0,0.5); z-index: 9999; display: flex; justify-content: center; align-items: center;">
+                    <div style="background-color: white; padding: 20px; border-radius: 10px; text-align: center; box-shadow: 0 4px 8px rgba(0,0,0,0.2);">
+                        <div class="spinner-border text-primary mb-3" role="status">
+                            <span class="visually-hidden">Loading...</span>
+                        </div>
+                        <p class="mb-0">${message}</p>
+                    </div>
+                </div>
+                `;
+                
+                document.body.insertAdjacentHTML('beforeend', loadingHTML);
+                
+                // Remove the overlay after navigation (in case it gets stuck)
+                setTimeout(() => {
+                    const overlay = document.getElementById('loadingOverlay');
+                    if (overlay) {
+                        overlay.remove();
+                    }
+                }, 3000);
+            }
+            
+            function showQuickActionModal(title, type) {
+                // Remove any existing modal
+                const existingModal = document.getElementById('quickActionModal');
+                if (existingModal) {
+                    existingModal.remove();
+                }
+                
+                // Create modal HTML based on type
+                let modalContent = '';
+                
+                if (type === 'quiz') {
+                    modalContent = `
+                        <div class="mb-3">
+                            <label for="quizTitle" class="form-label">Quiz Title</label>
+                            <input type="text" class="form-control" id="quizTitle" placeholder="Enter quiz title">
+                        </div>
+                        <div class="mb-3">
+                            <label for="quizCourse" class="form-label">Course</label>
+                            <select class="form-select" id="quizCourse">
+                                <QuizOption value="">Select a course...</QuizOption>
+                                <QuizOption value="1">Introduction to AI</QuizOption>
+                                <QuizOption value="2">Machine Learning Fundamentals</QuizOption>
+                                <QuizOption value="3">Deep Learning Applications</QuizOption>
+                            </select>
+                        </div>
+                        <div class="mb-3">
+                            <label for="quizDueDate" class="form-label">Due Date</label>
+                            <input type="date" class="form-control" id="quizDueDate">
+                        </div>
+                        <div class="mb-3">
+                            <label for="quizPoints" class="form-label">Total Points</label>
+                            <input type="number" class="form-control" id="quizPoints" min="1" value="100">
+                        </div>
+                        <div class="form-check mb-3">
+                            <input class="form-check-input" type="checkbox" id="quizTimeLimited">
+                            <label class="form-check-label" for="quizTimeLimited">
+                                Time Limited
+                            </label>
+                        </div>
+                        <div class="mb-3 time-limit-QuizOptions" style="display: none;">
+                            <label for="quizTimeLimit" class="form-label">Time Limit (minutes)</label>
+                            <input type="number" class="form-control" id="quizTimeLimit" min="1" value="60">
+                        </div>
+                        <div class="mb-3">
+                            <label for="quizInstructions" class="form-label">Instructions</label>
+                            <textarea class="form-control" id="quizInstructions" rows="3" placeholder="Enter instructions for students..."></textarea>
+                        </div>
+                    `;
+                } else if (type === 'lecture') {
+                    modalContent = `
+                        <div class="mb-3">
+                            <label for="lectureTitle" class="form-label">Lecture Title</label>
+                            <input type="text" class="form-control" id="lectureTitle" placeholder="Enter lecture title">
+                        </div>
+                        <div class="mb-3">
+                            <label for="lectureCourse" class="form-label">Course</label>
+                            <select class="form-select" id="lectureCourse">
+                                <QuizOption value="">Select a course...</QuizOption>
+                                <QuizOption value="1">Introduction to AI</QuizOption>
+                                <QuizOption value="2">Machine Learning Fundamentals</QuizOption>
+                                <QuizOption value="3">Deep Learning Applications</QuizOption>
+                            </select>
+                        </div>
+                        <div class="mb-3">
+                            <label for="lectureDate" class="form-label">Date</label>
+                            <input type="date" class="form-control" id="lectureDate">
+                        </div>
+                        <div class="mb-3">
+                            <label for="lectureTime" class="form-label">Time</label>
+                            <input type="time" class="form-control" id="lectureTime">
+                        </div>
+                        <div class="mb-3">
+                            <label for="lectureType" class="form-label">Lecture Type</label>
+                            <select class="form-select" id="lectureType">
+                                <QuizOption value="video">Video Lecture</QuizOption>
+                                <QuizOption value="live">Live Session</QuizOption>
+                                <QuizOption value="document">Document/Slides</QuizOption>
+                            </select>
+                        </div>
+                        <div class="mb-3 video-upload" style="display: none;">
+                            <label for="lectureVideo" class="form-label">Upload Video</label>
+                            <input type="file" class="form-control" id="lectureVideo" accept="video/*">
+                        </div>
+                        <div class="mb-3 document-upload" style="display: none;">
+                            <label for="lectureDocument" class="form-label">Upload Document</label>
+                            <input type="file" class="form-control" id="lectureDocument" accept=".pdf,.ppt,.pptx,.doc,.docx">
+                        </div>
+                        <div class="mb-3">
+                            <label for="lectureDescription" class="form-label">Description</label>
+                            <textarea class="form-control" id="lectureDescription" rows="3"></textarea>
+                        </div>
+                    `;
+                } else if (type === 'message') {
+                    modalContent = `
+                        <div class="mb-3">
+                            <label for="messageRecipients" class="form-label">Recipients</label>
+                            <select class="form-select" id="messageRecipients">
+                                <QuizOption value="all">All Students</QuizOption>
+                                <QuizOption value="course">Students in a Course</QuizOption>
+                                <QuizOption value="individual">Individual Students</QuizOption>
+                            </select>
+                        </div>
+                        <div class="mb-3" id="courseSelectorContainer" style="display: none;">
+                            <label for="messageCourse" class="form-label">Select Course</label>
+                            <select class="form-select" id="messageCourse">
+                                <QuizOption value="">Select a course...</QuizOption>
+                                <QuizOption value="1">Introduction to AI</QuizOption>
+                                <QuizOption value="2">Machine Learning Fundamentals</QuizOption>
+                                <QuizOption value="3">Deep Learning Applications</QuizOption>
+                            </select>
+                        </div>
+                        <div class="mb-3" id="studentSelectorContainer" style="display: none;">
+                            <label for="messageStudents" class="form-label">Select Students</label>
+                            <select class="form-select" id="messageStudents" multiple>
+                                <QuizOption value="1">John Doe</QuizOption>
+                                <QuizOption value="2">Jane Smith</QuizOption>
+                                <QuizOption value="3">Robert Johnson</QuizOption>
+                                <QuizOption value="4">Emily Davis</QuizOption>
+                                <QuizOption value="5">Michael Wilson</QuizOption>
+                            </select>
+                            <small class="text-muted">Hold Ctrl/Cmd to select multiple students</small>
+                        </div>
+                        <div class="mb-3">
+                            <label for="messageSubject" class="form-label">Subject</label>
+                            <input type="text" class="form-control" id="messageSubject" placeholder="Enter message subject">
+                        </div>
+                        <div class="mb-3">
+                            <label for="messageContent" class="form-label">Message</label>
+                            <textarea class="form-control" id="messageContent" rows="5"></textarea>
+                        </div>
+                        <div class="form-check mb-3">
+                            <input class="form-check-input" type="checkbox" id="messageSendEmail" checked>
+                            <label class="form-check-label" for="messageSendEmail">
+                                Also send as email
+                            </label>
+                        </div>
+                        <div class="form-check mb-3">
+                            <input class="form-check-input" type="checkbox" id="messageUrgent">
+                            <label class="form-check-label" for="messageUrgent">
+                                Mark as urgent
+                            </label>
+                        </div>
+                    `;
+                } else if (type === 'reports') {
+                    modalContent = `
+                        <div class="mb-3">
+                            <label for="reportType" class="form-label">Report Type</label>
+                            <select class="form-select" id="reportType">
+                                <QuizOption value="course">Course Performance</QuizOption>
+                                <QuizOption value="student">Student Progress</QuizOption>
+                                <QuizOption value="assignment">Assignment Completion</QuizOption>
+                                <QuizOption value="attendance">Attendance Report</QuizOption>
+                            </select>
+                        </div>
+                        <div class="mb-3">
+                            <label for="reportCourse" class="form-label">Course (QuizOptional)</label>
+                            <select class="form-select" id="reportCourse">
+                                <QuizOption value="">All Courses</QuizOption>
+                                <QuizOption value="1">Introduction to AI</QuizOption>
+                                <QuizOption value="2">Machine Learning Fundamentals</QuizOption>
+                                <QuizOption value="3">Deep Learning Applications</QuizOption>
+                            </select>
+                        </div>
+                        <div class="mb-3">
+                            <label for="reportDateRange" class="form-label">Date Range</label>
+                            <select class="form-select" id="reportDateRange">
+                                <QuizOption value="week">Last Week</QuizOption>
+                                <QuizOption value="month" selected>Last Month</QuizOption>
+                                <QuizOption value="semester">Current Semester</QuizOption>
+                                <QuizOption value="year">Current Year</QuizOption>
+                                <QuizOption value="custom">Custom Range</QuizOption>
+                            </select>
+                        </div>
+                        <div class="row mb-3" id="customDateRange" style="display: none;">
+                            <div class="col-md-6">
+                                <label for="reportStartDate" class="form-label">Start Date</label>
+                                <input type="date" class="form-control" id="reportStartDate">
+                            </div>
+                            <div class="col-md-6">
+                                <label for="reportEndDate" class="form-label">End Date</label>
+                                <input type="date" class="form-control" id="reportEndDate">
+                            </div>
+                        </div>
+                        <div class="mb-3">
+                            <label for="reportFormat" class="form-label">Format</label>
+                            <select class="form-select" id="reportFormat">
+                                <QuizOption value="web">Web View</QuizOption>
+                                <QuizOption value="pdf">PDF</QuizOption>
+                                <QuizOption value="excel">Excel</QuizOption>
+                                <QuizOption value="csv">CSV</QuizOption>
+                            </select>
+                        </div>
+                        <div class="form-check mb-3">
+                            <input class="form-check-input" type="checkbox" id="reportIncludeCharts" checked>
+                            <label class="form-check-label" for="reportIncludeCharts">
+                                Include charts and visualizations
+                            </label>
+                        </div>
+                    `;
+                }
+                
+                // Create modal element
+                const modalHTML = `
+                <div class="modal fade" id="quickActionModal" tabindex="-1" aria-labelledby="quickActionModalLabel" aria-hidden="true">
+                    <div class="modal-dialog">
+                        <div class="modal-content">
+                            <div class="modal-header" style="background: var(--gradient-2); color: white;">
+                                <h5 class="modal-title" id="quickActionModalLabel">${title}</h5>
+                                <button type="button" class="btn-close btn-close-white" data-bs-dismiss="modal" aria-label="Close"></button>
+                            </div>
+                            <div class="modal-body">
+                                ${modalContent}
+                            </div>
+                            <div class="modal-footer">
+                                <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Cancel</button>
+                                <button type="button" class="btn btn-primary" id="quickActionSubmit">
+                                    <span class="spinner-border spinner-border-sm d-none" role="status" aria-hidden="true" id="submitSpinner"></span>
+                                    <span id="submitText">Submit</span>
+                                </button>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                `;
+                
+                // Append modal to body
+                document.body.insertAdjacentHTML('beforeend', modalHTML);
+                
+                // Initialize modal
+                const modalElement = document.getElementById('quickActionModal');
+                const modal = new bootstrap.Modal(modalElement);
+                modal.show();
+                
+                // Add event listeners for specific modal types
+                if (type === 'quiz') {
+                    document.getElementById('quizTimeLimited').addEventListener('change', function() {
+                        const timeLimitQuizOptions = document.querySelector('.time-limit-QuizOptions');
+                        if (this.checked) {
+                            timeLimitQuizOptions.style.display = 'block';
+                        } else {
+                            timeLimitQuizOptions.style.display = 'none';
+                        }
+                    });
+                } else if (type === 'lecture') {
+                    const lectureTypeSelect = document.getElementById('lectureType');
+                    // Trigger change event to set initial state
+                    const videoUpload = document.querySelector('.video-upload');
+                    const documentUpload = document.querySelector('.document-upload');
+                    
+                    if (lectureTypeSelect.value === 'video') {
+                        videoUpload.style.display = 'block';
+                        documentUpload.style.display = 'none';
+                    } else if (lectureTypeSelect.value === 'document') {
+                        videoUpload.style.display = 'none';
+                        documentUpload.style.display = 'block';
+                    }
+                    
+                    lectureTypeSelect.addEventListener('change', function() {
+                        if (this.value === 'video') {
+                            videoUpload.style.display = 'block';
+                            documentUpload.style.display = 'none';
+                        } else if (this.value === 'document') {
+                            videoUpload.style.display = 'none';
+                            documentUpload.style.display = 'block';
+                        } else {
+                            videoUpload.style.display = 'none';
+                            documentUpload.style.display = 'none';
+                        }
+                    });
+                } else if (type === 'message') {
+                    document.getElementById('messageRecipients').addEventListener('change', function() {
+                        const courseSelector = document.getElementById('courseSelectorContainer');
+                        const studentSelector = document.getElementById('studentSelectorContainer');
+                        
+                        if (this.value === 'course') {
+                            courseSelector.style.display = 'block';
+                            studentSelector.style.display = 'none';
+                        } else if (this.value === 'individual') {
+                            courseSelector.style.display = 'none';
+                            studentSelector.style.display = 'block';
+                        } else {
+                            courseSelector.style.display = 'none';
+                            studentSelector.style.display = 'none';
+                        }
+                    });
+                } else if (type === 'reports') {
+                    document.getElementById('reportDateRange').addEventListener('change', function() {
+                        const customDateRange = document.getElementById('customDateRange');
+                        
+                        if (this.value === 'custom') {
+                            customDateRange.style.display = 'flex';
+                        } else {
+                            customDateRange.style.display = 'none';
+                        }
+                    });
+                }
+                
+                // Handle form submission
+                document.getElementById('quickActionSubmit').addEventListener('click', function() {
+                    // Show loading spinner
+                    const spinner = document.getElementById('submitSpinner');
+                    const submitText = document.getElementById('submitText');
+                    spinner.classList.remove('d-none');
+                    submitText.textContent = 'Processing...';
+                    this.disabled = true;
+                    
+                    // Validate form fields
+                    let isValid = true;
+                    let errorMessage = '';
+                    
+                    if (type === 'quiz') {
+                        const title = document.getElementById('quizTitle').value;
+                        const course = document.getElementById('quizCourse').value;
+                        
+                        if (!title) {
+                            isValid = false;
+                            errorMessage = 'Quiz title is required';
+                        } else if (!course) {
+                            isValid = false;
+                            errorMessage = 'Please select a course';
+                        }
+                    } else if (type === 'lecture') {
+                        const title = document.getElementById('lectureTitle').value;
+                        const course = document.getElementById('lectureCourse').value;
+                        
+                        if (!title) {
+                            isValid = false;
+                            errorMessage = 'Lecture title is required';
+                        } else if (!course) {
+                            isValid = false;
+                            errorMessage = 'Please select a course';
+                        }
+                    } else if (type === 'message') {
+                        const subject = document.getElementById('messageSubject').value;
+                        const content = document.getElementById('messageContent').value;
+                        
+                        if (!subject) {
+                            isValid = false;
+                            errorMessage = 'Message subject is required';
+                        } else if (!content) {
+                            isValid = false;
+                            errorMessage = 'Message content is required';
+                        }
+                    }
+                    
+                    if (!isValid) {
+                        // Show error message
+                        spinner.classList.add('d-none');
+                        submitText.textContent = 'Submit';
+                        this.disabled = false;
+                        
+                        // Create alert in modal
+                        const alertHTML = `
+                        <div class="alert alert-danger alert-dismissible fade show mt-3" role="alert">
+                            ${errorMessage}
+                            <button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close"></button>
+                        </div>
+                        `;
+                        
+                        const modalBody = modalElement.querySelector('.modal-body');
+                        modalBody.insertAdjacentHTML('afterbegin', alertHTML);
+                        
+                        return;
+                    }
+                    
+                    // Simulate form submission (in a real app, this would be an AJAX request)
+                    setTimeout(function() {
+                        // Hide modal
+                        modal.hide();
+                        
+                        // Show success toast
+                        const toastHTML = `
+                        <div class="position-fixed top-0 end-0 p-3" style="z-index: 1050">
+                            <div id="successToast" class="toast show" role="alert" aria-live="assertive" aria-atomic="true">
+                                <div class="toast-header bg-success text-white">
+                                    <strong class="me-auto">Success</strong>
+                                    <button type="button" class="btn-close btn-close-white" data-bs-dismiss="toast" aria-label="Close"></button>
+                                </div>
+                                <div class="toast-body">
+                                    ${title} has been successfully created.
+                                </div>
+                            </div>
+                        </div>
+                        `;
+                        
+                        document.body.insertAdjacentHTML('beforeend', toastHTML);
+                        
+                        setTimeout(function() {
+                            const toast = document.getElementById('successToast');
+                            if (toast) {
+                                const bsToast = bootstrap.Toast.getInstance(toast);
+                                if (bsToast) {
+                                    bsToast.hide();
+                                } else {
+                                    toast.remove();
+                                }
+                            }
+                        }, 3000);
+                    }, 1500);
+                });
+            }
+        });
+    </script>
+}
+
+<style>
+    .quick-action-btn {
+        display: flex;
+        flex-direction: column;
+        align-items: center;
+        justify-content: center;
+        background-color: #fff;
+        border: 1px solid #e0e0e0;
+        border-radius: 10px;
+        padding: 15px;
+        margin-bottom: 10px;
+        transition: all 0.3s ease;
+        text-decoration: none;
+        color: #333;
+        cursor: pointer;
+        width: 100%;
+    }
+    
+    .quick-action-btn:hover {
+        transform: translateY(-5px);
+        box-shadow: 0 5px 15px rgba(0,0,0,0.1);
+        border-color: var(--primary-color);
+    }
+    
+    .quick-action-icon {
+        font-size: 24px;
+        margin-bottom: 10px;
+        color: var(--primary-color);
+        transition: all 0.3s ease;
+    }
+    
+    .quick-actions {
+        display: grid;
+        grid-template-columns: repeat(3, 1fr);
+        gap: 15px;
+    }
+    
+    @@keyframes bounce {
+        0%, 20%, 50%, 80%, 100% { transform: translateY(0); }
+        40% { transform: translateY(-10px); }
+        60% { transform: translateY(-5px); }
+    }
+    
+    .fa-bounce {
+        animation: bounce 1s infinite;
+    }
+    
+    @@media (max-width: 768px) {
+        .quick-actions {
+            grid-template-columns: repeat(2, 1fr);
+        }
+    }
+    
+    @@media (max-width: 576px) {
+        .quick-actions {
+            grid-template-columns: 1fr;
+        }
+    }
+</style>

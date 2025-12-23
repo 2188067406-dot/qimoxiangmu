@@ -1,0 +1,817 @@
+@model List<TeachingAI1.ViewModels.StudentViewModel>
+@{
+    ViewData["Title"] = "Students";
+    Layout = "_TeacherLayout";
+}
+
+<div class="container-fluid py-4">
+    <!-- Page Header -->
+    <div class="d-flex justify-content-between align-items-center mb-4">
+        <div>
+            <h1 class="h2 mb-1">Students</h1>
+            <p class="text-muted">Manage and monitor your students</p>
+        </div>
+        <div class="d-flex">
+            <button class="btn btn-outline-primary me-2" id="importStudentsBtn">
+                <i class="fas fa-file-import me-2"></i>Import Students
+            </button>
+            <button class="btn btn-primary" id="addStudentBtn">
+                <i class="fas fa-plus me-2"></i>Add Student
+            </button>
+        </div>
+    </div>
+
+    <!-- Filters and Search -->
+    <div class="card mb-4">
+        <div class="card-body">
+            <div class="row g-3">
+                <div class="col-md-3">
+                    <label for="courseFilter" class="form-label">Filter by Course</label>
+                    <select class="form-select" id="courseFilter">
+                        <QuizOption value="">All Courses</QuizOption>
+                        <QuizOption value="Introduction to Programming">Introduction to Programming</QuizOption>
+                        <QuizOption value="Data Structures and Algorithms">Data Structures and Algorithms</QuizOption>
+                        <QuizOption value="Web Development Fundamentals">Web Development Fundamentals</QuizOption>
+                        <QuizOption value="Database Management Systems">Database Management Systems</QuizOption>
+                    </select>
+                </div>
+                <div class="col-md-3">
+                    <label for="progressFilter" class="form-label">Filter by Progress</label>
+                    <select class="form-select" id="progressFilter">
+                        <QuizOption value="">All Progress</QuizOption>
+                        <QuizOption value="0-25">0% - 25%</QuizOption>
+                        <QuizOption value="25-50">25% - 50%</QuizOption>
+                        <QuizOption value="50-75">50% - 75%</QuizOption>
+                        <QuizOption value="75-100">75% - 100%</QuizOption>
+                    </select>
+                </div>
+                <div class="col-md-3">
+                    <label for="sortBy" class="form-label">Sort By</label>
+                    <select class="form-select" id="sortBy">
+                        <QuizOption value="name">Name</QuizOption>
+                        <QuizOption value="progress">Progress</QuizOption>
+                        <QuizOption value="courses">Enrolled Courses</QuizOption>
+                        <QuizOption value="joinDate">Join Date</QuizOption>
+                    </select>
+                </div>
+                <div class="col-md-3">
+                    <label for="searchStudents" class="form-label">Search</label>
+                    <div class="input-group">
+                        <input type="text" class="form-control" id="searchStudents" placeholder="Search students...">
+                        <button class="btn btn-primary" type="button" id="searchBtn">
+                            <i class="fas fa-search"></i>
+                        </button>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- Student Statistics -->
+    <div class="row mb-4">
+        <div class="col-md-3">
+            <div class="stat-card clickable">
+                <div class="stat-card-body">
+                    <div class="stat-card-icon" style="background: var(--gradient-1);">
+                        <i class="fas fa-user-graduate"></i>
+                    </div>
+                    <div class="stat-card-info">
+                        <h2 class="stat-card-title">@Model.Count</h2>
+                        <p class="stat-card-text">Total Students</p>
+                    </div>
+                </div>
+            </div>
+        </div>
+        <div class="col-md-3">
+            <div class="stat-card clickable">
+                <div class="stat-card-body">
+                    <div class="stat-card-icon" style="background: var(--gradient-2);">
+                        <i class="fas fa-book-open"></i>
+                    </div>
+                    <div class="stat-card-info">
+                        <h2 class="stat-card-title">@(Model.Sum(s => s.EnrolledCourses))</h2>
+                        <p class="stat-card-text">Course Enrollments</p>
+                    </div>
+                </div>
+            </div>
+        </div>
+        <div class="col-md-3">
+            <div class="stat-card clickable">
+                <div class="stat-card-body">
+                    <div class="stat-card-icon" style="background: var(--gradient-3);">
+                        <i class="fas fa-chart-line"></i>
+                    </div>
+                    <div class="stat-card-info">
+                        <h2 class="stat-card-title">@(Model.Average(s => s.OverallProgress).ToString("F0"))%</h2>
+                        <p class="stat-card-text">Average Progress</p>
+                    </div>
+                </div>
+            </div>
+        </div>
+        <div class="col-md-3">
+            <div class="stat-card clickable">
+                <div class="stat-card-body">
+                    <div class="stat-card-icon" style="background: var(--gradient-4);">
+                        <i class="fas fa-user-plus"></i>
+                    </div>
+                    <div class="stat-card-info">
+                        <h2 class="stat-card-title">@Model.Count(s => (DateTime.Now - s.JoinDate).TotalDays < 30)</h2>
+                        <p class="stat-card-text">New This Month</p>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- Students List -->
+    <div class="card">
+        <div class="card-body">
+            <div class="table-responsive">
+                <table class="table table-hover">
+                    <thead>
+                        <tr>
+                            <th>Student</th>
+                            <th>Email</th>
+                            <th>Enrolled Courses</th>
+                            <th>Overall Progress</th>
+                            <th>Join Date</th>
+                            <th>Actions</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        @foreach (var student in Model)
+                        {
+                            <tr data-student-id="@student.Id">
+                                <td>
+                                    <div class="d-flex align-items-center">
+                                        <div class="avatar-sm me-3 bg-primary-subtle rounded-circle">
+                                            <span class="avatar-initials">@(student.Name.Substring(0, 1))</span>
+                                        </div>
+                                        <div>
+                                            <h6 class="mb-0">@student.Name</h6>
+                                        </div>
+                                    </div>
+                                </td>
+                                <td>@student.Email</td>
+                                <td>@student.EnrolledCourses</td>
+                                <td>
+                                    <div class="d-flex align-items-center">
+                                        <div class="progress flex-grow-1 me-2" style="height: 6px;">
+                                            <div class="progress-bar" role="progressbar" 
+                                                 style="width: @student.OverallProgress%;" 
+                                                 aria-valuenow="@student.OverallProgress" 
+                                                 aria-valuemin="0" 
+                                                 aria-valuemax="100"></div>
+                                        </div>
+                                        <span>@student.OverallProgress%</span>
+                                    </div>
+                                </td>
+                                <td>@student.JoinDate.ToString("MMM dd, yyyy")</td>
+                                <td>
+                                    <div class="dropdown">
+                                        <button class="btn btn-sm btn-outline-secondary dropdown-toggle" type="button" id="dropdownMenuButton@(student.Id)" data-bs-toggle="dropdown" aria-expanded="false">
+                                            Actions
+                                        </button>
+                                        <ul class="dropdown-menu" aria-labelledby="dropdownMenuButton@(student.Id)">
+                                            <li><a class="dropdown-item" asp-action="StudentDetails" asp-route-id="@student.Id"><i class="fas fa-eye me-2"></i>View Details</a></li>
+                                            <li><a class="dropdown-item" href="#" onclick="editStudent(@student.Id)"><i class="fas fa-edit me-2"></i>Edit</a></li>
+                                            <li><a class="dropdown-item" href="#" onclick="sendMessage(@student.Id)"><i class="fas fa-envelope me-2"></i>Send Message</a></li>
+                                            <li><hr class="dropdown-divider"></li>
+                                            <li><a class="dropdown-item text-danger" href="#" data-bs-toggle="modal" data-bs-target="#deleteStudentModal" data-student-id="@student.Id" data-student-name="@student.Name"><i class="fas fa-trash-alt me-2"></i>Remove</a></li>
+                                        </ul>
+                                    </div>
+                                </td>
+                            </tr>
+                        }
+                    </tbody>
+                </table>
+            </div>
+
+            <!-- Pagination -->
+            <nav aria-label="Page navigation" class="mt-4">
+                <ul class="pagination justify-content-center">
+                    <li class="page-item disabled">
+                        <a class="page-link" href="#" tabindex="-1" aria-disabled="true">Previous</a>
+                    </li>
+                    <li class="page-item active"><a class="page-link" href="#">1</a></li>
+                    <li class="page-item"><a class="page-link" href="#">2</a></li>
+                    <li class="page-item"><a class="page-link" href="#">3</a></li>
+                    <li class="page-item">
+                        <a class="page-link" href="#">Next</a>
+                    </li>
+                </ul>
+            </nav>
+        </div>
+    </div>
+</div>
+
+<!-- Delete Student Modal -->
+<div class="modal fade" id="deleteStudentModal" tabindex="-1" aria-labelledby="deleteStudentModalLabel" aria-hidden="true">
+    <div class="modal-dialog">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h5 class="modal-title" id="deleteStudentModalLabel">Remove Student</h5>
+                <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+            </div>
+            <div class="modal-body">
+                <p>Are you sure you want to remove the student "<span id="studentNameToDelete"></span>" from your class?</p>
+                <div class="alert alert-warning">
+                    <i class="fas fa-exclamation-triangle me-2"></i>
+                    This will remove the student from all your courses and delete all their associated submissions and grades. This action cannot be undone.
+                </div>
+            </div>
+            <div class="modal-footer">
+                <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Cancel</button>
+                <button type="button" class="btn btn-danger" id="confirmDeleteStudent">Remove Student</button>
+            </div>
+        </div>
+    </div>
+</div>
+
+<!-- Import Students Modal -->
+<div class="modal fade" id="importStudentsModal" tabindex="-1" aria-labelledby="importStudentsModalLabel" aria-hidden="true">
+    <div class="modal-dialog">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h5 class="modal-title" id="importStudentsModalLabel">Import Students</h5>
+                <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+            </div>
+            <div class="modal-body">
+                <p>Import students from a CSV file. The file should have the following columns:</p>
+                <ul>
+                    <li>Name (required)</li>
+                    <li>Email (required)</li>
+                    <li>Student ID (QuizOptional)</li>
+                </ul>
+                <div class="mb-3">
+                    <label for="importFile" class="form-label">Choose CSV File</label>
+                    <input class="form-control" type="file" id="importFile" accept=".csv">
+                </div>
+                <div class="form-check mb-3">
+                    <input class="form-check-input" type="checkbox" id="headerRow" checked>
+                    <label class="form-check-label" for="headerRow">
+                        File has header row
+                    </label>
+                </div>
+                <div class="alert alert-info">
+                    <i class="fas fa-info-circle me-2"></i>
+                    <a href="#" class="alert-link">Download a sample CSV template</a> to see the required format.
+                </div>
+            </div>
+            <div class="modal-footer">
+                <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Cancel</button>
+                <button type="button" class="btn btn-primary" id="confirmImportStudents">Import Students</button>
+            </div>
+        </div>
+    </div>
+</div>
+
+<!-- Add/Edit Student Modal -->
+<div class="modal fade" id="studentModal" tabindex="-1" aria-labelledby="studentModalLabel" aria-hidden="true">
+    <div class="modal-dialog">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h5 class="modal-title" id="studentModalLabel">Add Student</h5>
+                <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+            </div>
+            <div class="modal-body">
+                <form id="studentForm">
+                    <input type="hidden" id="studentId">
+                    <div class="mb-3">
+                        <label for="studentName" class="form-label">Full Name</label>
+                        <input type="text" class="form-control" id="studentName" required>
+                    </div>
+                    <div class="mb-3">
+                        <label for="studentEmail" class="form-label">Email</label>
+                        <input type="email" class="form-control" id="studentEmail" required>
+                    </div>
+                    <div class="mb-3">
+                        <label for="studentCourses" class="form-label">Enroll in Courses</label>
+                        <select class="form-select" id="studentCourses" multiple>
+                            <QuizOption value="1">Introduction to Programming</QuizOption>
+                            <QuizOption value="2">Data Structures and Algorithms</QuizOption>
+                            <QuizOption value="3">Web Development Fundamentals</QuizOption>
+                            <QuizOption value="4">Database Management Systems</QuizOption>
+                        </select>
+                        <div class="form-text">Hold Ctrl (or Cmd on Mac) to select multiple courses</div>
+                    </div>
+                </form>
+            </div>
+            <div class="modal-footer">
+                <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Cancel</button>
+                <button type="button" class="btn btn-primary" id="saveStudent">Save Student</button>
+            </div>
+        </div>
+    </div>
+</div>
+
+@section Styles {
+    <style>
+        .avatar-sm {
+            width: 2.5rem;
+            height: 2.5rem;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+        }
+        
+        .avatar-initials {
+            font-weight: 500;
+            color: #fff;
+        }
+        
+        .bg-primary-subtle {
+            background-color: rgba(13, 110, 253, 0.2);
+        }
+        
+        .stat-card {
+            background-color: #fff;
+            border-radius: 10px;
+            box-shadow: 0 0.125rem 0.25rem rgba(0, 0, 0, 0.075);
+            overflow: hidden;
+            margin-bottom: 1rem;
+            height: 100%;
+        }
+        
+        .stat-card.clickable {
+            cursor: pointer;
+            transition: transform 0.2s, box-shadow 0.2s;
+        }
+        
+        .stat-card.clickable:hover {
+            transform: translateY(-5px);
+            box-shadow: 0 0.5rem 1rem rgba(0, 0, 0, 0.1);
+        }
+        
+        .stat-card-body {
+            display: flex;
+            padding: 1.25rem;
+            align-items: center;
+        }
+        
+        .stat-card-icon {
+            width: 48px;
+            height: 48px;
+            border-radius: 10px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            margin-right: 1rem;
+            color: white;
+        }
+        
+        .stat-card-info {
+            flex: 1;
+        }
+        
+        .stat-card-title {
+            font-size: 1.75rem;
+            font-weight: 700;
+            margin-bottom: 0.25rem;
+            line-height: 1;
+        }
+        
+        .stat-card-text {
+            font-size: 0.875rem;
+            color: #6c757d;
+            margin-bottom: 0;
+        }
+        
+        :root {
+            --gradient-1: linear-gradient(45deg, #4e73df, #224abe);
+            --gradient-2: linear-gradient(45deg, #36b9cc, #1a8997);
+            --gradient-3: linear-gradient(45deg, #1cc88a, #169b6b);
+            --gradient-4: linear-gradient(45deg, #f6c23e, #dda20a);
+        }
+    </style>
+}
+
+@section Scripts {
+    <script>
+        document.addEventListener('DOMContentLoaded', function() {
+            // Set up filter functionality
+            setupFilters();
+            
+            // Set up stat cards
+            setupStatCards();
+            
+            // Set up modal events
+            setupModals();
+            
+            // Set up action buttons
+            setupActionButtons();
+        });
+        
+        function setupStatCards() {
+            // Total Students card
+            const totalStudentsCard = document.querySelector('.stat-card:nth-child(1)');
+            if (totalStudentsCard) {
+                totalStudentsCard.addEventListener('click', function() {
+                    // Reset all filters
+                    document.getElementById('courseFilter').value = '';
+                    document.getElementById('progressFilter').value = '';
+                    document.getElementById('searchStudents').value = '';
+                    
+                    // Apply filters to show all students
+                    filterStudents();
+                });
+            }
+            
+            // Course Enrollments card
+            const enrollmentsCard = document.querySelector('.stat-card:nth-child(2)');
+            if (enrollmentsCard) {
+                enrollmentsCard.addEventListener('click', function() {
+                    // Sort by number of enrolled courses
+                    document.getElementById('sortBy').value = 'courses';
+                    
+                    // Apply filters
+                    filterStudents();
+                });
+            }
+            
+            // Average Progress card
+            const progressCard = document.querySelector('.stat-card:nth-child(3)');
+            if (progressCard) {
+                progressCard.addEventListener('click', function() {
+                    // Sort by progress
+                    document.getElementById('sortBy').value = 'progress';
+                    
+                    // Apply filters
+                    filterStudents();
+                });
+            }
+            
+            // New This Month card
+            const newStudentsCard = document.querySelector('.stat-card:nth-child(4)');
+            if (newStudentsCard) {
+                newStudentsCard.addEventListener('click', function() {
+                    // Sort by join date (most recent first)
+                    document.getElementById('sortBy').value = 'joinDate';
+                    
+                    // We'll apply a special filter to only show students from the last 30 days
+                    // This requires a custom approach since we don't have a dropdown QuizOption for this
+                    filterRecentStudents();
+                });
+            }
+        }
+        
+        function filterRecentStudents() {
+            // Get all student rows
+            const students = document.querySelectorAll('table tbody tr');
+            
+            // Show/hide students based on join date
+            students.forEach(row => {
+                const joinDateText = row.querySelector('td:nth-child(5)').textContent;
+                const joinDate = new Date(joinDateText);
+                const daysSinceJoin = (new Date() - joinDate) / (1000 * 60 * 60 * 24);
+                
+                if (daysSinceJoin <= 30) {
+                    row.style.display = '';
+                } else {
+                    row.style.display = 'none';
+                }
+            });
+            
+            // Sort by join date
+            sortStudents('joinDate');
+            
+            // Update UI to show filtering is active
+            showAlert('Showing students who joined in the last 30 days', 'info');
+        }
+        
+        function setupFilters() {
+            // Course filter change
+            const courseFilter = document.getElementById('courseFilter');
+            if (courseFilter) {
+                courseFilter.addEventListener('change', filterStudents);
+            }
+            
+            // Progress filter change
+            const progressFilter = document.getElementById('progressFilter');
+            if (progressFilter) {
+                progressFilter.addEventListener('change', filterStudents);
+            }
+            
+            // Sort by change
+            const sortBy = document.getElementById('sortBy');
+            if (sortBy) {
+                sortBy.addEventListener('change', filterStudents);
+            }
+            
+            // Search functionality
+            const searchInput = document.getElementById('searchStudents');
+            const searchButton = document.getElementById('searchBtn');
+            
+            if (searchInput) {
+                // Search on enter key
+                searchInput.addEventListener('keyup', function(event) {
+                    if (event.key === 'Enter') {
+                        filterStudents();
+                    }
+                });
+            }
+            
+            if (searchButton) {
+                // Search on button click
+                searchButton.addEventListener('click', filterStudents);
+            }
+        }
+        
+        function filterStudents() {
+            const courseFilter = document.getElementById('courseFilter').value;
+            const progressFilter = document.getElementById('progressFilter').value;
+            const sortByValue = document.getElementById('sortBy').value;
+            const searchTerm = document.getElementById('searchStudents').value.toLowerCase();
+            
+            // Get all student rows
+            const students = document.querySelectorAll('table tbody tr');
+            
+            // Show/hide students based on filters
+            students.forEach(row => {
+                let matchesCourse = true;
+                let matchesProgress = true;
+                let matchesSearch = true;
+                
+                // Progress filtering
+                if (progressFilter) {
+                    const progressText = row.querySelector('td:nth-child(4) span').textContent;
+                    const progress = parseInt(progressText.replace('%', ''));
+                    
+                    const [min, max] = progressFilter.split('-').map(val => parseInt(val));
+                    matchesProgress = progress >= min && progress < max;
+                }
+                
+                // Search filtering
+                if (searchTerm) {
+                    const name = row.querySelector('td:nth-child(1) h6').textContent.toLowerCase();
+                    const email = row.querySelector('td:nth-child(2)').textContent.toLowerCase();
+                    matchesSearch = name.includes(searchTerm) || email.includes(searchTerm);
+                }
+                
+                // Course filtering
+                // This would require additional data or AJAX calls to filter by course
+                // For simplicity, we'll just simulate it here
+                if (courseFilter) {
+                    // In a real app, you'd need to check course enrollment data
+                    // For now, just randomly filter some rows
+                    const rowId = parseInt(row.getAttribute('data-student-id'));
+                    matchesCourse = (rowId % 2 === 0);
+                }
+                
+                // Show/hide row
+                if (matchesCourse && matchesProgress && matchesSearch) {
+                    row.style.display = '';
+                } else {
+                    row.style.display = 'none';
+                }
+            });
+            
+            // Sort students
+            if (sortByValue) {
+                sortStudents(sortByValue);
+            }
+        }
+        
+        function sortStudents(sortBy) {
+            const tableBody = document.querySelector('table tbody');
+            const rows = Array.from(tableBody.querySelectorAll('tr'));
+            
+            // Sort rows
+            rows.sort((a, b) => {
+                // Skip hidden rows (they're filtered out)
+                if (a.style.display === 'none' || b.style.display === 'none') {
+                    return 0;
+                }
+                
+                let aValue, bValue;
+                
+                switch (sortBy) {
+                    case 'name':
+                        aValue = a.querySelector('td:nth-child(1) h6').textContent;
+                        bValue = b.querySelector('td:nth-child(1) h6').textContent;
+                        return aValue.localeCompare(bValue);
+                    case 'progress':
+                        aValue = parseInt(a.querySelector('td:nth-child(4) span').textContent.replace('%', ''));
+                        bValue = parseInt(b.querySelector('td:nth-child(4) span').textContent.replace('%', ''));
+                        // Sort descending by progress
+                        return bValue - aValue;
+                    case 'courses':
+                        aValue = parseInt(a.querySelector('td:nth-child(3)').textContent);
+                        bValue = parseInt(b.querySelector('td:nth-child(3)').textContent);
+                        // Sort descending by number of courses
+                        return bValue - aValue;
+                    case 'joinDate':
+                        aValue = new Date(a.querySelector('td:nth-child(5)').textContent);
+                        bValue = new Date(b.querySelector('td:nth-child(5)').textContent);
+                        // Sort by join date (newest first)
+                        return bValue - aValue;
+                }
+                
+                return 0;
+            });
+            
+            // Re-append rows in the new order
+            rows.forEach(row => tableBody.appendChild(row));
+        }
+        
+        function setupModals() {
+            // Delete student modal
+            const deleteModal = document.getElementById('deleteStudentModal');
+            if (deleteModal) {
+                deleteModal.addEventListener('show.bs.modal', function(event) {
+                    const button = event.relatedTarget;
+                    
+                    const studentId = button.getAttribute('data-student-id');
+                    const studentName = button.getAttribute('data-student-name');
+                    
+                    document.getElementById('studentNameToDelete').textContent = studentName;
+                    
+                    const confirmButton = document.getElementById('confirmDeleteStudent');
+                    if (confirmButton) {
+                        confirmButton.setAttribute('data-student-id', studentId);
+                    }
+                });
+            }
+            
+            // Import students button
+            const importStudentsBtn = document.getElementById('importStudentsBtn');
+            if (importStudentsBtn) {
+                importStudentsBtn.addEventListener('click', function() {
+                    const modal = new bootstrap.Modal(document.getElementById('importStudentsModal'));
+                    modal.show();
+                });
+            }
+            
+            // Confirm import button
+            const confirmImportBtn = document.getElementById('confirmImportStudents');
+            if (confirmImportBtn) {
+                confirmImportBtn.addEventListener('click', function() {
+                    const fileInput = document.getElementById('importFile');
+                    if (fileInput.files.length === 0) {
+                        showAlert('Please select a file to import', 'warning');
+                        return;
+                    }
+                    
+                    // Show loading state
+                    this.innerHTML = '<span class="spinner-border spinner-border-sm me-2" role="status" aria-hidden="true"></span>Importing...';
+                    this.disabled = true;
+                    
+                    // Simulate file processing
+                    setTimeout(() => {
+                        // Hide modal
+                        const modal = bootstrap.Modal.getInstance(document.getElementById('importStudentsModal'));
+                        modal.hide();
+                        
+                        // Show success message
+                        showAlert('Successfully imported 5 students', 'success');
+                        
+                        // Reset button
+                        this.innerHTML = 'Import Students';
+                        this.disabled = false;
+                        
+                        // In a real app, you would refresh the student list here
+                    }, 1500);
+                });
+            }
+            
+            // Add student button
+            const addStudentBtn = document.getElementById('addStudentBtn');
+            if (addStudentBtn) {
+                addStudentBtn.addEventListener('click', function() {
+                    // Reset form
+                    document.getElementById('studentForm').reset();
+                    document.getElementById('studentId').value = '';
+                    document.getElementById('studentModalLabel').textContent = 'Add Student';
+                    
+                    // Show modal
+                    const modal = new bootstrap.Modal(document.getElementById('studentModal'));
+                    modal.show();
+                });
+            }
+            
+            // Save student button
+            const saveStudentBtn = document.getElementById('saveStudent');
+            if (saveStudentBtn) {
+                saveStudentBtn.addEventListener('click', function() {
+                    const form = document.getElementById('studentForm');
+                    
+                    // Basic validation
+                    if (!form.checkValidity()) {
+                        form.reportValidity();
+                        return;
+                    }
+                    
+                    const studentId = document.getElementById('studentId').value;
+                    const name = document.getElementById('studentName').value;
+                    const email = document.getElementById('studentEmail').value;
+                    
+                    // Show loading state
+                    this.innerHTML = '<span class="spinner-border spinner-border-sm me-2" role="status" aria-hidden="true"></span>Saving...';
+                    this.disabled = true;
+                    
+                    // Simulate saving
+                    setTimeout(() => {
+                        // Hide modal
+                        const modal = bootstrap.Modal.getInstance(document.getElementById('studentModal'));
+                        modal.hide();
+                        
+                        // Show success message
+                        const action = studentId ? 'updated' : 'added';
+                        showAlert(`Student ${name} successfully ${action}`, 'success');
+                        
+                        // Reset button
+                        this.innerHTML = 'Save Student';
+                        this.disabled = false;
+                        
+                        // In a real app, you would refresh the student list here
+                    }, 1000);
+                });
+            }
+        }
+        
+        function setupActionButtons() {
+            // Confirm delete student button
+            const confirmDeleteBtn = document.getElementById('confirmDeleteStudent');
+            if (confirmDeleteBtn) {
+                confirmDeleteBtn.addEventListener('click', function() {
+                    const studentId = this.getAttribute('data-student-id');
+                    
+                    // Show loading state
+                    this.innerHTML = '<span class="spinner-border spinner-border-sm me-2" role="status" aria-hidden="true"></span>Removing...';
+                    this.disabled = true;
+                    
+                    // Simulate deletion
+                    setTimeout(() => {
+                        // Hide modal
+                        const modal = bootstrap.Modal.getInstance(document.getElementById('deleteStudentModal'));
+                        modal.hide();
+                        
+                        // Remove row from table
+                        const row = document.querySelector(`tr[data-student-id="${studentId}"]`);
+                        if (row) {
+                            row.remove();
+                        }
+                        
+                        // Show success message
+                        showAlert('Student successfully removed', 'success');
+                        
+                        // Reset button
+                        this.innerHTML = 'Remove Student';
+                        this.disabled = false;
+                    }, 1000);
+                });
+            }
+        }
+        
+        function editStudent(studentId) {
+            // In a real app, this would fetch student data from the server
+            // For demo purposes, we'll use the data from the table
+            const row = document.querySelector(`tr[data-student-id="${studentId}"]`);
+            if (!row) return;
+            
+            const name = row.querySelector('td:nth-child(1) h6').textContent;
+            const email = row.querySelector('td:nth-child(2)').textContent;
+            
+            // Set form values
+            document.getElementById('studentId').value = studentId;
+            document.getElementById('studentName').value = name;
+            document.getElementById('studentEmail').value = email;
+            
+            // Update modal title
+            document.getElementById('studentModalLabel').textContent = 'Edit Student';
+            
+            // Show modal
+            const modal = new bootstrap.Modal(document.getElementById('studentModal'));
+            modal.show();
+        }
+        
+        function sendMessage(studentId) {
+            // This would open a messaging interface in a real app
+            // For demo purposes, just show an alert
+            showAlert('Messaging feature not implemented in this demo', 'info');
+        }
+        
+        function showAlert(message, type = 'info') {
+            // Create alert element
+            const alertDiv = document.createElement('div');
+            alertDiv.className = `alert alert-${type} alert-dismissible fade show`;
+            alertDiv.setAttribute('role', 'alert');
+            alertDiv.innerHTML = `
+                ${message}
+                <button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close"></button>
+            `;
+            
+            // Add to the page
+            const container = document.querySelector('.container-fluid');
+            if (container) {
+                container.insertBefore(alertDiv, container.firstChild);
+                
+                // Auto-dismiss after 5 seconds
+                setTimeout(() => {
+                    alertDiv.classList.remove('show');
+                    setTimeout(() => alertDiv.remove(), 150);
+                }, 5000);
+            }
+        }
+    </script>
+} 

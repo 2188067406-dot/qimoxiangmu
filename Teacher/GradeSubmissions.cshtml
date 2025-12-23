@@ -1,0 +1,707 @@
+@model TeachingAI1.Models.AssignmentViewModel
+@{
+    ViewData["Title"] = "Grade Submissions";
+    Layout = "_TeacherLayout";
+}
+
+<div class="container-fluid py-4">
+    <!-- Page Header -->
+    <div class="d-flex justify-content-between align-items-center mb-4">
+        <div>
+            <nav aria-label="breadcrumb">
+                <ol class="breadcrumb mb-1">
+                    <li class="breadcrumb-item"><a asp-action="Assignments">Assignments</a></li>
+                    <li class="breadcrumb-item"><a asp-action="AssignmentDetails" asp-route-id="@Model.Id">@Model.Title</a></li>
+                    <li class="breadcrumb-item active" aria-current="page">Grade Submissions</li>
+                </ol>
+            </nav>
+            <h1 class="h2 mb-1">Grade Submissions</h1>
+            <p class="text-muted">@Model.Title | @Model.CourseTitle</p>
+        </div>
+        <div>
+            <button type="button" id="btnSaveAllGrades" class="btn btn-primary">
+                <i class="fas fa-save me-2"></i>Save All Grades
+            </button>
+        </div>
+    </div>
+
+    <!-- Grading Statistics -->
+    <div class="row mb-4">
+        <div class="col-lg-4">
+            <div class="card h-100">
+                <div class="card-body">
+                    <h5 class="card-title">Grading Progress</h5>
+                    <div class="d-flex align-items-center mt-4">
+                        <div class="progress flex-grow-1 me-3" style="height: 10px;">
+                            @{
+                                var gradedCount = Model.Submissions?.Count(s => s.Grade.HasValue) ?? 0;
+                                var totalCount = Model.Submissions?.Count ?? 0;
+                                var gradedPercentage = totalCount > 0 ? (gradedCount * 100 / totalCount) : 0;
+                            }
+                            <div class="progress-bar bg-success" role="progressbar" style="width: @gradedPercentage%;" 
+                                 aria-valuenow="@gradedPercentage" aria-valuemin="0" aria-valuemax="100"></div>
+                        </div>
+                        <div class="text-end">
+                            <span class="fs-5 fw-bold">@gradedCount / @totalCount</span>
+                        </div>
+                    </div>
+                    <p class="text-muted mt-3 mb-0">@gradedPercentage% of submissions have been graded</p>
+                </div>
+            </div>
+        </div>
+        <div class="col-lg-4">
+            <div class="card h-100">
+                <div class="card-body">
+                    <h5 class="card-title">Grade Distribution</h5>
+                    <div class="mt-3">
+                        <canvas id="gradeDistributionChart" height="150"></canvas>
+                    </div>
+                </div>
+            </div>
+        </div>
+        <div class="col-lg-4">
+            <div class="card h-100">
+                <div class="card-body">
+                    <h5 class="card-title">Assignment Details</h5>
+                    <ul class="list-group list-group-flush mt-3">
+                        <li class="list-group-item px-0">
+                            <div class="d-flex justify-content-between">
+                                <span>Due Date:</span>
+                                <span class="fw-medium">@Model.DueDate.ToString("MMM dd, yyyy")</span>
+                            </div>
+                        </li>
+                        <li class="list-group-item px-0">
+                            <div class="d-flex justify-content-between">
+                                <span>Points Possible:</span>
+                                <span class="fw-medium">@Model.PointsPossible points</span>
+                            </div>
+                        </li>
+                        <li class="list-group-item px-0">
+                            <div class="d-flex justify-content-between">
+                                <span>Average Grade:</span>
+                                @{
+                                    var gradedSubmissions = Model.Submissions?.Where(s => s.Grade.HasValue).ToList();
+                                    var averageGrade = gradedSubmissions != null && gradedSubmissions.Count > 0 
+                                        ? gradedSubmissions.Average(s => s.Grade.Value) 
+                                        : 0;
+                                }
+                                <span class="fw-medium">@averageGrade.ToString("F1") / @Model.PointsPossible</span>
+                            </div>
+                        </li>
+                    </ul>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- Submissions to Grade -->
+    <div class="card">
+        <div class="card-header d-flex justify-content-between align-items-center">
+            <h5 class="card-title mb-0">Student Submissions</h5>
+            <div>
+                <div class="form-check form-check-inline">
+                    <input class="form-check-input" type="radio" name="submissionFilter" id="showAllSubmissions" value="all" checked>
+                    <label class="form-check-label" for="showAllSubmissions">All</label>
+                </div>
+                <div class="form-check form-check-inline">
+                    <input class="form-check-input" type="radio" name="submissionFilter" id="showUngradedSubmissions" value="ungraded">
+                    <label class="form-check-label" for="showUngradedSubmissions">Ungraded</label>
+                </div>
+                <div class="form-check form-check-inline">
+                    <input class="form-check-input" type="radio" name="submissionFilter" id="showGradedSubmissions" value="graded">
+                    <label class="form-check-label" for="showGradedSubmissions">Graded</label>
+                </div>
+            </div>
+        </div>
+        <div class="card-body">
+            <div class="table-responsive">
+                <table class="table table-hover grading-table">
+                    <thead>
+                        <tr>
+                            <th style="width: 25%">Student</th>
+                            <th style="width: 20%">Submission Date</th>
+                            <th style="width: 15%">Status</th>
+                            <th style="width: 25%">Grade</th>
+                            <th style="width: 15%">Actions</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        @if (Model.Submissions != null && Model.Submissions.Any())
+                        {
+                            foreach (var submission in Model.Submissions)
+                            {
+                                <tr data-submission-id="@submission.Id" data-status="@(submission.Grade.HasValue ? "graded" : "ungraded")">
+                                    <td>
+                                        <div class="d-flex align-items-center">
+                                            <div class="avatar-sm me-3 bg-primary-subtle rounded-circle">
+                                                <span class="avatar-initials">@(submission.StudentName.Substring(0, 1))</span>
+                                            </div>
+                                            <div>
+                                                <h6 class="mb-0">@submission.StudentName</h6>
+                                            </div>
+                                        </div>
+                                    </td>
+                                    <td>
+                                        @if (submission.SubmissionDate.HasValue)
+                                        {
+                                            <div>
+                                                <span>@submission.SubmissionDate.Value.ToString("MMM dd, yyyy")</span>
+                                                @if (submission.SubmissionDate > Model.DueDate)
+                                                {
+                                                    <span class="badge bg-warning ms-2">Late</span>
+                                                }
+                                            </div>
+                                        }
+                                        else
+                                        {
+                                            <span class="text-muted">Not submitted</span>
+                                        }
+                                    </td>
+                                    <td>
+                                        @{
+                                            string badgeClass = "bg-secondary";
+                                            switch (submission.Status)
+                                            {
+                                                case "Submitted":
+                                                    badgeClass = "bg-success";
+                                                    break;
+                                                case "Late":
+                                                    badgeClass = "bg-warning";
+                                                    break;
+                                                case "Not Submitted":
+                                                    badgeClass = "bg-danger";
+                                                    break;
+                                                case "Graded":
+                                                    badgeClass = "bg-info";
+                                                    break;
+                                            }
+                                        }
+                                        <span class="badge @badgeClass">@submission.Status</span>
+                                    </td>
+                                    <td>
+                                        @if (submission.Status == "Submitted" || submission.Status == "Late" || submission.Status == "Graded")
+                                        {
+                                            <div class="grade-input-group">
+                                                <div class="input-group">
+                                                    <input type="number" class="form-control grade-input" min="0" max="@Model.PointsPossible" 
+                                                           value="@submission.Grade" placeholder="Enter grade" 
+                                                           aria-label="Grade" aria-describedby="point-label-@submission.Id">
+                                                    <span class="input-group-text" id="point-label-@submission.Id">/ @Model.PointsPossible</span>
+                                                </div>
+                                                <div class="form-text">
+                                                    <a href="#" class="text-decoration-none feedback-toggle" data-bs-toggle="collapse" 
+                                                       data-bs-target="#feedback-@submission.Id" aria-expanded="false" aria-controls="feedback-@submission.Id">
+                                                        <i class="fas fa-comment-alt me-1"></i>
+                                                        @(string.IsNullOrEmpty(submission.Feedback) ? "Add feedback" : "Edit feedback")
+                                                    </a>
+                                                </div>
+                                                <div class="collapse mt-2 feedback-container" id="feedback-@submission.Id">
+                                                    <textarea class="form-control feedback-input" rows="3" 
+                                                              placeholder="Enter feedback for student">@submission.Feedback</textarea>
+                                                </div>
+                                            </div>
+                                        }
+                                        else
+                                        {
+                                            <span class="text-muted">No submission</span>
+                                        }
+                                    </td>
+                                    <td>
+                                        @if (submission.Status == "Submitted" || submission.Status == "Late" || submission.Status == "Graded")
+                                        {
+                                            <div class="d-flex">
+                                                <button type="button" class="btn btn-sm btn-outline-primary me-2 btn-view-submission" 
+                                                        data-submission-id="@submission.Id" title="View Submission">
+                                                    <i class="fas fa-eye"></i>
+                                                </button>
+                                                <button type="button" class="btn btn-sm btn-outline-success btn-save-grade" 
+                                                        data-submission-id="@submission.Id" title="Save Grade">
+                                                    <i class="fas fa-save"></i>
+                                                </button>
+                                            </div>
+                                        }
+                                        else
+                                        {
+                                            <button type="button" class="btn btn-sm btn-outline-secondary" disabled>
+                                                <i class="fas fa-minus"></i>
+                                            </button>
+                                        }
+                                    </td>
+                                </tr>
+                            }
+                        }
+                        else
+                        {
+                            <tr>
+                                <td colspan="5" class="text-center py-5">
+                                    <div class="empty-state">
+                                        <i class="fas fa-file-upload fa-3x mb-3 text-muted"></i>
+                                        <h5>No submissions to grade</h5>
+                                        <p class="text-muted">There are no student submissions for this assignment yet.</p>
+                                    </div>
+                                </td>
+                            </tr>
+                        }
+                    </tbody>
+                </table>
+            </div>
+        </div>
+    </div>
+</div>
+
+<!-- View Submission Modal -->
+<div class="modal fade" id="viewSubmissionModal" tabindex="-1" aria-labelledby="viewSubmissionModalLabel" aria-hidden="true">
+    <div class="modal-dialog modal-lg modal-dialog-scrollable">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h5 class="modal-title" id="viewSubmissionModalLabel">Student Submission</h5>
+                <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+            </div>
+            <div class="modal-body">
+                <div class="submission-header mb-4">
+                    <div class="d-flex align-items-center">
+                        <div class="avatar-md me-3 bg-primary-subtle rounded-circle">
+                            <span class="avatar-initials" id="submissionStudentInitials">JD</span>
+                        </div>
+                        <div>
+                            <h5 class="mb-1" id="submissionStudentName">John Doe</h5>
+                            <p class="text-muted mb-0" id="submissionDate">Submitted on Apr 02, 2023 at 2:45 PM</p>
+                        </div>
+                    </div>
+                </div>
+                
+                <!-- Submission Content - This would be populated with real content -->
+                <div class="submission-content p-3 border rounded bg-light">
+                    <p class="mb-3">This is a placeholder for the student's submission content. In a real application, this would display the actual submitted work.</p>
+                    
+                    <h6>Example Files:</h6>
+                    <ul class="list-group mb-3">
+                        <li class="list-group-item d-flex justify-content-between align-items-center">
+                            <span><i class="fas fa-file-pdf me-2 text-danger"></i>Assignment_Report.pdf</span>
+                            <button class="btn btn-sm btn-outline-primary"><i class="fas fa-download me-1"></i>Download</button>
+                        </li>
+                        <li class="list-group-item d-flex justify-content-between align-items-center">
+                            <span><i class="fas fa-file-code me-2 text-primary"></i>code_sample.py</span>
+                            <button class="btn btn-sm btn-outline-primary"><i class="fas fa-download me-1"></i>Download</button>
+                        </li>
+                    </ul>
+                    
+                    <div class="submission-text">
+                        <h6>Submission Text:</h6>
+                        <p>This is a sample text submission. The actual content would depend on what the student has submitted. It could include code, essays, answers to QuizQuizQuestions, or other forms of written work.</p>
+                        <p>The format and structure of this content would vary based on the type of assignment and the requirements specified by the teacher.</p>
+                    </div>
+                </div>
+            </div>
+            <div class="modal-footer d-flex justify-content-between">
+                <div>
+                    <button type="button" id="previousSubmission" class="btn btn-outline-secondary">
+                        <i class="fas fa-chevron-left me-1"></i>Previous
+                    </button>
+                    <button type="button" id="nextSubmission" class="btn btn-outline-secondary">
+                        Next<i class="fas fa-chevron-right ms-1"></i>
+                    </button>
+                </div>
+                <div>
+                    <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Close</button>
+                    <button type="button" class="btn btn-primary" id="gradeFromModal">Grade Submission</button>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+
+@section Scripts {
+    <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+    <script>
+    document.addEventListener('DOMContentLoaded', function() {
+        // Initialize grade distribution chart
+        initGradeDistributionChart();
+        
+        // Filter submissions
+        setupSubmissionFilters();
+        
+        // Setup grade inputs
+        setupGradeInputs();
+        
+        // Setup save buttons
+        setupSaveButtons();
+        
+        // Setup view submission
+        setupViewSubmissionModal();
+    });
+    
+    function initGradeDistributionChart() {
+        const ctx = document.getElementById('gradeDistributionChart').getContext('2d');
+        
+        // Mock data for grade distribution
+        // In a real app, this would come from the server
+        const gradeRanges = ['90-100', '80-89', '70-79', '60-69', 'Below 60'];
+        const gradeCounts = [3, 5, 7, 2, 1];
+        
+        const gradeChart = new Chart(ctx, {
+            type: 'bar',
+            data: {
+                labels: gradeRanges,
+                datasets: [{
+                    label: 'Number of Students',
+                    data: gradeCounts,
+                    backgroundColor: [
+                        'rgba(40, 167, 69, 0.7)',
+                        'rgba(23, 162, 184, 0.7)',
+                        'rgba(255, 193, 7, 0.7)',
+                        'rgba(253, 126, 20, 0.7)',
+                        'rgba(220, 53, 69, 0.7)'
+                    ],
+                    borderColor: [
+                        'rgba(40, 167, 69, 1)',
+                        'rgba(23, 162, 184, 1)',
+                        'rgba(255, 193, 7, 1)',
+                        'rgba(253, 126, 20, 1)',
+                        'rgba(220, 53, 69, 1)'
+                    ],
+                    borderWidth: 1
+                }]
+            },
+            QuizOptions: {
+                responsive: true,
+                scales: {
+                    y: {
+                        beginAtZero: true,
+                        ticks: {
+                            stepSize: 1,
+                            precision: 0
+                        }
+                    }
+                },
+                plugins: {
+                    legend: {
+                        display: false
+                    }
+                }
+            }
+        });
+    }
+    
+    function setupSubmissionFilters() {
+        const filterButtons = document.querySelectorAll('input[name="submissionFilter"]');
+        filterButtons.forEach(button => {
+            button.addEventListener('change', function() {
+                const filterValue = this.value;
+                const rows = document.querySelectorAll('.grading-table tbody tr');
+                
+                rows.forEach(row => {
+                    const status = row.getAttribute('data-status');
+                    
+                    if (filterValue === 'all' || status === filterValue) {
+                        row.style.display = '';
+                    } else {
+                        row.style.display = 'none';
+                    }
+                });
+            });
+        });
+    }
+    
+    function setupGradeInputs() {
+        const gradeInputs = document.querySelectorAll('.grade-input');
+        gradeInputs.forEach(input => {
+            input.addEventListener('input', function() {
+                const max = parseInt(this.getAttribute('max'), 10);
+                let value = parseInt(this.value, 10);
+                
+                if (isNaN(value)) {
+                    return;
+                }
+                
+                if (value < 0) {
+                    this.value = 0;
+                } else if (value > max) {
+                    this.value = max;
+                }
+                
+                // Mark row as changed
+                const row = this.closest('tr');
+                row.classList.add('grade-changed');
+            });
+        });
+    }
+    
+    function setupSaveButtons() {
+        // Individual save buttons
+        const saveButtons = document.querySelectorAll('.btn-save-grade');
+        saveButtons.forEach(button => {
+            button.addEventListener('click', function() {
+                const submissionId = this.getAttribute('data-submission-id');
+                saveGrade(submissionId);
+            });
+        });
+        
+        // Save all grades button
+        const saveAllButton = document.getElementById('btnSaveAllGrades');
+        if (saveAllButton) {
+            saveAllButton.addEventListener('click', function() {
+                const changedRows = document.querySelectorAll('.grade-changed');
+                let savedCount = 0;
+                
+                changedRows.forEach(row => {
+                    const submissionId = row.getAttribute('data-submission-id');
+                    const success = saveGrade(submissionId);
+                    if (success) savedCount++;
+                });
+                
+                if (savedCount > 0) {
+                    showAlert(`Saved grades for ${savedCount} submission(s)`, 'success');
+                    updateGradingProgress();
+                }
+            });
+        }
+    }
+    
+    function saveGrade(submissionId) {
+        const row = document.querySelector(`tr[data-submission-id="${submissionId}"]`);
+        if (!row) return false;
+        
+        const gradeInput = row.querySelector('.grade-input');
+        const feedbackInput = row.querySelector('.feedback-input');
+        
+        if (!gradeInput) return false;
+        
+        const grade = gradeInput.value ? parseInt(gradeInput.value, 10) : null;
+        const feedback = feedbackInput ? feedbackInput.value : '';
+        
+        // In a real app, this would make an AJAX call to save the grade
+        console.log(`Saving grade for submission ${submissionId}: ${grade}, feedback: ${feedback}`);
+        
+        // Update UI
+        const statusBadge = row.querySelector('.badge');
+        if (statusBadge && grade !== null) {
+            statusBadge.className = 'badge bg-info';
+            statusBadge.textContent = 'Graded';
+            
+            // Update data-status for filtering
+            row.setAttribute('data-status', 'graded');
+        }
+        
+        // Remove changed indicator
+        row.classList.remove('grade-changed');
+        
+        // Show feedback
+        showAlert(`Grade saved for ${row.querySelector('h6').textContent}`, 'success');
+        
+        return true;
+    }
+    
+    function updateGradingProgress() {
+        // Count graded submissions
+        const total = document.querySelectorAll('.grading-table tbody tr').length;
+        const graded = document.querySelectorAll('tr[data-status="graded"]').length;
+        const percentage = total > 0 ? Math.round((graded / total) * 100) : 0;
+        
+        // Update progress bar
+        const progressBar = document.querySelector('.progress-bar');
+        if (progressBar) {
+            progressBar.style.width = `${percentage}%`;
+            progressBar.setAttribute('aria-valuenow', percentage);
+        }
+        
+        // Update text
+        const progressText = document.querySelector('.progress + div span');
+        if (progressText) {
+            progressText.textContent = `${graded} / ${total}`;
+        }
+        
+        const percentageText = document.querySelector('.text-muted.mt-3');
+        if (percentageText) {
+            percentageText.textContent = `${percentage}% of submissions have been graded`;
+        }
+    }
+    
+    function setupViewSubmissionModal() {
+        // View submission buttons
+        const viewButtons = document.querySelectorAll('.btn-view-submission');
+        viewButtons.forEach(button => {
+            button.addEventListener('click', function() {
+                const submissionId = this.getAttribute('data-submission-id');
+                viewSubmission(submissionId);
+            });
+        });
+        
+        // Grade from modal button
+        const gradeButton = document.getElementById('gradeFromModal');
+        if (gradeButton) {
+            gradeButton.addEventListener('click', function() {
+                const submissionId = this.getAttribute('data-submission-id');
+                
+                // Close modal
+                const modal = bootstrap.Modal.getInstance(document.getElementById('viewSubmissionModal'));
+                modal.hide();
+                
+                // Focus on the grade input for this submission
+                setTimeout(() => {
+                    const row = document.querySelector(`tr[data-submission-id="${submissionId}"]`);
+                    if (row) {
+                        const gradeInput = row.querySelector('.grade-input');
+                        if (gradeInput) {
+                            gradeInput.focus();
+                            
+                            // Scroll to the row
+                            row.scrollIntoView({ behavior: 'smooth', block: 'center' });
+                        }
+                    }
+                }, 500);
+            });
+        }
+        
+        // Previous/Next buttons
+        document.getElementById('previousSubmission').addEventListener('click', function() {
+            navigateSubmissions('prev');
+        });
+        
+        document.getElementById('nextSubmission').addEventListener('click', function() {
+            navigateSubmissions('next');
+        });
+    }
+    
+    function viewSubmission(submissionId) {
+        // In a real app, this would fetch the submission details from the server
+        // For now, we'll use mock data
+        
+        // Find the row for this submission
+        const row = document.querySelector(`tr[data-submission-id="${submissionId}"]`);
+        if (!row) return;
+        
+        const studentName = row.querySelector('h6').textContent;
+        const studentInitial = studentName.charAt(0);
+        const submissionDate = row.querySelector('td:nth-child(2)').textContent.trim();
+        
+        // Update modal
+        document.getElementById('submissionStudentName').textContent = studentName;
+        document.getElementById('submissionStudentInitials').textContent = studentInitial;
+        document.getElementById('submissionDate').textContent = `Submitted on ${submissionDate}`;
+        
+        // Store current submission ID on the grade button
+        document.getElementById('gradeFromModal').setAttribute('data-submission-id', submissionId);
+        
+        // Update navigation buttons
+        updateNavigationButtons(submissionId);
+        
+        // Show modal
+        const modal = new bootstrap.Modal(document.getElementById('viewSubmissionModal'));
+        modal.show();
+    }
+    
+    function navigateSubmissions(direction) {
+        // Get current submission ID
+        const currentId = document.getElementById('gradeFromModal').getAttribute('data-submission-id');
+        if (!currentId) return;
+        
+        // Get visible rows
+        const visibleRows = Array.from(document.querySelectorAll('.grading-table tbody tr')).filter(
+            row => row.style.display !== 'none'
+        );
+        
+        // Find current index
+        const currentIndex = visibleRows.findIndex(row => row.getAttribute('data-submission-id') === currentId);
+        if (currentIndex === -1) return;
+        
+        // Calculate new index
+        let newIndex;
+        if (direction === 'prev') {
+            newIndex = currentIndex > 0 ? currentIndex - 1 : visibleRows.length - 1;
+        } else {
+            newIndex = currentIndex < visibleRows.length - 1 ? currentIndex + 1 : 0;
+        }
+        
+        // Get new submission ID
+        const newId = visibleRows[newIndex].getAttribute('data-submission-id');
+        
+        // View new submission
+        viewSubmission(newId);
+    }
+    
+    function updateNavigationButtons(currentId) {
+        // Get visible rows
+        const visibleRows = Array.from(document.querySelectorAll('.grading-table tbody tr')).filter(
+            row => row.style.display !== 'none'
+        );
+        
+        // If only one row, disable both buttons
+        if (visibleRows.length <= 1) {
+            document.getElementById('previousSubmission').disabled = true;
+            document.getElementById('nextSubmission').disabled = true;
+            return;
+        }
+        
+        // Enable both buttons
+        document.getElementById('previousSubmission').disabled = false;
+        document.getElementById('nextSubmission').disabled = false;
+    }
+    
+    function showAlert(message, type = 'info') {
+        // Create alert element
+        const alertDiv = document.createElement('div');
+        alertDiv.className = `alert alert-${type} alert-dismissible fade show position-fixed bottom-0 end-0 m-3`;
+        alertDiv.setAttribute('role', 'alert');
+        alertDiv.style.zIndex = '1050';
+        alertDiv.innerHTML = `
+            ${message}
+            <button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close"></button>
+        `;
+        
+        // Add to the page
+        document.body.appendChild(alertDiv);
+        
+        // Auto-dismiss after 3 seconds
+        setTimeout(() => {
+            alertDiv.classList.remove('show');
+            setTimeout(() => alertDiv.remove(), 150);
+        }, 3000);
+    }
+    </script>
+    
+    <style>
+    .avatar-sm {
+        width: 2.5rem;
+        height: 2.5rem;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+    }
+    
+    .avatar-md {
+        width: 3.5rem;
+        height: 3.5rem;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+    }
+    
+    .avatar-initials {
+        font-weight: 500;
+        color: #fff;
+    }
+    
+    .grade-changed {
+        background-color: rgba(255, 243, 205, 0.3);
+    }
+    
+    .grade-changed .grade-input {
+        border-color: var(--bs-warning);
+        box-shadow: 0 0 0 0.25rem rgba(255, 193, 7, 0.25);
+    }
+    
+    .grading-table th, .grading-table td {
+        vertical-align: middle;
+    }
+    
+    .empty-state {
+        text-align: center;
+        padding: 2rem;
+    }
+    
+    .feedback-container {
+        transition: all 0.3s ease;
+    }
+    </style>
+} 

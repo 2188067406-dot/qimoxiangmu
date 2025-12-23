@@ -1,0 +1,287 @@
+@model IEnumerable<CertificateViewModel>
+@{
+    ViewData["Title"] = "My Certificates";
+    Layout = "_StudentLayout";
+}
+
+<div class="container-fluid py-4">
+    <!-- Certificates Header -->
+    <div class="row mb-4">
+        <div class="col-12">
+            <div class="d-flex justify-content-between align-items-center">
+                <h1 class="h2 mb-0">My Certificates</h1>
+                <a href="@Url.Action("Profile", "Student")" class="btn btn-outline-primary">
+                    <i class="fas fa-arrow-left me-2"></i>Back to Profile
+                </a>
+            </div>
+        </div>
+    </div>
+
+    <!-- Certificates Grid -->
+    <div class="row">
+        @if (Model.Any())
+        {
+            foreach (var certificate in Model)
+            {
+                <div class="col-lg-4 col-md-6 mb-4">
+                    <div class="card certificate-card border-0 shadow-sm h-100">
+                        <div class="card-body">
+                            <div class="certificate-icon mb-3">
+                                <i class="fas fa-certificate text-primary"></i>
+                            </div>
+                            <h5 class="card-title text-center mb-3">@certificate.Title</h5>
+                            <p class="text-center text-muted mb-4">
+                                <small>Issued on @certificate.IssueDate.ToString("MMMM d, yyyy")</small>
+                            </p>
+                            <div class="d-flex justify-content-center certificate-actions">
+                                <a href="#" class="btn btn-sm btn-outline-primary me-2" data-bs-toggle="modal" data-bs-target="#viewCertificateModal" data-certificate="@certificate.Title">
+                                    <i class="fas fa-eye me-1"></i> View
+                                </a>
+                                <a href="#" class="btn btn-sm btn-outline-success me-2">
+                                    <i class="fas fa-download me-1"></i> Download
+                                </a>
+                                <a href="#" class="btn btn-sm btn-outline-info">
+                                    <i class="fas fa-share-alt me-1"></i> Share
+                                </a>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            }
+        }
+        else
+        {
+            <div class="col-12">
+                <div class="card border-0 shadow-sm">
+                    <div class="card-body text-center py-5">
+                        <div class="empty-state mb-4">
+                            <i class="fas fa-certificate text-muted fa-4x mb-3"></i>
+                            <h4>No Certificates Yet</h4>
+                            <p class="text-muted">Complete courses to earn certificates that will appear here.</p>
+                        </div>
+                        <a href="@Url.Action("Courses", "Student")" class="btn btn-primary">
+                            <i class="fas fa-graduation-cap me-2"></i>Browse Courses
+                        </a>
+                    </div>
+                </div>
+            </div>
+        }
+    </div>
+</div>
+
+<!-- Certificate View Modal -->
+<div class="modal fade" id="viewCertificateModal" tabindex="-1" aria-hidden="true">
+    <div class="modal-dialog modal-lg modal-dialog-centered">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h5 class="modal-title" id="certificateModalTitle">Certificate</h5>
+                <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+            </div>
+            <div class="modal-body p-0">
+                <div class="certificate-container">
+                    <div class="certificate">
+                        <div class="certificate-header">
+                            <div class="certificate-logo-placeholder">
+                                <i class="fas fa-award fa-3x text-primary"></i>
+                            </div>
+                            <h2 class="certificate-title">Certificate of Completion</h2>
+                        </div>
+                        <div class="certificate-content">
+                            <p class="certificate-text">This is to certify that</p>
+                            <h3 class="certificate-name">John Doe</h3>
+                            <p class="certificate-text">has successfully completed the course</p>
+                            <h4 class="certificate-course-title" id="modalCertificateTitle"></h4>
+                            <p class="certificate-text">with a grade of <span class="certificate-grade">A</span></p>
+                        </div>
+                        <div class="certificate-footer">
+                            <div class="certificate-date">
+                                <p>Issue Date: <span id="modalCertificateDate"></span></p>
+                            </div>
+                            <div class="certificate-signature">
+                                <div class="signature-placeholder">
+                                    <i class="fas fa-signature fa-2x text-primary"></i>
+                                </div>
+                                <p>Course Instructor</p>
+                            </div>
+                        </div>
+                        <div class="certificate-border"></div>
+                    </div>
+                </div>
+            </div>
+            <div class="modal-footer">
+                <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Close</button>
+                <a href="#" class="btn btn-success">
+                    <i class="fas fa-download me-1"></i> Download
+                </a>
+                <a href="#" class="btn btn-info">
+                    <i class="fas fa-share-alt me-1"></i> Share
+                </a>
+            </div>
+        </div>
+    </div>
+</div>
+
+@section Styles {
+    <style>
+        /* Certificate Card Styles */
+        .certificate-card {
+            transition: transform 0.3s ease;
+            position: relative;
+            overflow: hidden;
+            border-radius: 10px;
+        }
+        
+        .certificate-card:hover {
+            transform: translateY(-5px);
+        }
+        
+        .certificate-card::before {
+            content: '';
+            position: absolute;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 5px;
+            background: linear-gradient(90deg, #4e73df, #36b9cc);
+        }
+        
+        .certificate-icon {
+            font-size: 2.5rem;
+            text-align: center;
+            margin-top: 1rem;
+        }
+        
+        .certificate-actions {
+            margin-top: auto;
+        }
+        
+        /* Certificate Modal Styles */
+        .certificate-container {
+            padding: 30px;
+            background-color: #f8f9fc;
+        }
+        
+        .certificate {
+            background-color: white;
+            border: 10px solid #e6e9f0;
+            padding: 40px;
+            position: relative;
+            box-shadow: 0 0 20px rgba(0, 0, 0, 0.1);
+        }
+        
+        .certificate-border {
+            position: absolute;
+            top: 20px;
+            left: 20px;
+            right: 20px;
+            bottom: 20px;
+            border: 2px solid #4e73df;
+            pointer-events: none;
+        }
+        
+        .certificate-header {
+            text-align: center;
+            margin-bottom: 30px;
+        }
+        
+        .certificate-logo {
+            max-height: 60px;
+            margin-bottom: 20px;
+        }
+        
+        .certificate-title {
+            font-size: 32px;
+            color: #4e73df;
+            margin: 0;
+            font-weight: 600;
+        }
+        
+        .certificate-content {
+            text-align: center;
+            margin: 40px 0;
+        }
+        
+        .certificate-text {
+            margin: 10px 0;
+            font-size: 18px;
+        }
+        
+        .certificate-name {
+            font-size: 32px;
+            margin: 15px 0;
+            color: #2e59d9;
+        }
+        
+        .certificate-course-title {
+            font-size: 24px;
+            margin: 15px 0;
+            color: #4e73df;
+        }
+        
+        .certificate-grade {
+            font-weight: bold;
+            color: #1cc88a;
+        }
+        
+        .certificate-footer {
+            display: flex;
+            justify-content: space-between;
+            margin-top: 50px;
+        }
+        
+        .certificate-date {
+            text-align: left;
+        }
+        
+        .certificate-signature {
+            text-align: center;
+        }
+        
+        .signature-img {
+            max-width: 150px;
+            margin-bottom: 10px;
+        }
+        
+        /* Empty State */
+        .empty-state {
+            padding: 30px;
+            color: #858796;
+        }
+        
+        .certificate-logo-placeholder {
+            text-align: center;
+            margin-bottom: 20px;
+        }
+        
+        .signature-placeholder {
+            text-align: center;
+            margin-bottom: 15px;
+        }
+    </style>
+}
+
+@section Scripts {
+    <script>
+        document.addEventListener('DOMContentLoaded', function() {
+            const viewCertificateModal = document.getElementById('viewCertificateModal');
+            if (viewCertificateModal) {
+                viewCertificateModal.addEventListener('show.bs.modal', function(event) {
+                    const button = event.relatedTarget;
+                    const certificateTitle = button.getAttribute('data-certificate');
+                    
+                    const modalTitle = document.getElementById('modalCertificateTitle');
+                    const modalDate = document.getElementById('modalCertificateDate');
+                    
+                    if (modalTitle) modalTitle.textContent = certificateTitle;
+                    
+                    // Set a sample date (in a real app, this would come from the certificate data)
+                    if (modalDate) modalDate.textContent = new Date().toLocaleDateString('en-US', {
+                        year: 'numeric',
+                        month: 'long',
+                        day: 'numeric'
+                    });
+                });
+            }
+        });
+    </script>
+} 

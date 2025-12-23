@@ -1,0 +1,541 @@
+@model TeachingAI1.ViewModels.CourseViewModel
+@{
+    ViewData["Title"] = ViewBag.Title ?? "Course Details";
+}
+
+<div class="container-fluid px-4 py-4">
+    <!-- Page Header -->
+    <div class="page-header row align-items-center mb-4">
+        <div class="col-md-6">
+            <h1 class="page-title">@Model.Title</h1>
+            <p class="page-subtitle">Course Management Dashboard</p>
+        </div>
+        <div class="col-md-6 text-md-end">
+            <a asp-action="EditCourse" asp-route-id="@Model.Id" class="btn btn-outline-primary me-2">
+                <i class="fas fa-edit me-2"></i> Edit Course
+            </a>
+            <a asp-action="CreateAssignment" asp-route-courseId="@Model.Id" class="btn btn-primary">
+                <i class="fas fa-plus me-2"></i> Add Assignment
+            </a>
+        </div>
+    </div>
+
+    <!-- Course Overview -->
+    <div class="row mb-4">
+        <div class="col-lg-8">
+            <div class="dashboard-card">
+                <h3 class="section-title">Course Overview</h3>
+                <div class="row">
+                    <div class="col-md-6 mb-3">
+                        <div class="course-info-item">
+                            <span class="course-info-label">Status</span>
+                            <span class="badge bg-success">@Model.Status</span>
+                        </div>
+                    </div>
+                    <div class="col-md-6 mb-3">
+                        <div class="course-info-item">
+                            <span class="course-info-label">Duration</span>
+                            <span class="course-info-value">@Model.Duration</span>
+                        </div>
+                    </div>
+                    <div class="col-md-6 mb-3">
+                        <div class="course-info-item">
+                            <span class="course-info-label">Start Date</span>
+                            <span class="course-info-value">@(Model.StartDate?.ToString("yyyy-MM-dd") ?? "")</span>
+                        </div>
+                    </div>
+                    <div class="col-md-6 mb-3">
+                        <div class="course-info-item">
+                            <span class="course-info-label">End Date</span>
+                            <span class="course-info-value">@(Model.EndDate?.ToString("yyyy-MM-dd") ?? "")</span>
+                        </div>
+                    </div>
+                    <div class="col-md-12 mb-3">
+                        <div class="course-info-item">
+                            <span class="course-info-label">Description</span>
+                            <p class="course-info-value">@Model.Description</p>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+        <div class="col-lg-4">
+            <div class="dashboard-card h-100">
+                <h3 class="section-title">Course Statistics</h3>
+                <div class="course-stats-grid">
+                    <div class="course-stat-item">
+                        <div class="course-stat-icon bg-primary">
+                            <i class="fas fa-users"></i>
+                        </div>
+                        <div class="course-stat-info">
+                            <h4>@Model.EnrolledStudents</h4>
+                            <p>Students</p>
+                        </div>
+                    </div>
+                    <div class="course-stat-item">
+                        <div class="course-stat-icon bg-success">
+                            <i class="fas fa-user-check"></i>
+                        </div>
+                        <div class="course-stat-info">
+                            <h4>@Model.Attendance%</h4>
+                            <p>Attendance</p>
+                        </div>
+                    </div>
+                    <div class="course-stat-item">
+                        <div class="course-stat-icon bg-info">
+                            <i class="fas fa-tasks"></i>
+                        </div>
+                        <div class="course-stat-info">
+                            <h4>@Model.Completion%</h4>
+                            <p>Completion</p>
+                        </div>
+                    </div>
+                    <div class="course-stat-item">
+                        <div class="course-stat-icon bg-warning">
+                            <i class="fas fa-star"></i>
+                        </div>
+                        <div class="course-stat-info">
+                            <h4>@Model.Rating.ToString("F1")</h4>
+                            <p>Rating</p>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- Course Content Tabs -->
+    <ul class="nav nav-tabs mb-4" id="courseTab" role="tablist">
+        <li class="nav-item" role="presentation">
+            <button class="nav-link active" id="students-tab" data-bs-toggle="tab" data-bs-target="#students" type="button" role="tab" aria-controls="students" aria-selected="true">Students</button>
+        </li>
+        <li class="nav-item" role="presentation">
+            <button class="nav-link" id="assignments-tab" data-bs-toggle="tab" data-bs-target="#assignments" type="button" role="tab" aria-controls="assignments" aria-selected="false">Assignments</button>
+        </li>
+        <li class="nav-item" role="presentation">
+            <button class="nav-link" id="syllabus-tab" data-bs-toggle="tab" data-bs-target="#syllabus" type="button" role="tab" aria-controls="syllabus" aria-selected="false">Syllabus</button>
+        </li>
+        <li class="nav-item" role="presentation">
+            <button class="nav-link" id="analytics-tab" data-bs-toggle="tab" data-bs-target="#analytics" type="button" role="tab" aria-controls="analytics" aria-selected="false">Analytics</button>
+        </li>
+    </ul>
+
+    <div class="tab-content" id="courseTabContent">
+        <!-- Students Tab -->
+        <div class="tab-pane fade show active" id="students" role="tabpanel" aria-labelledby="students-tab">
+            <div class="dashboard-card">
+                <div class="d-flex justify-content-between align-items-center mb-4">
+                    <h3 class="section-title mb-0">Enrolled Students</h3>
+                    <div class="d-flex">
+                        <div class="input-group me-2" style="width: 250px;">
+                            <input type="text" class="form-control" placeholder="Search students...">
+                            <button class="btn btn-outline-primary" type="button">
+                                <i class="fas fa-search"></i>
+                            </button>
+                        </div>
+                        <button class="btn btn-outline-primary">
+                            <i class="fas fa-plus me-2"></i> Add Student
+                        </button>
+                    </div>
+                </div>
+                <div class="table-responsive">
+                    <table class="table table-hover">
+                        <thead>
+                            <tr>
+                                <th>Name</th>
+                                <th>Email</th>
+                                <th>Progress</th>
+                                <th>Last Activity</th>
+                                <th>Grade</th>
+                                <th>Actions</th>
+                            </tr>
+                        </thead>
+                        <tbody>
+                            <tr>
+                                <td>
+                                    <div class="d-flex align-items-center">
+                                        <img src="https://randomuser.me/api/portraits/men/32.jpg" alt="John Doe" class="avatar-sm me-2">
+                                        <div>John Doe</div>
+                                    </div>
+                                </td>
+                                <td>john.doe@example.com</td>
+                                <td>
+                                    <div class="progress" style="height: 8px;">
+                                        <div class="progress-bar bg-success" role="progressbar" style="width: 90%;" aria-valuenow="90" aria-valuemin="0" aria-valuemax="100"></div>
+                                    </div>
+                                    <small>90%</small>
+                                </td>
+                                <td>Today</td>
+                                <td>A-</td>
+                                <td>
+                                    <div class="dropdown">
+                                        <button class="btn btn-sm btn-outline-secondary dropdown-toggle" type="button" id="dropdownMenuButton1" data-bs-toggle="dropdown" aria-expanded="false">
+                                            Actions
+                                        </button>
+                                        <ul class="dropdown-menu" aria-labelledby="dropdownMenuButton1">
+                                            <li><a class="dropdown-item" href="#">View Profile</a></li>
+                                            <li><a class="dropdown-item" href="#">Send Message</a></li>
+                                            <li><a class="dropdown-item" href="#">View Submissions</a></li>
+                                            <li><hr class="dropdown-divider"></li>
+                                            <li><a class="dropdown-item text-danger" href="#">Remove from Course</a></li>
+                                        </ul>
+                                    </div>
+                                </td>
+                            </tr>
+                            <tr>
+                                <td>
+                                    <div class="d-flex align-items-center">
+                                        <img src="https://randomuser.me/api/portraits/women/44.jpg" alt="Jane Smith" class="avatar-sm me-2">
+                                        <div>Jane Smith</div>
+                                    </div>
+                                </td>
+                                <td>jane.smith@example.com</td>
+                                <td>
+                                    <div class="progress" style="height: 8px;">
+                                        <div class="progress-bar bg-success" role="progressbar" style="width: 95%;" aria-valuenow="95" aria-valuemin="0" aria-valuemax="100"></div>
+                                    </div>
+                                    <small>95%</small>
+                                </td>
+                                <td>Yesterday</td>
+                                <td>A</td>
+                                <td>
+                                    <div class="dropdown">
+                                        <button class="btn btn-sm btn-outline-secondary dropdown-toggle" type="button" id="dropdownMenuButton2" data-bs-toggle="dropdown" aria-expanded="false">
+                                            Actions
+                                        </button>
+                                        <ul class="dropdown-menu" aria-labelledby="dropdownMenuButton2">
+                                            <li><a class="dropdown-item" href="#">View Profile</a></li>
+                                            <li><a class="dropdown-item" href="#">Send Message</a></li>
+                                            <li><a class="dropdown-item" href="#">View Submissions</a></li>
+                                            <li><hr class="dropdown-divider"></li>
+                                            <li><a class="dropdown-item text-danger" href="#">Remove from Course</a></li>
+                                        </ul>
+                                    </div>
+                                </td>
+                            </tr>
+                            <tr>
+                                <td>
+                                    <div class="d-flex align-items-center">
+                                        <img src="https://randomuser.me/api/portraits/men/67.jpg" alt="Michael Johnson" class="avatar-sm me-2">
+                                        <div>Michael Johnson</div>
+                                    </div>
+                                </td>
+                                <td>michael.johnson@example.com</td>
+                                <td>
+                                    <div class="progress" style="height: 8px;">
+                                        <div class="progress-bar bg-warning" role="progressbar" style="width: 75%;" aria-valuenow="75" aria-valuemin="0" aria-valuemax="100"></div>
+                                    </div>
+                                    <small>75%</small>
+                                </td>
+                                <td>2 days ago</td>
+                                <td>B+</td>
+                                <td>
+                                    <div class="dropdown">
+                                        <button class="btn btn-sm btn-outline-secondary dropdown-toggle" type="button" id="dropdownMenuButton3" data-bs-toggle="dropdown" aria-expanded="false">
+                                            Actions
+                                        </button>
+                                        <ul class="dropdown-menu" aria-labelledby="dropdownMenuButton3">
+                                            <li><a class="dropdown-item" href="#">View Profile</a></li>
+                                            <li><a class="dropdown-item" href="#">Send Message</a></li>
+                                            <li><a class="dropdown-item" href="#">View Submissions</a></li>
+                                            <li><hr class="dropdown-divider"></li>
+                                            <li><a class="dropdown-item text-danger" href="#">Remove from Course</a></li>
+                                        </ul>
+                                    </div>
+                                </td>
+                            </tr>
+                        </tbody>
+                    </table>
+                </div>
+                <nav aria-label="Student pagination">
+                    <ul class="pagination justify-content-center">
+                        <li class="page-item disabled">
+                            <a class="page-link" href="#" tabindex="-1" aria-disabled="true">Previous</a>
+                        </li>
+                        <li class="page-item active"><a class="page-link" href="#">1</a></li>
+                        <li class="page-item"><a class="page-link" href="#">2</a></li>
+                        <li class="page-item"><a class="page-link" href="#">3</a></li>
+                        <li class="page-item">
+                            <a class="page-link" href="#">Next</a>
+                        </li>
+                    </ul>
+                </nav>
+            </div>
+        </div>
+
+        <!-- Assignments Tab -->
+        <div class="tab-pane fade" id="assignments" role="tabpanel" aria-labelledby="assignments-tab">
+            <div class="dashboard-card">
+                <div class="d-flex justify-content-between align-items-center mb-4">
+                    <h3 class="section-title mb-0">Course Assignments</h3>
+                    <a asp-action="CreateAssignment" asp-route-courseId="@Model.Id" class="btn btn-outline-primary">
+                        <i class="fas fa-plus me-2"></i> Add Assignment
+                    </a>
+                </div>
+                <div class="table-responsive">
+                    <table class="table table-hover">
+                        <thead>
+                            <tr>
+                                <th>Title</th>
+                                <th>Due Date</th>
+                                <th>Status</th>
+                                <th>Submissions</th>
+                                <th>Average Grade</th>
+                                <th>Actions</th>
+                            </tr>
+                        </thead>
+                        <tbody>
+                            <tr>
+                                <td>AI Ethics Case Study</td>
+                                <td>May 15, 2023</td>
+                                <td><span class="badge bg-warning">Due Tomorrow</span></td>
+                                <td>18/32 (56%)</td>
+                                <td>--</td>
+                                <td>
+                                    <div class="btn-group" role="group">
+                                        <a href="#" class="btn btn-sm btn-outline-primary">View</a>
+                                        <a href="#" class="btn btn-sm btn-outline-secondary">Edit</a>
+                                        <button type="button" class="btn btn-sm btn-outline-danger">Delete</button>
+                                    </div>
+                                </td>
+                            </tr>
+                            <tr>
+                                <td>Machine Learning Basics Quiz</td>
+                                <td>May 10, 2023</td>
+                                <td><span class="badge bg-success">Completed</span></td>
+                                <td>30/32 (94%)</td>
+                                <td>85%</td>
+                                <td>
+                                    <div class="btn-group" role="group">
+                                        <a href="#" class="btn btn-sm btn-outline-primary">View</a>
+                                        <a href="#" class="btn btn-sm btn-outline-secondary">Edit</a>
+                                        <button type="button" class="btn btn-sm btn-outline-danger">Delete</button>
+                                    </div>
+                                </td>
+                            </tr>
+                            <tr>
+                                <td>Neural Networks Implementation</td>
+                                <td>May 25, 2023</td>
+                                <td><span class="badge bg-info">Upcoming</span></td>
+                                <td>0/32 (0%)</td>
+                                <td>--</td>
+                                <td>
+                                    <div class="btn-group" role="group">
+                                        <a href="#" class="btn btn-sm btn-outline-primary">View</a>
+                                        <a href="#" class="btn btn-sm btn-outline-secondary">Edit</a>
+                                        <button type="button" class="btn btn-sm btn-outline-danger">Delete</button>
+                                    </div>
+                                </td>
+                            </tr>
+                        </tbody>
+                    </table>
+                </div>
+            </div>
+        </div>
+
+        <!-- Syllabus Tab -->
+        <div class="tab-pane fade" id="syllabus" role="tabpanel" aria-labelledby="syllabus-tab">
+            <div class="dashboard-card">
+                <div class="d-flex justify-content-between align-items-center mb-4">
+                    <h3 class="section-title mb-0">Course Syllabus</h3>
+                    <button class="btn btn-outline-primary">
+                        <i class="fas fa-edit me-2"></i> Edit Syllabus
+                    </button>
+                </div>
+                <div class="syllabus-content">
+                    @foreach (var week in Model.Syllabus.Split('\n'))
+                    {
+                        <div class="syllabus-week">
+                            <h4>@week</h4>
+                        </div>
+                    }
+                </div>
+            </div>
+        </div>
+
+        <!-- Analytics Tab -->
+        <div class="tab-pane fade" id="analytics" role="tabpanel" aria-labelledby="analytics-tab">
+            <div class="row">
+                <div class="col-lg-6 mb-4">
+                    <div class="dashboard-card">
+                        <h3 class="section-title">Student Progress</h3>
+                        <div class="chart-container">
+                            <canvas id="studentProgressChart"></canvas>
+                        </div>
+                    </div>
+                </div>
+                <div class="col-lg-6 mb-4">
+                    <div class="dashboard-card">
+                        <h3 class="section-title">Assignment Completion</h3>
+                        <div class="chart-container">
+                            <canvas id="assignmentCompletionChart"></canvas>
+                        </div>
+                    </div>
+                </div>
+                <div class="col-lg-6 mb-4">
+                    <div class="dashboard-card">
+                        <h3 class="section-title">Grade Distribution</h3>
+                        <div class="chart-container">
+                            <canvas id="gradeDistributionChart"></canvas>
+                        </div>
+                    </div>
+                </div>
+                <div class="col-lg-6 mb-4">
+                    <div class="dashboard-card">
+                        <h3 class="section-title">Engagement Over Time</h3>
+                        <div class="chart-container">
+                            <canvas id="engagementChart"></canvas>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+
+@section Scripts {
+    <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+    <script>
+        document.addEventListener('DOMContentLoaded', function() {
+            // Student Progress Chart
+            const studentProgressCtx = document.getElementById('studentProgressChart').getContext('2d');
+            const studentProgressChart = new Chart(studentProgressCtx, {
+                type: 'bar',
+                data: {
+                    labels: ['0-20%', '21-40%', '41-60%', '61-80%', '81-100%'],
+                    datasets: [{
+                        label: 'Number of Students',
+                        data: [2, 4, 6, 8, 12],
+                        backgroundColor: [
+                            'rgba(255, 99, 132, 0.5)',
+                            'rgba(255, 159, 64, 0.5)',
+                            'rgba(255, 205, 86, 0.5)',
+                            'rgba(75, 192, 192, 0.5)',
+                            'rgba(54, 162, 235, 0.5)'
+                        ],
+                        borderColor: [
+                            'rgb(255, 99, 132)',
+                            'rgb(255, 159, 64)',
+                            'rgb(255, 205, 86)',
+                            'rgb(75, 192, 192)',
+                            'rgb(54, 162, 235)'
+                        ],
+                        borderWidth: 1
+                    }]
+                },
+                QuizOptions: {
+                    responsive: true,
+                    maintainAspectRatio: false,
+                    scales: {
+                        y: {
+                            beginAtZero: true,
+                            ticks: {
+                                precision: 0
+                            }
+                        }
+                    }
+                }
+            });
+
+            // Assignment Completion Chart
+            const assignmentCompletionCtx = document.getElementById('assignmentCompletionChart').getContext('2d');
+            const assignmentCompletionChart = new Chart(assignmentCompletionCtx, {
+                type: 'doughnut',
+                data: {
+                    labels: ['Completed', 'In Progress', 'Not Started'],
+                    datasets: [{
+                        label: 'Assignment Status',
+                        data: [65, 20, 15],
+                        backgroundColor: [
+                            'rgba(75, 192, 192, 0.5)',
+                            'rgba(255, 205, 86, 0.5)',
+                            'rgba(201, 203, 207, 0.5)'
+                        ],
+                        borderColor: [
+                            'rgb(75, 192, 192)',
+                            'rgb(255, 205, 86)',
+                            'rgb(201, 203, 207)'
+                        ],
+                        borderWidth: 1
+                    }]
+                },
+                QuizOptions: {
+                    responsive: true,
+                    maintainAspectRatio: false,
+                    plugins: {
+                        legend: {
+                            position: 'right',
+                        }
+                    }
+                }
+            });
+
+            // Grade Distribution Chart
+            const gradeDistributionCtx = document.getElementById('gradeDistributionChart').getContext('2d');
+            const gradeDistributionChart = new Chart(gradeDistributionCtx, {
+                type: 'bar',
+                data: {
+                    labels: ['A', 'B', 'C', 'D', 'F'],
+                    datasets: [{
+                        label: 'Number of Students',
+                        data: [12, 8, 6, 4, 2],
+                        backgroundColor: [
+                            'rgba(54, 162, 235, 0.5)',
+                            'rgba(75, 192, 192, 0.5)',
+                            'rgba(255, 205, 86, 0.5)',
+                            'rgba(255, 159, 64, 0.5)',
+                            'rgba(255, 99, 132, 0.5)'
+                        ],
+                        borderColor: [
+                            'rgb(54, 162, 235)',
+                            'rgb(75, 192, 192)',
+                            'rgb(255, 205, 86)',
+                            'rgb(255, 159, 64)',
+                            'rgb(255, 99, 132)'
+                        ],
+                        borderWidth: 1
+                    }]
+                },
+                QuizOptions: {
+                    responsive: true,
+                    maintainAspectRatio: false,
+                    scales: {
+                        y: {
+                            beginAtZero: true,
+                            ticks: {
+                                precision: 0
+                            }
+                        }
+                    }
+                }
+            });
+
+            // Engagement Over Time Chart
+            const engagementCtx = document.getElementById('engagementChart').getContext('2d');
+            const engagementChart = new Chart(engagementCtx, {
+                type: 'line',
+                data: {
+                    labels: ['Week 1', 'Week 2', 'Week 3', 'Week 4', 'Week 5', 'Week 6', 'Week 7', 'Week 8'],
+                    datasets: [{
+                        label: 'Average Engagement (hours)',
+                        data: [3.5, 4.2, 3.8, 4.5, 5.1, 4.8, 5.3, 5.7],
+                        backgroundColor: 'rgba(153, 102, 255, 0.2)',
+                        borderColor: 'rgba(153, 102, 255, 1)',
+                        borderWidth: 2,
+                        tension: 0.4,
+                        fill: true
+                    }]
+                },
+                QuizOptions: {
+                    responsive: true,
+                    maintainAspectRatio: false,
+                    scales: {
+                        y: {
+                            beginAtZero: true
+                        }
+                    }
+                }
+            });
+        });
+    </script>
+} 

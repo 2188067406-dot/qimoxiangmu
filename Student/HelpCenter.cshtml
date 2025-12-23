@@ -1,0 +1,264 @@
+@{
+    ViewData["Title"] = "Help Center";
+    Layout = "_StudentLayout";
+}
+
+<div class="container-fluid px-4 py-4">
+    <!-- Page Header -->
+    <div class="page-header row align-items-center mb-4">
+        <div class="col-md-6">
+            <h1 class="page-title">@ViewData["Title"]</h1>
+            <p class="page-subtitle">Find answers and get support</p>
+        </div>
+        <div class="col-md-6 text-md-end">
+            <button class="btn btn-primary">
+                <i class="fas fa-headset me-2"></i> Contact Support
+            </button>
+        </div>
+    </div>
+
+    <!-- Search Bar -->
+    <div class="row mb-4">
+        <div class="col-lg-8 mx-auto">
+            <div class="help-search">
+                <div class="input-group">
+                    <span class="input-group-text bg-transparent border-end-0">
+                        <i class="fas fa-search"></i>
+                    </span>
+                    <input type="text" class="form-control border-start-0" placeholder="Search for help...">
+                    <button class="btn btn-primary" type="button">Search</button>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- Help Categories -->
+    <div class="row mb-4">
+        <div class="col-md-4 mb-4">
+            <div class="help-category-card">
+                <div class="help-category-icon">
+                    <i class="fas fa-book"></i>
+                </div>
+                <h3 class="help-category-title">Academic Support</h3>
+                <p class="help-category-desc">Get help with courses, assignments, and academic resources</p>
+                <a href="#" class="help-category-link">View Articles <i class="fas fa-arrow-right ms-1"></i></a>
+            </div>
+        </div>
+        <div class="col-md-4 mb-4">
+            <div class="help-category-card">
+                <div class="help-category-icon">
+                    <i class="fas fa-laptop-code"></i>
+                </div>
+                <h3 class="help-category-title">Technical Support</h3>
+                <p class="help-category-desc">Resolve issues with the platform, login, and features</p>
+                <a href="#" class="help-category-link">View Articles <i class="fas fa-arrow-right ms-1"></i></a>
+            </div>
+        </div>
+        <div class="col-md-4 mb-4">
+            <div class="help-category-card">
+                <div class="help-category-icon">
+                    <i class="fas fa-user-graduate"></i>
+                </div>
+                <h3 class="help-category-title">Student Services</h3>
+                <p class="help-category-desc">Information about registration, financial aid, and student life</p>
+                <a href="#" class="help-category-link">View Articles <i class="fas fa-arrow-right ms-1"></i></a>
+            </div>
+        </div>
+    </div>
+
+    <div class="row">
+        <!-- FAQs -->
+        <div class="col-lg-8 mb-4">
+            <div class="dashboard-card">
+                <h3 class="section-title">Frequently Asked QuizQuizQuestions</h3>
+                
+                <div class="accordion" id="faqAccordion">
+                    <div class="accordion-item">
+                        <h2 class="accordion-header" id="faqOne">
+                            <button class="accordion-button" type="button" data-bs-toggle="collapse" data-bs-target="#collapseOne" aria-expanded="true" aria-controls="collapseOne">
+                                How do I reset my password?
+                            </button>
+                        </h2>
+                        <div id="collapseOne" class="accordion-collapse collapse show" aria-labelledby="faqOne" data-bs-parent="#faqAccordion">
+                            <div class="accordion-body">
+                                <p>To reset your password, follow these steps:</p>
+                                <ol>
+                                    <li>Click on the "Forgot Password" link on the login page</li>
+                                    <li>Enter your email address associated with your account</li>
+                                    <li>Check your email for a password reset link</li>
+                                    <li>Click the link and follow the instructions to create a new password</li>
+                                </ol>
+                                <p>If you don't receive the email within a few minutes, check your spam folder or contact support for assistance.</p>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="accordion-item">
+                        <h2 class="accordion-header" id="faqTwo">
+                            <button class="accordion-button collapsed" type="button" data-bs-toggle="collapse" data-bs-target="#collapseTwo" aria-expanded="false" aria-controls="collapseTwo">
+                                How do I submit an assignment?
+                            </button>
+                        </h2>
+                        <div id="collapseTwo" class="accordion-collapse collapse" aria-labelledby="faqTwo" data-bs-parent="#faqAccordion">
+                            <div class="accordion-body">
+                                <p>To submit an assignment:</p>
+                                <ol>
+                                    <li>Navigate to the "Assignments" section in your course</li>
+                                    <li>Find the assignment you want to submit and click on it</li>
+                                    <li>Click the "Submit Assignment" button</li>
+                                    <li>Upload your files or type your response in the text editor</li>
+                                    <li>Click "Submit" to finalize your submission</li>
+                                </ol>
+                                <p>Make sure to submit before the deadline to avoid late penalties. You can check the submission status in the Assignments section.</p>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="accordion-item">
+                        <h2 class="accordion-header" id="faqThree">
+                            <button class="accordion-button collapsed" type="button" data-bs-toggle="collapse" data-bs-target="#collapseThree" aria-expanded="false" aria-controls="collapseThree">
+                                How do I contact my instructor?
+                            </button>
+                        </h2>
+                        <div id="collapseThree" class="accordion-collapse collapse" aria-labelledby="faqThree" data-bs-parent="#faqAccordion">
+                            <div class="accordion-body">
+                                <p>There are several ways to contact your instructor:</p>
+                                <ul>
+                                    <li>Use the Messages feature in the platform to send a direct message</li>
+                                    <li>Check the course syllabus for office hours and contact information</li>
+                                    <li>Post a QuizQuestion in the course discussion forum (for QuizQuizQuestions that might benefit other students)</li>
+                                    <li>Email your instructor using the email address provided in the course information</li>
+                                </ul>
+                                <p>Most instructors respond within 24-48 hours during weekdays. For urgent matters, check if your instructor has specified a preferred contact method.</p>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="accordion-item">
+                        <h2 class="accordion-header" id="faqFour">
+                            <button class="accordion-button collapsed" type="button" data-bs-toggle="collapse" data-bs-target="#collapseFour" aria-expanded="false" aria-controls="collapseFour">
+                                How do I view my grades?
+                            </button>
+                        </h2>
+                        <div id="collapseFour" class="accordion-collapse collapse" aria-labelledby="faqFour" data-bs-parent="#faqAccordion">
+                            <div class="accordion-body">
+                                <p>To view your grades:</p>
+                                <ol>
+                                    <li>Click on the "Grades" section in the main navigation</li>
+                                    <li>You'll see an overview of your grades for all courses</li>
+                                    <li>Click on a specific course to see detailed grade information</li>
+                                    <li>You can also access grades through the individual course pages</li>
+                                </ol>
+                                <p>If you have QuizQuizQuestions about a specific grade, contact your instructor directly through the messaging system.</p>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="accordion-item">
+                        <h2 class="accordion-header" id="faqFive">
+                            <button class="accordion-button collapsed" type="button" data-bs-toggle="collapse" data-bs-target="#collapseFive" aria-expanded="false" aria-controls="collapseFive">
+                                How do I access course materials?
+                            </button>
+                        </h2>
+                        <div id="collapseFive" class="accordion-collapse collapse" aria-labelledby="faqFive" data-bs-parent="#faqAccordion">
+                            <div class="accordion-body">
+                                <p>To access course materials:</p>
+                                <ol>
+                                    <li>Go to the "Courses" section in the main navigation</li>
+                                    <li>Select the course you want to access</li>
+                                    <li>Navigate to the "Materials" or "Resources" section within the course</li>
+                                    <li>Click on the specific material you want to view or download</li>
+                                </ol>
+                                <p>Course materials may include lecture notes, readings, videos, and supplementary resources. Some materials may be available for offline use.</p>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+        
+        <!-- Support QuizOptions -->
+        <div class="col-lg-4">
+            <div class="dashboard-card mb-4">
+                <h3 class="section-title">Contact Support</h3>
+                <div class="support-QuizOptions">
+                    <div class="support-QuizOption">
+                        <div class="support-icon">
+                            <i class="fas fa-envelope"></i>
+                        </div>
+                        <div class="support-details">
+                            <h4>Email Support</h4>
+                            <p>Get a response within 24 hours</p>
+                            <a href="mailto:support@teachingai.edu" class="btn btn-sm btn-outline-primary">Email Us</a>
+                        </div>
+                    </div>
+                    <div class="support-QuizOption">
+                        <div class="support-icon">
+                            <i class="fas fa-comments"></i>
+                        </div>
+                        <div class="support-details">
+                            <h4>Live Chat</h4>
+                            <p>Available weekdays 9am-5pm</p>
+                            <button class="btn btn-sm btn-outline-primary">Start Chat</button>
+                        </div>
+                    </div>
+                    <div class="support-QuizOption">
+                        <div class="support-icon">
+                            <i class="fas fa-phone-alt"></i>
+                        </div>
+                        <div class="support-details">
+                            <h4>Phone Support</h4>
+                            <p>Call us at (123) 456-7890</p>
+                            <button class="btn btn-sm btn-outline-primary">Call Now</button>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            
+            <div class="dashboard-card">
+                <h3 class="section-title">Helpful Resources</h3>
+                <ul class="resource-list">
+                    <li class="resource-item">
+                        <i class="fas fa-file-pdf me-2 text-danger"></i>
+                        <a href="#">Student Handbook</a>
+                    </li>
+                    <li class="resource-item">
+                        <i class="fas fa-video me-2 text-primary"></i>
+                        <a href="#">Platform Tutorial Videos</a>
+                    </li>
+                    <li class="resource-item">
+                        <i class="fas fa-calendar-alt me-2 text-success"></i>
+                        <a href="#">Academic Calendar</a>
+                    </li>
+                    <li class="resource-item">
+                        <i class="fas fa-book me-2 text-warning"></i>
+                        <a href="#">Library Resources</a>
+                    </li>
+                    <li class="resource-item">
+                        <i class="fas fa-graduation-cap me-2 text-info"></i>
+                        <a href="#">Academic Policies</a>
+                    </li>
+                </ul>
+            </div>
+        </div>
+    </div>
+</div>
+
+@section Scripts {
+    <script>
+        $(document).ready(function() {
+            // Search functionality
+            $('.help-search button').click(function() {
+                var searchTerm = $('.help-search input').val();
+                if (searchTerm) {
+                    // Here you would add logic to search for help articles
+                    alert('Searching for: ' + searchTerm);
+                }
+            });
+            
+            // Enter key in search
+            $('.help-search input').keypress(function(e) {
+                if (e.which == 13) {
+                    $('.help-search button').click();
+                    return false;
+                }
+            });
+        });
+    </script>
+} 

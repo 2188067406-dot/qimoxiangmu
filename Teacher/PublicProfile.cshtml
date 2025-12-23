@@ -1,0 +1,575 @@
+@{
+    ViewData["Title"] = "Public Profile";
+    ViewData["ShowSearch"] = true;
+}
+
+<div class="public-profile-container">
+    <!-- Header Section -->
+    <div class="public-profile-header mb-4">
+        <div class="container">
+            <div class="row align-items-center">
+                <div class="col-md-2 text-center text-md-start mb-3 mb-md-0">
+                    <img src="https://randomuser.me/api/portraits/men/42.jpg" alt="Dr. John Smith" class="rounded-circle public-profile-avatar">
+                </div>
+                <div class="col-md-7">
+                    <h1 class="public-profile-name">Dr. John Smith</h1>
+                    <p class="public-profile-title">AI & Machine Learning Professor</p>
+                    <div class="public-profile-stats">
+                        <div class="stat-item">
+                            <i class="fas fa-book me-2"></i>
+                            <span>5 Courses</span>
+                        </div>
+                        <div class="stat-item">
+                            <i class="fas fa-users me-2"></i>
+                            <span>128 Students</span>
+                        </div>
+                        <div class="stat-item">
+                            <i class="fas fa-star me-2"></i>
+                            <span>4.9 Rating</span>
+                        </div>
+                    </div>
+                </div>
+                <div class="col-md-3 text-center text-md-end">
+                    <a asp-controller="Teacher" asp-action="Profile" class="btn btn-outline-primary">
+                        <i class="fas fa-arrow-left me-2"></i>Back to Profile
+                    </a>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- Main Content -->
+    <div class="row">
+        <!-- Left Column - About and Courses -->
+        <div class="col-lg-8">
+            <!-- About Section -->
+            <div class="card border-0 shadow-sm mb-4">
+                <div class="card-body">
+                    <h2 class="card-title">About</h2>
+                    <hr>
+                    <div class="public-profile-about">
+                        <p>Dr. John Smith is a professor of AI and Machine Learning with over 15 years of experience in the field. He has published numerous research papers on neural networks, deep learning, and their applications in various domains. Dr. Smith has received several awards for his contributions to AI research and education.</p>
+                        <p>With a PhD in Computer Science from MIT, Dr. Smith has previously worked as a research scientist at Google AI and as a visiting professor at Stanford University. His current research focuses on developing more efficient deep learning algorithms and applying machine learning to solve real-world problems in healthcare and environmental science.</p>
+                    </div>
+                    <div class="public-profile-details mt-4">
+                        <div class="row">
+                            <div class="col-md-6">
+                                <h5>Department</h5>
+                                <p>Computer Science</p>
+                            </div>
+                            <div class="col-md-6">
+                                <h5>Office Hours</h5>
+                                <p>Mon & Wed 2:00 PM - 4:00 PM</p>
+                            </div>
+                        </div>
+                        <div class="row mt-3">
+                            <div class="col-md-6">
+                                <h5>Email</h5>
+                                <p><a href="mailto:john.smith@university.edu">john.smith@university.edu</a></p>
+                            </div>
+                            <div class="col-md-6">
+                                <h5>Phone</h5>
+                                <p>(555) 123-4567</p>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Specializations -->
+            <div class="card border-0 shadow-sm mb-4">
+                <div class="card-body">
+                    <h2 class="card-title">Specializations</h2>
+                    <hr>
+                    <div class="specialization-tags">
+                        <span class="badge bg-primary rounded-pill">Artificial Intelligence</span>
+                        <span class="badge bg-primary rounded-pill">Machine Learning</span>
+                        <span class="badge bg-primary rounded-pill">Neural Networks</span>
+                        <span class="badge bg-primary rounded-pill">Deep Learning</span>
+                        <span class="badge bg-primary rounded-pill">Data Science</span>
+                        <span class="badge bg-primary rounded-pill">Computer Vision</span>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Courses Section -->
+            <div class="card border-0 shadow-sm mb-4">
+                <div class="card-body">
+                    <h2 class="card-title">Courses</h2>
+                    <hr>
+                    <div class="public-profile-courses">
+                        <!-- Course 1 -->
+                        <div class="public-course-card">
+                            <div class="row g-0">
+                                <div class="col-md-3">
+                                    <div class="course-image-container">
+                                        <div class="course-image" style="background-color: #4361ee;">
+                                            <i class="fas fa-robot"></i>
+                                        </div>
+                                    </div>
+                                </div>
+                                <div class="col-md-9">
+                                    <div class="course-content">
+                                        <h3 class="course-title">Introduction to AI</h3>
+                                        <div class="course-meta">
+                                            <span><i class="fas fa-users me-2"></i>32 Students</span>
+                                            <span><i class="fas fa-calendar me-2"></i>12 Weeks</span>
+                                            <span><i class="fas fa-star me-2"></i>4.8 Rating</span>
+                                        </div>
+                                        <p class="course-description">A comprehensive introduction to artificial intelligence concepts, including problem-solving, knowledge representation, reasoning, planning, and machine learning fundamentals.</p>
+                                        <a href="#" class="btn btn-sm btn-outline-primary">View Course</a>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+
+                        <!-- Course 2 -->
+                        <div class="public-course-card">
+                            <div class="row g-0">
+                                <div class="col-md-3">
+                                    <div class="course-image-container">
+                                        <div class="course-image" style="background-color: #3a0ca3;">
+                                            <i class="fas fa-brain"></i>
+                                        </div>
+                                    </div>
+                                </div>
+                                <div class="col-md-9">
+                                    <div class="course-content">
+                                        <h3 class="course-title">Machine Learning Fundamentals</h3>
+                                        <div class="course-meta">
+                                            <span><i class="fas fa-users me-2"></i>28 Students</span>
+                                            <span><i class="fas fa-calendar me-2"></i>16 Weeks</span>
+                                            <span><i class="fas fa-star me-2"></i>4.6 Rating</span>
+                                        </div>
+                                        <p class="course-description">Learn the core principles and algorithms of machine learning, including supervised and unsupervised learning, neural networks, and model evaluation techniques.</p>
+                                        <a href="#" class="btn btn-sm btn-outline-primary">View Course</a>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+
+                        <!-- Course 3 -->
+                        <div class="public-course-card">
+                            <div class="row g-0">
+                                <div class="col-md-3">
+                                    <div class="course-image-container">
+                                        <div class="course-image" style="background-color: #f72585;">
+                                            <i class="fas fa-project-diagram"></i>
+                                        </div>
+                                    </div>
+                                </div>
+                                <div class="col-md-9">
+                                    <div class="course-content">
+                                        <h3 class="course-title">Deep Learning Applications</h3>
+                                        <div class="course-meta">
+                                            <span><i class="fas fa-users me-2"></i>24 Students</span>
+                                            <span><i class="fas fa-calendar me-2"></i>14 Weeks</span>
+                                            <span><i class="fas fa-star me-2"></i>4.9 Rating</span>
+                                        </div>
+                                        <p class="course-description">An advanced course on implementing deep learning models for practical applications in computer vision, natural language processing, and reinforcement learning.</p>
+                                        <a href="#" class="btn btn-sm btn-outline-primary">View Course</a>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <!-- Right Column - Stats, Publications, and Connect -->
+        <div class="col-lg-4">
+            <!-- Contact Card -->
+            <div class="card border-0 shadow-sm mb-4">
+                <div class="card-body">
+                    <h2 class="card-title">Connect</h2>
+                    <hr>
+                    <div class="social-profiles">
+                        <a href="https://linkedin.com/in/johnsmith" target="_blank" class="social-link">
+                            <i class="fab fa-linkedin"></i>
+                            <span>LinkedIn</span>
+                        </a>
+                        <a href="https://twitter.com/drjohnsmith" target="_blank" class="social-link">
+                            <i class="fab fa-twitter"></i>
+                            <span>Twitter</span>
+                        </a>
+                        <a href="https://researchgate.net/profile/John-Smith" target="_blank" class="social-link">
+                            <i class="fab fa-researchgate"></i>
+                            <span>ResearchGate</span>
+                        </a>
+                        <a href="https://johnsmith.edu" target="_blank" class="social-link">
+                            <i class="fas fa-globe"></i>
+                            <span>Personal Website</span>
+                        </a>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Publications -->
+            <div class="card border-0 shadow-sm mb-4">
+                <div class="card-body">
+                    <h2 class="card-title">Recent Publications</h2>
+                    <hr>
+                    <div class="publications-list">
+                        <div class="publication-item">
+                            <h5 class="publication-title">Efficient Neural Architecture Search with Parameter Sharing</h5>
+                            <p class="publication-info">Journal of Machine Learning Research, 2023</p>
+                            <a href="#" class="publication-link">View Publication</a>
+                        </div>
+                        <div class="publication-item">
+                            <h5 class="publication-title">Deep Reinforcement Learning for Robotic Manipulation Tasks</h5>
+                            <p class="publication-info">IEEE Conference on Computer Vision, 2022</p>
+                            <a href="#" class="publication-link">View Publication</a>
+                        </div>
+                        <div class="publication-item">
+                            <h5 class="publication-title">Transformer-based Models for Medical Image Segmentation</h5>
+                            <p class="publication-info">Nature Machine Intelligence, 2021</p>
+                            <a href="#" class="publication-link">View Publication</a>
+                        </div>
+                    </div>
+                    <a href="#" class="btn btn-sm btn-outline-primary mt-3 w-100">View All Publications</a>
+                </div>
+            </div>
+
+            <!-- Student Feedback -->
+            <div class="card border-0 shadow-sm">
+                <div class="card-body">
+                    <h2 class="card-title">Student Feedback</h2>
+                    <hr>
+                    <div class="student-feedback">
+                        <div class="rating-summary mb-4">
+                            <div class="overall-rating">
+                                <span class="rating-number">4.9</span>
+                                <div class="rating-stars">
+                                    <i class="fas fa-star"></i>
+                                    <i class="fas fa-star"></i>
+                                    <i class="fas fa-star"></i>
+                                    <i class="fas fa-star"></i>
+                                    <i class="fas fa-star"></i>
+                                </div>
+                                <span class="rating-count">Based on 87 reviews</span>
+                            </div>
+                        </div>
+                        <div class="feedback-items">
+                            <div class="feedback-item">
+                                <div class="feedback-header">
+                                    <div class="student-info">
+                                        <img src="https://randomuser.me/api/portraits/women/33.jpg" alt="Student" class="student-avatar">
+                                        <div>
+                                            <h5 class="student-name">Emily Davis</h5>
+                                            <div class="feedback-rating">
+                                                <i class="fas fa-star"></i>
+                                                <i class="fas fa-star"></i>
+                                                <i class="fas fa-star"></i>
+                                                <i class="fas fa-star"></i>
+                                                <i class="fas fa-star"></i>
+                                            </div>
+                                        </div>
+                                    </div>
+                                    <div class="feedback-date">March 15, 2023</div>
+                                </div>
+                                <p class="feedback-text">Dr. Smith is an exceptional professor. His deep knowledge of AI and machine learning concepts, combined with his ability to explain complex ideas in an accessible way, made this course both challenging and enjoyable.</p>
+                            </div>
+                            <div class="feedback-item">
+                                <div class="feedback-header">
+                                    <div class="student-info">
+                                        <img src="https://randomuser.me/api/portraits/men/45.jpg" alt="Student" class="student-avatar">
+                                        <div>
+                                            <h5 class="student-name">Michael Wilson</h5>
+                                            <div class="feedback-rating">
+                                                <i class="fas fa-star"></i>
+                                                <i class="fas fa-star"></i>
+                                                <i class="fas fa-star"></i>
+                                                <i class="fas fa-star"></i>
+                                                <i class="fas fa-star"></i>
+                                            </div>
+                                        </div>
+                                    </div>
+                                    <div class="feedback-date">February 22, 2023</div>
+                                </div>
+                                <p class="feedback-text">One of the best courses I've taken. Dr. Smith's practical approach to teaching deep learning concepts has significantly improved my understanding of neural networks and how to implement them effectively.</p>
+                            </div>
+                        </div>
+                        <a href="#" class="btn btn-sm btn-outline-primary mt-3 w-100">View All Reviews</a>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+
+<style>
+    /* Public Profile Header */
+    .public-profile-header {
+        padding: 2rem 0;
+        background: linear-gradient(135deg, #4361ee, #3a0ca3);
+        color: white;
+        border-radius: 0.5rem;
+    }
+    
+    .public-profile-name {
+        font-size: 2rem;
+        font-weight: 700;
+        margin-bottom: 0.5rem;
+    }
+    
+    .public-profile-title {
+        font-size: 1.25rem;
+        opacity: 0.9;
+        margin-bottom: 1rem;
+    }
+    
+    .public-profile-avatar {
+        width: 120px;
+        height: 120px;
+        border: 4px solid rgba(255, 255, 255, 0.3);
+    }
+    
+    .public-profile-stats {
+        display: flex;
+        flex-wrap: wrap;
+        gap: 1.5rem;
+    }
+    
+    .stat-item {
+        display: flex;
+        align-items: center;
+        font-size: 0.9rem;
+    }
+    
+    /* About Section */
+    .public-profile-about {
+        line-height: 1.7;
+    }
+    
+    /* Specialization Tags */
+    .specialization-tags {
+        display: flex;
+        flex-wrap: wrap;
+        gap: 0.5rem;
+    }
+    
+    .specialization-tags .badge {
+        padding: 0.5rem 1rem;
+        font-size: 0.85rem;
+    }
+    
+    /* Courses */
+    .public-course-card {
+        border: 1px solid #eee;
+        border-radius: 0.5rem;
+        overflow: hidden;
+        margin-bottom: 1.5rem;
+        transition: transform 0.3s ease, box-shadow 0.3s ease;
+    }
+    
+    .public-course-card:hover {
+        transform: translateY(-5px);
+        box-shadow: 0 10px 20px rgba(0, 0, 0, 0.1);
+    }
+    
+    .course-image-container {
+        height: 100%;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+    }
+    
+    .course-image {
+        width: 80px;
+        height: 80px;
+        border-radius: 50%;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        color: white;
+        font-size: 2rem;
+    }
+    
+    .course-content {
+        padding: 1.25rem;
+    }
+    
+    .course-title {
+        font-size: 1.25rem;
+        margin-bottom: 0.75rem;
+    }
+    
+    .course-meta {
+        display: flex;
+        flex-wrap: wrap;
+        gap: 1rem;
+        font-size: 0.85rem;
+        color: #666;
+        margin-bottom: 0.75rem;
+    }
+    
+    .course-description {
+        color: #555;
+        margin-bottom: 1rem;
+        font-size: 0.9rem;
+    }
+    
+    /* Social Links */
+    .social-profiles {
+        display: flex;
+        flex-direction: column;
+        gap: 0.75rem;
+    }
+    
+    .social-link {
+        display: flex;
+        align-items: center;
+        padding: 0.75rem;
+        border-radius: 0.25rem;
+        text-decoration: none;
+        color: #333;
+        transition: background-color 0.3s ease;
+    }
+    
+    .social-link:hover {
+        background-color: #f8f9fa;
+    }
+    
+    .social-link i {
+        width: 24px;
+        margin-right: 0.75rem;
+        font-size: 1.25rem;
+    }
+    
+    .social-link i.fa-linkedin {
+        color: #0077b5;
+    }
+    
+    .social-link i.fa-twitter {
+        color: #1da1f2;
+    }
+    
+    .social-link i.fa-researchgate {
+        color: #00ccbb;
+    }
+    
+    .social-link i.fa-globe {
+        color: #4285f4;
+    }
+    
+    /* Publications */
+    .publication-item {
+        margin-bottom: 1.25rem;
+        padding-bottom: 1.25rem;
+        border-bottom: 1px solid #eee;
+    }
+    
+    .publication-item:last-child {
+        margin-bottom: 0;
+        padding-bottom: 0;
+        border-bottom: none;
+    }
+    
+    .publication-title {
+        font-size: 1rem;
+        font-weight: 600;
+        margin-bottom: 0.5rem;
+    }
+    
+    .publication-info {
+        font-size: 0.85rem;
+        color: #666;
+        margin-bottom: 0.5rem;
+    }
+    
+    .publication-link {
+        font-size: 0.85rem;
+        text-decoration: none;
+    }
+    
+    /* Student Feedback */
+    .overall-rating {
+        display: flex;
+        flex-direction: column;
+        align-items: center;
+        margin-bottom: 1rem;
+    }
+    
+    .rating-number {
+        font-size: 3rem;
+        font-weight: 700;
+        line-height: 1;
+    }
+    
+    .rating-stars {
+        color: #ffc107;
+        font-size: 1.25rem;
+        margin: 0.5rem 0;
+    }
+    
+    .rating-count {
+        font-size: 0.85rem;
+        color: #666;
+    }
+    
+    .feedback-item {
+        margin-bottom: 1.5rem;
+        padding-bottom: 1.5rem;
+        border-bottom: 1px solid #eee;
+    }
+    
+    .feedback-item:last-child {
+        margin-bottom: 0;
+        padding-bottom: 0;
+        border-bottom: none;
+    }
+    
+    .feedback-header {
+        display: flex;
+        justify-content: space-between;
+        margin-bottom: 0.75rem;
+    }
+    
+    .student-info {
+        display: flex;
+        align-items: center;
+    }
+    
+    .student-avatar {
+        width: 40px;
+        height: 40px;
+        border-radius: 50%;
+        margin-right: 0.75rem;
+    }
+    
+    .student-name {
+        font-size: 0.95rem;
+        margin-bottom: 0.25rem;
+    }
+    
+    .feedback-rating {
+        font-size: 0.85rem;
+        color: #ffc107;
+    }
+    
+    .feedback-date {
+        font-size: 0.85rem;
+        color: #666;
+    }
+    
+    .feedback-text {
+        font-size: 0.9rem;
+        line-height: 1.6;
+        color: #555;
+    }
+    
+    @@media (max-width: 768px) {
+        .public-profile-header {
+            text-align: center;
+        }
+        
+        .public-profile-stats {
+            justify-content: center;
+        }
+        
+        .course-image-container {
+            padding: 1rem;
+        }
+    }
+</style> 

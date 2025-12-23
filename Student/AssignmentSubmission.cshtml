@@ -1,0 +1,112 @@
+@{
+    ViewData["Title"] = "Assignment Submission";
+    Layout = "_StudentLayout";
+}
+
+<div class="container-fluid px-4 py-4">
+    <!-- Page Header -->
+    <div class="page-header row align-items-center mb-4">
+        <div class="col-md-6">
+            <h1 class="page-title">@ViewData["Title"]</h1>
+            <p class="page-subtitle">Submit your assignment: @ViewData["AssignmentName"]</p>
+        </div>
+        <div class="col-md-6 text-md-end">
+            <a href="@Url.Action("Assignments", "Student")" class="btn btn-outline-secondary">
+                <i class="fas fa-arrow-left me-2"></i>Back to Assignments
+            </a>
+        </div>
+    </div>
+
+    <!-- Submission Form -->
+    <div class="dashboard-card mb-4">
+        <div class="row">
+            <div class="col-lg-8">
+                <div class="card mb-4">
+                    <div class="card-header">
+                        <h4 class="mb-0">Submission Details</h4>
+                    </div>
+                    <div class="card-body">
+                        <form method="post" enctype="multipart/form-data">
+                            <input type="hidden" name="assignmentId" value="@ViewData["AssignmentId"]" />
+                            
+                            <div class="mb-3">
+                                <label for="submissionTitle" class="form-label">Submission Title</label>
+                                <input type="text" class="form-control" id="submissionTitle" name="submissionTitle" placeholder="Enter a title for your submission" required>
+                            </div>
+                            
+                            <div class="mb-3">
+                                <label for="submissionDescription" class="form-label">Description</label>
+                                <textarea class="form-control" id="submissionDescription" name="submissionDescription" rows="4" placeholder="Provide a brief description of your submission (QuizOptional)"></textarea>
+                            </div>
+                            
+                            <div class="mb-3">
+                                <label for="submissionFile" class="form-label">Upload File</label>
+                                <input type="file" class="form-control" id="submissionFile" name="submissionFile">
+                                <div class="form-text">Max file size: 50MB. Supported formats: PDF, DOC, DOCX, ZIP, RAR, JPG, PNG</div>
+                            </div>
+                            
+                            <div class="mb-3">
+                                <label for="submissionText" class="form-label">Submission Text</label>
+                                <textarea class="form-control" id="submissionText" name="submissionText" rows="10" placeholder="Or enter your submission text here"></textarea>
+                            </div>
+                            
+                            <div class="d-grid gap-2 d-md-flex justify-content-md-end">
+                                <button type="submit" class="btn btn-primary">
+                                    <i class="fas fa-paper-plane me-2"></i>Submit Assignment
+                                </button>
+                                <button type="button" class="btn btn-outline-secondary">
+                                    <i class="fas fa-save me-2"></i>Save Draft
+                                </button>
+                            </div>
+                        </form>
+                    </div>
+                </div>
+            </div>
+            <div class="col-lg-4">
+                <div class="card mb-4">
+                    <div class="card-header">
+                        <h4 class="mb-0">Assignment Information</h4>
+                    </div>
+                    <div class="card-body">
+                        <div class="mb-3">
+                            <h5>@ViewData["AssignmentName"]</h5>
+                            <p class="text-muted">@ViewData["CourseName"]</p>
+                        </div>
+                        <div class="mb-3">
+                            <div class="d-flex justify-content-between">
+                                <span>Due Date:</span>
+                                <span class="@(ViewData["IsOverdue"] != null && (bool)ViewData["IsOverdue"] ? "text-danger" : "text-muted")">
+                                    @ViewData["DueDate"]
+                                </span>
+                            </div>
+                        </div>
+                        <div class="mb-3">
+                            <div class="d-flex justify-content-between">
+                                <span>Status:</span>
+                                <span class="badge @(ViewData["IsOverdue"] != null && (bool)ViewData["IsOverdue"] ? "bg-danger" : "bg-warning")">
+                                    @(ViewData["IsOverdue"] != null && (bool)ViewData["IsOverdue"] ? "Overdue" : "Open")
+                                </span>
+                            </div>
+                        </div>
+                        <div class="mb-3">
+                            <div class="d-flex justify-content-between">
+                                <span>Worth:</span>
+                                <span class="text-muted">@ViewData["Worth"]</span>
+                            </div>
+                        </div>
+                        <hr />
+                        <div class="mb-3">
+                            <h6>Submission Guidelines:</h6>
+                            <ul class="small text-muted">
+                                <li>Make sure your submission follows all formatting requirements.</li>
+                                <li>Check for plagiarism before submitting your work.</li>
+                                <li>Once submitted, you cannot edit your submission.</li>
+                                <li>Late submissions may be subject to penalties as per course policy.</li>
+                            </ul>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</div> 

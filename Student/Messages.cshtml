@@ -1,0 +1,451 @@
+@{
+    ViewData["Title"] = "My Messages";
+    Layout = "_StudentLayout";
+}
+
+<div class="container-fluid px-4 py-4">
+    <div class="row">
+        <!-- Messages Interface -->
+        <div class="col-12">
+            <div class="messages-container">
+                <!-- Messages Header -->
+                <div class="messages-header mb-4">
+                    <h1 class="page-title">My Messages</h1>
+                    <p class="page-subtitle">Communicate with instructors and classmates</p>
+                </div>
+                
+                <div class="row">
+                    <!-- Left Panel (Contacts/Conversations) -->
+                    <div class="col-md-4 col-lg-4 mb-4 mb-md-0">
+                        <div class="card h-100">
+                            <div class="card-body p-0 d-flex flex-column">
+                                <!-- Search Bar -->
+                                <div class="messages-search p-3 border-bottom">
+                                    <div class="input-group">
+                                        <span class="input-group-text bg-white border-end-0">
+                                            <i class="fas fa-search text-muted"></i>
+                                        </span>
+                                        <input type="text" id="messageSearch" class="form-control border-start-0" placeholder="Search messages...">
+                                    </div>
+                                </div>
+                                
+                                <!-- Conversations List -->
+                                <div class="conversations-list">
+                                    <div class="conversation-item active" data-contact="dr-sarah-johnson">
+                                        <div class="d-flex align-items-center p-3 border-bottom conversation-content">
+                                            <div class="contact-avatar me-3 position-relative">
+                                                <img src="https://randomuser.me/api/portraits/women/65.jpg" alt="Dr. Sarah Johnson" class="rounded-circle" width="50" height="50">
+                                                <span class="status-indicator online"></span>
+                                            </div>
+                                            <div class="conversation-info flex-grow-1 overflow-hidden">
+                                                <div class="d-flex justify-content-between align-items-center mb-1">
+                                                    <h6 class="mb-0 contact-name text-truncate">Dr. Sarah Johnson</h6>
+                                                    <small class="text-muted timestamp ms-2 flex-shrink-0">10:30 AM</small>
+                                                </div>
+                                                <div class="d-flex align-items-center message-preview-container">
+                                                    <span class="text-success flex-shrink-0 me-1">●</span>
+                                                    <p class="mb-0 message-preview">Thanks for submitting your project. I've reviewed it and...</p>
+                                                </div>
+                                            </div>
+                                        </div>
+                                    </div>
+                                    
+                                    <div class="conversation-item" data-contact="prof-michael-chen">
+                                        <div class="d-flex align-items-center p-3 border-bottom conversation-content">
+                                            <div class="contact-avatar me-3 position-relative">
+                                                <img src="https://randomuser.me/api/portraits/men/45.jpg" alt="Prof. Michael Chen" class="rounded-circle" width="50" height="50">
+                                                <span class="status-indicator online"></span>
+                                            </div>
+                                            <div class="conversation-info flex-grow-1 overflow-hidden">
+                                                <div class="d-flex justify-content-between align-items-center mb-1">
+                                                    <h6 class="mb-0 contact-name text-truncate">Prof. Michael Chen</h6>
+                                                    <small class="text-muted timestamp ms-2 flex-shrink-0">Yesterday</small>
+                                                </div>
+                                                <div class="d-flex align-items-center message-preview-container">
+                                                    <span class="text-danger flex-shrink-0 me-1">●</span>
+                                                    <p class="mb-0 message-preview">Don't forget about the quiz tomorrow. It covers chapters 5-7...</p>
+                                                </div>
+                                            </div>
+                                        </div>
+                                    </div>
+                                    
+                                    <div class="conversation-item" data-contact="study-group">
+                                        <div class="d-flex align-items-center p-3 border-bottom conversation-content">
+                                            <div class="contact-avatar me-3 position-relative">
+                                                <div class="group-avatar rounded-circle d-flex align-items-center justify-content-center bg-primary text-white" style="width: 50px; height: 50px;">
+                                                    <i class="fas fa-users"></i>
+                                                </div>
+                                            </div>
+                                            <div class="conversation-info flex-grow-1 overflow-hidden">
+                                                <div class="d-flex justify-content-between align-items-center mb-1">
+                                                    <h6 class="mb-0 contact-name text-truncate">Data Structures Study Group</h6>
+                                                    <small class="text-muted timestamp ms-2 flex-shrink-0">Yesterday</small>
+                                                </div>
+                                                <div class="d-flex align-items-center message-preview-container">
+                                                    <span class="text-secondary flex-shrink-0 me-1">●</span>
+                                                    <p class="mb-0 message-preview">Alex: Are we still meeting at the library tomorrow at 3pm?</p>
+                                                </div>
+                                            </div>
+                                        </div>
+                                    </div>
+                                    
+                                    <div class="conversation-item" data-contact="emma-wilson">
+                                        <div class="d-flex align-items-center p-3 border-bottom conversation-content">
+                                            <div class="contact-avatar me-3 position-relative">
+                                                <img src="https://randomuser.me/api/portraits/women/32.jpg" alt="Emma Wilson" class="rounded-circle" width="50" height="50">
+                                                <span class="status-indicator offline"></span>
+                                            </div>
+                                            <div class="conversation-info flex-grow-1 overflow-hidden">
+                                                <div class="d-flex justify-content-between align-items-center mb-1">
+                                                    <h6 class="mb-0 contact-name text-truncate">Emma Wilson</h6>
+                                                    <small class="text-muted timestamp ms-2 flex-shrink-0">2 days ago</small>
+                                                </div>
+                                                <div class="d-flex align-items-center message-preview-container">
+                                                    <span class="text-success flex-shrink-0 me-1">●</span>
+                                                    <p class="mb-0 message-preview">Hey, did you understand the assignment for next week? I'm...</p>
+                                                </div>
+                                            </div>
+                                        </div>
+                                    </div>
+                                    
+                                    <div class="conversation-item" data-contact="dr-robert-lee">
+                                        <div class="d-flex align-items-center p-3 border-bottom conversation-content">
+                                            <div class="contact-avatar me-3 position-relative">
+                                                <img src="https://randomuser.me/api/portraits/men/22.jpg" alt="Dr. Robert Lee" class="rounded-circle" width="50" height="50">
+                                                <span class="status-indicator offline"></span>
+                                            </div>
+                                            <div class="conversation-info flex-grow-1 overflow-hidden">
+                                                <div class="d-flex justify-content-between align-items-center mb-1">
+                                                    <h6 class="mb-0 contact-name text-truncate">Dr. Robert Lee</h6>
+                                                    <small class="text-muted timestamp ms-2 flex-shrink-0">1 week ago</small>
+                                                </div>
+                                                <div class="d-flex align-items-center message-preview-container">
+                                                    <span class="text-danger flex-shrink-0 me-1">●</span>
+                                                    <p class="mb-0 message-preview">Your research proposal looks promising. Let's discuss it...</p>
+                                                </div>
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                    
+                    <!-- Right Panel (Conversation) -->
+                    <div class="col-md-8 col-lg-8">
+                        <div class="card h-100">
+                            <div class="card-body p-0 d-flex flex-column">
+                                <!-- Chat Header -->
+                                <div class="chat-header p-3 border-bottom d-flex justify-content-between align-items-center">
+                                    <div class="d-flex align-items-center">
+                                        <div class="contact-avatar me-3 position-relative">
+                                            <img src="https://randomuser.me/api/portraits/women/65.jpg" alt="Dr. Sarah Johnson" class="rounded-circle" width="40" height="40">
+                                            <span class="status-indicator online"></span>
+                                        </div>
+                                        <div>
+                                            <h5 class="mb-0">Dr. Sarah Johnson</h5>
+                                            <small class="text-muted">Advanced Web Development • Online now</small>
+                                        </div>
+                                    </div>
+                                    <div class="chat-actions">
+                                        <button class="btn btn-icon btn-light rounded-circle me-2" title="Phone call">
+                                            <i class="fas fa-phone"></i>
+                                        </button>
+                                        <button class="btn btn-icon btn-light rounded-circle me-2" title="Video call">
+                                            <i class="fas fa-video"></i>
+                                        </button>
+                                        <button class="btn btn-icon btn-light rounded-circle" title="More QuizOptions">
+                                            <i class="fas fa-ellipsis-v"></i>
+                                        </button>
+                                    </div>
+                                </div>
+                                
+                                <!-- Chat Messages -->
+                                <div class="chat-messages p-3 flex-grow-1 overflow-auto">
+                                    <div class="message-date-divider text-center my-3">
+                                        <span class="date-label bg-light px-3 rounded">Today</span>
+                                    </div>
+                                    
+                                    <!-- Instructor Message -->
+                                    <div class="message-container mb-3">
+                                        <div class="message instructor-message">
+                                            <div class="message-content">
+                                                <p>Good morning John! I wanted to let you know that I've reviewed your final project submission.</p>
+                                            </div>
+                                            <div class="message-time text-muted small">9:45 AM</div>
+                                        </div>
+                                    </div>
+                                    
+                                    <!-- Instructor Message -->
+                                    <div class="message-container mb-3">
+                                        <div class="message instructor-message">
+                                            <div class="message-content">
+                                                <p>I'm impressed with your implementation of the responsive design and the use of modern JavaScript frameworks. Your code is well-structured and documented.</p>
+                                            </div>
+                                            <div class="message-time text-muted small">9:47 AM</div>
+                                        </div>
+                                    </div>
+                                    
+                                    <!-- Student Message -->
+                                    <div class="message-container student-message-container mb-3">
+                                        <div class="message student-message ms-auto">
+                                            <div class="message-content bg-primary text-white">
+                                                <p>Thank you, Dr. Johnson! I spent a lot of time on making sure the responsive design worked well across all devices.</p>
+                                            </div>
+                                            <div class="message-time text-muted small text-end">10:15 AM</div>
+                                        </div>
+                                    </div>
+                                    
+                                    <!-- Instructor Message -->
+                                    <div class="message-container mb-3">
+                                        <div class="message instructor-message">
+                                            <div class="message-content">
+                                                <p>It shows! I particularly liked the attention to detail with the animations and transitions. They enhance the user experience without being distracting.</p>
+                                            </div>
+                                            <div class="message-time text-muted small">10:30 AM</div>
+                                        </div>
+                                    </div>
+                                    
+                                    <!-- Instructor Message -->
+                                    <div class="message-container mb-3">
+                                        <div class="message instructor-message">
+                                            <div class="message-content">
+                                                <p>I've added some comments directly in the feedback section of the assignment. There are a few minor suggestions for improvement, but overall excellent work!</p>
+                                            </div>
+                                            <div class="message-time text-muted small">10:32 AM</div>
+                                        </div>
+                                    </div>
+                                </div>
+                                
+                                <!-- Chat Input -->
+                                <div class="chat-input-container p-3 border-top">
+                                    <form id="messageForm" class="d-flex align-items-center">
+                                        <button type="button" class="btn btn-light rounded-circle me-2" title="Attach file">
+                                            <i class="fas fa-paperclip"></i>
+                                        </button>
+                                        <div class="input-group">
+                                            <input type="text" class="form-control" placeholder="Type a message..." aria-label="Message">
+                                            <button class="btn btn-primary" type="submit">
+                                                <i class="fas fa-paper-plane"></i>
+                                            </button>
+                                        </div>
+                                    </form>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+
+<div class="new-message-fab">
+    <button class="btn btn-primary" data-bs-toggle="tooltip" data-bs-placement="left" title="New Message">
+        <i class="fas fa-plus me-2"></i> New Message
+    </button>
+</div>
+
+@section Styles {
+    <style>
+        /* Messages Container */
+        .messages-container {
+            height: calc(100vh - 180px);
+            min-height: 600px;
+        }
+        
+        /* Status Indicators */
+        .contact-avatar {
+            position: relative;
+        }
+        
+        .status-indicator {
+            position: absolute;
+            width: 12px;
+            height: 12px;
+            border-radius: 50%;
+            bottom: 0;
+            right: 0;
+            border: 2px solid #fff;
+        }
+        
+        .status-indicator.online {
+            background-color: #28a745;
+        }
+        
+        .status-indicator.offline {
+            background-color: #6c757d;
+        }
+        
+        /* Conversation Items */
+        .conversation-item {
+            cursor: pointer;
+            transition: background-color 0.2s;
+        }
+        
+        .conversation-item:hover, .conversation-item.active {
+            background-color: rgba(13, 110, 253, 0.05);
+        }
+        
+        .conversation-item.active {
+            border-left: 3px solid #0d6efd;
+        }
+        
+        /* Messages */
+        .chat-messages {
+            height: 0;
+            min-height: 400px;
+            max-height: 60vh;
+            overflow-y: auto;
+        }
+        
+        .message-container {
+            max-width: 75%;
+        }
+        
+        .message {
+            display: inline-block;
+            border-radius: 1rem;
+            padding: 0.75rem 1rem;
+            margin-bottom: 0.5rem;
+            max-width: 100%;
+            word-wrap: break-word;
+            overflow-wrap: break-word;
+        }
+        
+        .instructor-message .message-content {
+            background-color: #f0f2f5;
+            border-radius: 18px;
+            padding: 10px 15px;
+        }
+        
+        .student-message .message-content {
+            background-color: #0d6efd;
+            border-radius: 18px;
+            padding: 10px 15px;
+        }
+        
+        .student-message-container {
+            display: flex;
+            justify-content: flex-end;
+        }
+        
+        .message p {
+            margin-bottom: 0;
+            max-width: 100%;
+        }
+        
+        /* New Message FAB */
+        .new-message-fab {
+            position: fixed;
+            bottom: 2rem;
+            right: 5rem;
+            z-index: 10;
+        }
+        
+        .new-message-fab .btn {
+            width: auto;
+            height: auto;
+            padding: 0.75rem 1.25rem;
+            box-shadow: 0 4px 10px rgba(0, 0, 0, 0.2);
+        }
+
+        /* Message preview truncation */
+        .message-preview {
+            display: inline-block;
+            max-width: 100%;
+            white-space: nowrap;
+            overflow: hidden;
+            text-overflow: ellipsis;
+            font-size: 0.85rem;
+            color: #6c757d;
+        }
+        
+        .message-preview-container {
+            max-width: 100%;
+            overflow: hidden;
+        }
+
+        /* Responsive styles for small screens */
+        @@media (max-width: 768px) {
+            .message-container {
+                max-width: 85%;
+            }
+        }
+
+        @@media (max-width: 576px) {
+            .new-message-fab {
+                bottom: 5rem;
+                right: 1rem;
+            }
+            
+            .contact-name {
+                max-width: 120px;
+            }
+        }
+    </style>
+}
+
+@section Scripts {
+    <script>
+        $(document).ready(function() {
+            // Initialize tooltips
+            var tooltipTriggerList = [].slice.call(document.querySelectorAll('[data-bs-toggle="tooltip"]'))
+            var tooltipList = tooltipTriggerList.map(function (tooltipTriggerEl) {
+                return new bootstrap.Tooltip(tooltipTriggerEl)
+            });
+            
+            // Message search functionality
+            $("#messageSearch").on("keyup", function() {
+                var value = $(this).val().toLowerCase();
+                $(".conversation-item").filter(function() {
+                    // Search through contact name and message preview
+                    var contactName = $(this).find(".contact-name").text().toLowerCase();
+                    var messagePreview = $(this).find(".message-preview").text().toLowerCase();
+                    var visible = contactName.indexOf(value) > -1 || messagePreview.indexOf(value) > -1;
+                    $(this).toggle(visible);
+                });
+            });
+            
+            // Conversation selection
+            $(".conversation-item").click(function() {
+                $(".conversation-item").removeClass("active");
+                $(this).addClass("active");
+                
+                // In a real app, we would load the conversation here
+                // For now, we'll just simulate a selected conversation
+                var contactName = $(this).find(".contact-name").text();
+                $(".chat-header h5").text(contactName);
+            });
+            
+            // Message submission
+            $("#messageForm").submit(function(e) {
+                e.preventDefault();
+                var messageInput = $(this).find("input");
+                var message = messageInput.val().trim();
+                
+                if (message) {
+                    // In a real app, we would send the message to the server
+                    // For now, we'll just add it to the chat
+                    var now = new Date();
+                    var timeStr = now.getHours() + ":" + (now.getMinutes() < 10 ? "0" : "") + now.getMinutes() + " " + (now.getHours() >= 12 ? "PM" : "AM");
+                    
+                    var newMessage = `
+                        <div class="message-container student-message-container mb-3">
+                            <div class="message student-message ms-auto">
+                                <div class="message-content bg-primary text-white">
+                                    <p>${message}</p>
+                                </div>
+                                <div class="message-time text-muted small text-end">${timeStr}</div>
+                            </div>
+                        </div>
+                    `;
+                    
+                    $(".chat-messages").append(newMessage);
+                    $(".chat-messages").scrollTop($(".chat-messages")[0].scrollHeight);
+                    messageInput.val("");
+                }
+            });
+        });
+    </script>
+} 

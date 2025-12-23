@@ -1,0 +1,234 @@
+@model IEnumerable<TeachingAI1.ViewModels.CourseViewModel>
+
+@{
+    var courses = Model?.ToList() ?? new List<TeachingAI1.ViewModels.CourseViewModel>();
+}
+
+@{
+    ViewData["Title"] = "My Courses";
+    Layout = "_StudentLayout";
+
+    var inProgressCourses = Model.Where(c => c.Status == "In Progress").ToList();
+    var completedCourses = Model.Where(c => c.Status == "Completed").ToList();
+}
+
+<!-- Page Header -->
+<div class="page-header mb-4">
+    <div class="row align-items-center">
+        <div class="col-md-6">
+            <h1 class="page-title">My Courses</h1>
+            <p class="page-subtitle">Manage and explore your enrolled courses</p>
+        </div>
+        <div class="col-md-6 text-md-end">
+            <button class="btn btn-outline-primary me-2"><i class="fas fa-th-large me-2"></i>Grid</button>
+            <button class="btn btn-outline-secondary"><i class="fas fa-list me-2"></i>List</button>
+        </div>
+    </div>
+</div>
+
+<!-- Filters and Search -->
+<div class="card mb-4">
+    <div class="card-body">
+        <div class="row g-3">
+            <div class="col-md-4">
+                <div class="form-group">
+                    <label for="statusFilter" class="form-label">Status</label>
+                    <select class="form-select" id="statusFilter" onchange="filterCourses()">
+                        <QuizOption value="all" selected>All Courses</QuizOption>
+                        <QuizOption value="in-progress">In Progress</QuizOption>
+                        <QuizOption value="completed">Completed</QuizOption>
+                    </select>
+                </div>
+            </div>
+            <div class="col-md-4">
+                <div class="form-group">
+                    <label for="categoryFilter" class="form-label">Category</label>
+                    <select class="form-select" id="categoryFilter" onchange="filterCourses()">
+                        <QuizOption value="all" selected>All Categories</QuizOption>
+                        <QuizOption value="ai">Artificial Intelligence</QuizOption>
+                        <QuizOption value="ml">Machine Learning</QuizOption>
+                        <QuizOption value="data-science">Data Science</QuizOption>
+                        <QuizOption value="programming">Programming</QuizOption>
+                    </select>
+                </div>
+            </div>
+            <div class="col-md-4">
+                <div class="form-group">
+                    <label for="sortFilter" class="form-label">Sort By</label>
+                    <select class="form-select" id="sortFilter" onchange="filterCourses()">
+                        <QuizOption value="recent" selected>Recently Accessed</QuizOption>
+                        <QuizOption value="name-asc">Name (A-Z)</QuizOption>
+                        <QuizOption value="name-desc">Name (Z-A)</QuizOption>
+                        <QuizOption value="progress">Progress</QuizOption>
+                    </select>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+
+<!-- Course Stats -->
+<div class="row mb-4">
+    <div class="col-md-3 col-sm-6 mb-3 mb-md-0">
+        <div class="stat-card bg-primary text-white">
+            <div class="stat-card-body">
+                <div class="stat-card-icon">
+                    <i class="fas fa-book-open"></i>
+                </div>
+                <div class="stat-card-info">
+                    <h5 class="stat-card-title">@Model.Count()</h5>
+                    <p class="stat-card-text">Total Courses</p>
+                </div>
+            </div>
+        </div>
+    </div>
+    <div class="col-md-3 col-sm-6 mb-3 mb-md-0">
+        <div class="stat-card bg-success text-white">
+            <div class="stat-card-body">
+                <div class="stat-card-icon">
+                    <i class="fas fa-check-circle"></i>
+                </div>
+                <div class="stat-card-info">
+                    <h5 class="stat-card-title">@completedCourses.Count</h5>
+                    <p class="stat-card-text">Completed</p>
+                </div>
+            </div>
+        </div>
+    </div>
+    <div class="col-md-3 col-sm-6 mb-3 mb-md-0">
+        <div class="stat-card bg-warning text-white">
+            <div class="stat-card-body">
+                <div class="stat-card-icon">
+                    <i class="fas fa-spinner"></i>
+                </div>
+                <div class="stat-card-info">
+                    <h5 class="stat-card-title">@inProgressCourses.Count</h5>
+                    <p class="stat-card-text">In Progress</p>
+                </div>
+            </div>
+        </div>
+    </div>
+    <div class="col-md-3 col-sm-6">
+        <div class="stat-card bg-info text-white">
+            <div class="stat-card-body">
+                <div class="stat-card-icon">
+                    <i class="fas fa-clock"></i>
+                </div>
+                <div class="stat-card-info">
+                    <h5 class="stat-card-title">@(Model.Count() - completedCourses.Count - inProgressCourses.Count)</h5>
+                    <p class="stat-card-text">Not Started</p>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+
+<!-- Courses Grid -->
+<div class="row">
+    <!-- In Progress Courses -->
+    @if (inProgressCourses.Any())
+    {
+        <div class="col-12 mb-4">
+            <h2 class="section-title">In Progress</h2>
+            <div class="row">
+                @foreach (var course in inProgressCourses)
+                {
+                    <div class="col-lg-4 col-md-6 mb-4 course-item" data-status="@course.Status.ToLower().Replace(" ", "-")">
+                        <div class="course-card">
+                            <div class="course-image">
+                                <img src="/images/course@(course.Id).jpg" alt="@course.Title">
+                                <div class="course-badge">@course.Progress% Complete</div>
+                            </div>
+                            <div class="course-content">
+                                <h3 class="course-title">@course.Title</h3>
+                                <p class="course-instructor"><i class="fas fa-user-tie me-2"></i>@course.Instructor</p>
+                                <div class="progress-container">
+                                    <div class="d-flex justify-content-between mb-1">
+                                        <span>Progress</span>
+                                        <span>@course.Progress%</span>
+                                    </div>
+                                    <div class="progress">
+                                        <div class="progress-bar" role="progressbar" style="width: @course.Progress%;" aria-valuenow="@course.Progress" aria-valuemin="0" aria-valuemax="100"></div>
+                                    </div>
+                                </div>
+                                <div class="d-flex justify-content-between mt-3">
+                                    <span class="course-meta"><i class="fas fa-book me-1"></i> @course.LessonsTotal Lessons</span>
+                                    <span class="course-meta"><i class="fas fa-clock me-1"></i> @course.TimeLeft</span>
+                                </div>
+                                <div class="course-actions mt-3">
+                                    <a href="@Url.Action("CourseDetails", "Student", new { id = course.Id })" class="btn btn-primary btn-sm w-100">Continue Learning</a>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                }
+            </div>
+        </div>
+    }
+
+    <!-- Completed Courses -->
+    @if (completedCourses.Any())
+    {
+        <div class="col-12 mb-4">
+            <h2 class="section-title">Completed</h2>
+            <div class="row">
+                @foreach (var course in completedCourses)
+                {
+                    <div class="col-lg-4 col-md-6 mb-4 course-item" data-status="@course.Status.ToLower().Replace(" ", "-")">
+                        <div class="course-card completed">
+                            <div class="course-image">
+                                <img src="/images/course@(course.Id).jpg" alt="@course.Title">
+                                <div class="course-badge completed">Completed</div>
+                            </div>
+                            <div class="course-content">
+                                <h3 class="course-title">@course.Title</h3>
+                                <p class="course-instructor"><i class="fas fa-user-tie me-2"></i>@course.Instructor</p>
+                                <div class="progress-container">
+                                    <div class="d-flex justify-content-between mb-1">
+                                        <span>Progress</span>
+                                        <span>100%</span>
+                                    </div>
+                                    <div class="progress">
+                                        <div class="progress-bar bg-success" role="progressbar" style="width: 100%;" aria-valuenow="100" aria-valuemin="0" aria-valuemax="100"></div>
+                                    </div>
+                                </div>
+                                <div class="d-flex justify-content-between mt-3">
+                                    <span class="course-meta"><i class="fas fa-book me-1"></i> @course.LessonsTotal Lessons</span>
+                                    <span class="course-meta"><i class="fas fa-award me-1"></i> Certificate</span>
+                                </div>
+                                <div class="course-actions mt-3">
+                                    <a href="@Url.Action("CourseDetails", "Student", new { id = course.Id })" class="btn btn-outline-success btn-sm w-100">View Course</a>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                }
+            </div>
+        </div>
+    }
+</div>
+
+@section Scripts {
+    <script>
+        function filterCourses() {
+            const statusFilter = document.getElementById('statusFilter').value;
+            const categoryFilter = document.getElementById('categoryFilter').value;
+            const sortFilter = document.getElementById('sortFilter').value;
+            
+            const courseItems = document.querySelectorAll('.course-item');
+            
+            courseItems.forEach(item => {
+                const status = item.dataset.status;
+                
+                // Apply status filter
+                if (statusFilter === 'all' || statusFilter === status) {
+                    item.style.display = '';
+                } else {
+                    item.style.display = 'none';
+                }
+            });
+            
+            // Sorting and category filtering can be added later
+        }
+    </script>
+}

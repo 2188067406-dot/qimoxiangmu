@@ -1,0 +1,460 @@
+@model TeachingAI1.Models.AssignmentViewModel
+@{
+    ViewData["Title"] = "Assignment Details";
+    Layout = "_TeacherLayout";
+}
+
+<div class="container-fluid py-4">
+    <!-- Page Header -->
+    <div class="d-flex justify-content-between align-items-center mb-4">
+        <div>
+            <nav aria-label="breadcrumb">
+                <ol class="breadcrumb mb-1">
+                    <li class="breadcrumb-item"><a asp-action="Assignments">Assignments</a></li>
+                    <li class="breadcrumb-item active" aria-current="page">@Model.Title</li>
+                </ol>
+            </nav>
+            <h1 class="h2 mb-1">@Model.Title</h1>
+            <p class="text-muted">@Model.CourseTitle | Due: @Model.DueDate.ToString("MMM dd, yyyy")</p>
+        </div>
+        <div>
+            <a asp-action="EditAssignment" asp-route-id="@Model.Id" class="btn btn-outline-primary me-2">
+                <i class="fas fa-edit me-2"></i>Edit
+            </a>
+            <button type="button" class="btn btn-primary dropdown-toggle" data-bs-toggle="dropdown">
+                Actions
+            </button>
+            <ul class="dropdown-menu">
+                <li><a class="dropdown-item" href="#" id="btnGradeSubmissions"><i class="fas fa-clipboard-check me-2"></i>Grade Submissions</a></li>
+                <li><a class="dropdown-item" href="#" id="btnSendReminder"><i class="fas fa-bell me-2"></i>Send Reminder</a></li>
+                <li><hr class="dropdown-divider"></li>
+                <li><a class="dropdown-item text-danger" href="#" data-bs-toggle="modal" data-bs-target="#deleteAssignmentModal"><i class="fas fa-trash-alt me-2"></i>Delete</a></li>
+            </ul>
+        </div>
+    </div>
+
+    <!-- Assignment Details -->
+    <div class="row">
+        <div class="col-lg-8">
+            <!-- Overview Card -->
+            <div class="card mb-4">
+                <div class="card-header">
+                    <h5 class="card-title mb-0">Assignment Overview</h5>
+                </div>
+                <div class="card-body">
+                    <h6 class="fw-bold mb-3">Description</h6>
+                    <p>@Model.Description</p>
+                    
+                    <h6 class="fw-bold mb-3 mt-4">Instructions</h6>
+                    <div class="instructions-container p-3 bg-light rounded mb-3">
+                        @foreach (var line in Model.Instructions.Split('\n'))
+                        {
+                            <p class="mb-2">@line</p>
+                        }
+                    </div>
+                    
+                    <h6 class="fw-bold mb-3 mt-4">Requirements</h6>
+                    <ul class="list-group list-group-flush">
+                        <li class="list-group-item d-flex justify-content-between align-items-center px-0">
+                            <span><i class="fas fa-award me-2 text-primary"></i>Points Possible</span>
+                            <span class="badge bg-primary rounded-pill">@Model.PointsPossible</span>
+                        </li>
+                        <li class="list-group-item d-flex justify-content-between align-items-center px-0">
+                            <span><i class="fas fa-clock me-2 text-primary"></i>Due Date</span>
+                            <span>@Model.DueDate.ToString("MMM dd, yyyy 'at' h:mm tt")</span>
+                        </li>
+                        <li class="list-group-item d-flex justify-content-between align-items-center px-0">
+                            <span><i class="fas fa-users me-2 text-primary"></i>Assigned Students</span>
+                            <span>@Model.AssignedStudents</span>
+                        </li>
+                    </ul>
+                </div>
+            </div>
+
+            <!-- Submissions Table -->
+            <div class="card">
+                <div class="card-header d-flex justify-content-between align-items-center">
+                    <h5 class="card-title mb-0">Student Submissions</h5>
+                    <span class="badge bg-primary">@Model.SubmittedCount/@Model.AssignedStudents Submitted</span>
+                </div>
+                <div class="card-body">
+                    <div class="table-responsive">
+                        <table class="table table-hover">
+                            <thead>
+                                <tr>
+                                    <th>Student</th>
+                                    <th>Submission Date</th>
+                                    <th>Status</th>
+                                    <th>Grade</th>
+                                    <th>Actions</th>
+                                </tr>
+                            </thead>
+                            <tbody>
+                                @if (Model.Submissions != null && Model.Submissions.Any())
+                                {
+                                    foreach (var submission in Model.Submissions)
+                                    {
+                                        <tr>
+                                            <td>
+                                                <div class="d-flex align-items-center">
+                                                    <div class="avatar-sm me-3 bg-primary-subtle rounded-circle">
+                                                        <span class="avatar-initials">@(submission.StudentName.Substring(0, 1))</span>
+                                                    </div>
+                                                    <div>
+                                                        <h6 class="mb-0">@submission.StudentName</h6>
+                                                    </div>
+                                                </div>
+                                            </td>
+                                            <td>
+                                                @if (submission.SubmissionDate.HasValue)
+                                                {
+                                                    <span>@submission.SubmissionDate.Value.ToString("MMM dd, yyyy")</span>
+                                                }
+                                                else
+                                                {
+                                                    <span class="text-muted">Not submitted</span>
+                                                }
+                                            </td>
+                                            <td>
+                                                @{
+                                                    string badgeClass = "bg-secondary";
+                                                    switch (submission.Status)
+                                                    {
+                                                        case "Submitted":
+                                                            badgeClass = "bg-success";
+                                                            break;
+                                                        case "Late":
+                                                            badgeClass = "bg-warning";
+                                                            break;
+                                                        case "Not Submitted":
+                                                            badgeClass = "bg-danger";
+                                                            break;
+                                                        case "Graded":
+                                                            badgeClass = "bg-info";
+                                                            break;
+                                                    }
+                                                }
+                                                <span class="badge @badgeClass">@submission.Status</span>
+                                            </td>
+                                            <td>
+                                                @if (submission.Grade.HasValue)
+                                                {
+                                                    <span>@submission.Grade / @Model.PointsPossible</span>
+                                                }
+                                                else
+                                                {
+                                                    <span class="text-muted">Not graded</span>
+                                                }
+                                            </td>
+                                            <td>
+                                                <div class="dropdown">
+                                                    <button class="btn btn-sm btn-outline-secondary dropdown-toggle" type="button" data-bs-toggle="dropdown" aria-expanded="false">
+                                                        Actions
+                                                    </button>
+                                                    <ul class="dropdown-menu">
+                                                        @if (submission.Status == "Submitted" || submission.Status == "Late")
+                                                        {
+                                                            <li><a class="dropdown-item" href="#" onclick="viewSubmission(@submission.Id)"><i class="fas fa-eye me-2"></i>View Submission</a></li>
+                                                            <li><a class="dropdown-item" href="#" onclick="gradeSubmission(@submission.Id)"><i class="fas fa-clipboard-check me-2"></i>Grade</a></li>
+                                                        }
+                                                        @if (submission.Status == "Not Submitted")
+                                                        {
+                                                            <li><a class="dropdown-item" href="#" onclick="sendReminder(@submission.Id)"><i class="fas fa-bell me-2"></i>Send Reminder</a></li>
+                                                            <li><a class="dropdown-item" href="#" onclick="excuseSubmission(@submission.Id)"><i class="fas fa-check-circle me-2"></i>Excuse</a></li>
+                                                        }
+                                                        @if (submission.Status == "Graded")
+                                                        {
+                                                            <li><a class="dropdown-item" href="#" onclick="viewSubmission(@submission.Id)"><i class="fas fa-eye me-2"></i>View Submission</a></li>
+                                                            <li><a class="dropdown-item" href="#" onclick="updateGrade(@submission.Id)"><i class="fas fa-edit me-2"></i>Update Grade</a></li>
+                                                        }
+                                                    </ul>
+                                                </div>
+                                            </td>
+                                        </tr>
+                                    }
+                                }
+                                else
+                                {
+                                    <tr>
+                                        <td colspan="5" class="text-center py-4">
+                                            <div class="empty-state">
+                                                <div class="empty-state-icon mb-3">
+                                                    <i class="fas fa-file-upload fa-2x text-muted"></i>
+                                                </div>
+                                                <h5>No submissions yet</h5>
+                                                <p class="text-muted">Students haven't submitted their work yet.</p>
+                                            </div>
+                                        </td>
+                                    </tr>
+                                }
+                            </tbody>
+                        </table>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <div class="col-lg-4">
+            <!-- Progress Card -->
+            <div class="card mb-4">
+                <div class="card-header">
+                    <h5 class="card-title mb-0">Submission Progress</h5>
+                </div>
+                <div class="card-body">
+                    <div class="mb-4 text-center">
+                        <canvas id="submissionChart" width="200" height="200"></canvas>
+                    </div>
+                    <div class="d-flex justify-content-around text-center">
+                        <div>
+                            <h5 class="mb-0 text-success">@Model.SubmittedCount</h5>
+                            <p class="text-muted mb-0">Submitted</p>
+                        </div>
+                        <div>
+                            <h5 class="mb-0 text-danger">@(Model.AssignedStudents - Model.SubmittedCount)</h5>
+                            <p class="text-muted mb-0">Not Submitted</p>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Timeline Card -->
+            <div class="card">
+                <div class="card-header">
+                    <h5 class="card-title mb-0">Assignment Timeline</h5>
+                </div>
+                <div class="card-body">
+                    <ul class="timeline">
+                        <li class="timeline-item">
+                            <div class="timeline-marker"></div>
+                            <div class="timeline-content">
+                                <h6 class="timeline-title">Created</h6>
+                                <p class="timeline-text">@DateTime.Now.AddDays(-7).ToString("MMM dd, yyyy")</p>
+                            </div>
+                        </li>
+                        <li class="timeline-item">
+                            <div class="timeline-marker"></div>
+                            <div class="timeline-content">
+                                <h6 class="timeline-title">Published</h6>
+                                <p class="timeline-text">@DateTime.Now.AddDays(-5).ToString("MMM dd, yyyy")</p>
+                            </div>
+                        </li>
+                        <li class="timeline-item">
+                            <div class="timeline-marker active"></div>
+                            <div class="timeline-content">
+                                <h6 class="timeline-title">Due Date</h6>
+                                <p class="timeline-text">@Model.DueDate.ToString("MMM dd, yyyy")</p>
+                            </div>
+                        </li>
+                        <li class="timeline-item">
+                            <div class="timeline-marker"></div>
+                            <div class="timeline-content">
+                                <h6 class="timeline-title">Grade By</h6>
+                                <p class="timeline-text">@Model.DueDate.AddDays(7).ToString("MMM dd, yyyy")</p>
+                            </div>
+                        </li>
+                    </ul>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+
+<!-- Delete Assignment Modal -->
+<div class="modal fade" id="deleteAssignmentModal" tabindex="-1" aria-labelledby="deleteAssignmentModalLabel" aria-hidden="true">
+    <div class="modal-dialog">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h5 class="modal-title" id="deleteAssignmentModalLabel">Delete Assignment</h5>
+                <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+            </div>
+            <div class="modal-body">
+                <p>Are you sure you want to delete the assignment "<strong>@Model.Title</strong>"?</p>
+                <div class="alert alert-warning">
+                    <i class="fas fa-exclamation-triangle me-2"></i>
+                    This will permanently delete the assignment and all associated submissions. This action cannot be undone.
+                </div>
+            </div>
+            <div class="modal-footer">
+                <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Cancel</button>
+                <button type="button" class="btn btn-danger" id="confirmDeleteAssignment">Delete Assignment</button>
+            </div>
+        </div>
+    </div>
+</div>
+
+@section Scripts {
+    <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+    <script>
+    document.addEventListener('DOMContentLoaded', function() {
+        // Submission Chart
+        var ctx = document.getElementById('submissionChart').getContext('2d');
+        var submissionChart = new Chart(ctx, {
+            type: 'doughnut',
+            data: {
+                labels: ['Submitted', 'Not Submitted'],
+                datasets: [{
+                    data: [@Model.SubmittedCount, @(Model.AssignedStudents - Model.SubmittedCount)],
+                    backgroundColor: [
+                        'rgba(40, 167, 69, 0.7)',
+                        'rgba(220, 53, 69, 0.7)'
+                    ],
+                    borderColor: [
+                        'rgba(40, 167, 69, 1)',
+                        'rgba(220, 53, 69, 1)'
+                    ],
+                    borderWidth: 1
+                }]
+            },
+            QuizOptions: {
+                responsive: true,
+                maintainAspectRatio: true,
+                cutout: '75%',
+                plugins: {
+                    legend: {
+                        display: false
+                    },
+                    tooltip: {
+                        callbacks: {
+                            label: function(context) {
+                                var label = context.label || '';
+                                var value = context.raw || 0;
+                                var total = context.dataset.data.reduce((acc, val) => acc + val, 0);
+                                var percentage = Math.round((value / total) * 100);
+                                return `${label}: ${value} (${percentage}%)`;
+                            }
+                        }
+                    }
+                }
+            }
+        });
+        
+        // Action button handlers
+        document.getElementById('btnGradeSubmissions').addEventListener('click', function() {
+            alert('Redirecting to grade submissions...');
+            // Implement redirection to grade submissions view
+        });
+        
+        document.getElementById('btnSendReminder').addEventListener('click', function() {
+            alert('Sending reminders to students who have not submitted...');
+            // Implement send reminders functionality
+        });
+        
+        document.getElementById('confirmDeleteAssignment').addEventListener('click', function() {
+            alert('Deleting assignment...');
+            // Implement delete assignment functionality
+            window.location.href = '@Url.Action("Assignments", "Teacher")';
+        });
+    });
+    
+    // Submission action handlers
+    function viewSubmission(submissionId) {
+        alert('Viewing submission ' + submissionId);
+        // Implement view submission functionality
+    }
+    
+    function gradeSubmission(submissionId) {
+        alert('Grading submission ' + submissionId);
+        // Implement grade submission functionality
+    }
+    
+    function sendReminder(submissionId) {
+        alert('Sending reminder for submission ' + submissionId);
+        // Implement send reminder functionality
+    }
+    
+    function excuseSubmission(submissionId) {
+        alert('Excusing submission ' + submissionId);
+        // Implement excuse submission functionality
+    }
+    
+    function updateGrade(submissionId) {
+        alert('Updating grade for submission ' + submissionId);
+        // Implement update grade functionality
+    }
+    </script>
+    
+    <style>
+    .avatar-sm {
+        width: 2.5rem;
+        height: 2.5rem;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+    }
+    
+    .avatar-initials {
+        font-weight: 500;
+        color: #fff;
+    }
+    
+    .timeline {
+        position: relative;
+        padding-left: 2rem;
+        margin-bottom: 0;
+        list-style: none;
+    }
+    
+    .timeline-item {
+        position: relative;
+        padding-bottom: 1.5rem;
+    }
+    
+    .timeline-item:last-child {
+        padding-bottom: 0;
+    }
+    
+    .timeline-marker {
+        position: absolute;
+        left: -2rem;
+        width: 1rem;
+        height: 1rem;
+        border-radius: 50%;
+        border: 2px solid #dee2e6;
+        background-color: #fff;
+    }
+    
+    .timeline-marker.active {
+        border-color: var(--bs-primary);
+        background-color: var(--bs-primary);
+    }
+    
+    .timeline-marker::before {
+        content: '';
+        position: absolute;
+        left: calc(0.5rem - 1px);
+        bottom: 0;
+        width: 2px;
+        height: 1.5rem;
+        background-color: #dee2e6;
+        transform: translateY(100%);
+    }
+    
+    .timeline-item:last-child .timeline-marker::before {
+        display: none;
+    }
+    
+    .timeline-content {
+        padding-bottom: 0.5rem;
+    }
+    
+    .timeline-title {
+        margin-bottom: 0.25rem;
+        font-weight: 500;
+    }
+    
+    .timeline-text {
+        color: #6c757d;
+        margin-bottom: 0;
+    }
+    
+    .empty-state {
+        padding: 2rem;
+        text-align: center;
+    }
+    
+    .empty-state-icon {
+        font-size: 2rem;
+        color: #adb5bd;
+    }
+    </style>
+} 

@@ -1,0 +1,238 @@
+﻿@{
+    ViewData["Title"] = "Register";
+    Layout = null;
+}
+
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>TeachingAI - Register</title>
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0-alpha1/dist/css/bootstrap.min.css" rel="stylesheet">
+    <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;500;600;700&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    <link rel="stylesheet" href="~/css/register.css">
+</head>
+<body>
+    <!-- Navigation -->
+    <nav class="navbar navbar-expand-lg navbar-light">
+        <div class="container">
+            <a class="navbar-brand" href="@Url.Action("Index", "Home")">TeachingAI</a>
+            <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarNav" aria-controls="navbarNav" aria-expanded="false" aria-label="Toggle navigation">
+                <span class="navbar-toggler-icon"></span>
+            </button>
+            <div class="collapse navbar-collapse" id="navbarNav">
+                <ul class="navbar-nav ms-auto">
+                    <li class="nav-item">
+                        <a class="nav-link" href="@Url.Action("Index", "Home")">Home</a>
+                    </li>
+                    <li class="nav-item">
+                        <a class="nav-link" href="@Url.Action("Login", "Account")">Login</a>
+                    </li>
+                    <li class="nav-item">
+                        <a class="nav-link active pulse" href="@Url.Action("Register", "Account")">Sign Up</a>
+                    </li>
+                </ul>
+            </div>
+        </div>
+    </nav>
+
+    <div class="register-container">
+        <div id="particles-js"></div>
+        <div class="container">
+            <div class="register-card">
+                <div class="row g-0">
+                    <div class="col-md-6">
+                        <div class="register-form-container">
+                            <div class="register-header">
+                                <h2 class="mb-4">Create Account</h2>
+                                <p class="text-muted mb-4">Join our community of learners and educators</p>
+                            </div>
+                            <form method="POST" class="register-form" id="register-form">
+                                <div class="form-group mb-3">
+                                    <label for="username"><i class="fas fa-user me-2"></i>Username</label>
+                                    <input type="text" name="username" id="username" class="form-control" placeholder="Choose a username" required />
+                                </div>
+                                <div class="form-group mb-3">
+                                    <label for="email"><i class="fas fa-envelope me-2"></i>Email</label>
+                                    <input type="email" name="email" id="email" class="form-control" placeholder="Your email address" required />
+                                </div>
+                                <div class="form-group mb-3">
+                                    <label for="password"><i class="fas fa-lock me-2"></i>Password</label>
+                                    <input type="password" name="password" id="password" class="form-control" placeholder="Create a password" required />
+                                </div>
+                                <div class="form-group mb-3">
+                                    <label for="role"><i class="fas fa-user-tag me-2"></i>Role</label>
+                                    <select name="role" id="role" class="form-select" required>
+                                        <option value="" disabled selected>Select your role</option>
+                                        <option value="Student">Student</option>
+                                        <option value="Teacher">Teacher</option>
+                                        <option value="Admin">Admin</option>
+                                    </select>
+                                </div>
+
+                                <div class="form-group mb-3">
+                                    <label for="studentOrStaffId"><i class="fas fa-id-card me-2"></i>Student/Staff ID</label>
+                                    <input type="text" name="studentOrStaffId" id="studentOrStaffId" class="form-control" placeholder="Enter your student or staff ID" required />
+                                </div>
+
+                                <div class="form-check mb-4">
+                                    <input type="checkbox" name="agree-term" id="agree-term" class="form-check-input" required />
+                                    ...
+                                </div>
+                                
+                                <div class="form-check mb-4">
+                                    <input type="checkbox" name="agree-term" id="agree-term" class="form-check-input" required />
+                                    <label for="agree-term" class="form-check-label">
+                                        I agree to the <a href="#" class="terms-link">Terms of Service</a> and <a href="#" class="terms-link">Privacy Policy</a>
+                                    </label>
+                                </div>
+                                <button type="submit" class="btn btn-primary w-100">Create Account</button>
+                                <div class="text-center mt-4">
+                                    <p>Already have an account? <a href="@Url.Action("Login", "Account")" class="login-link">Login here</a></p>
+                                </div>
+                            </form>
+                        </div>
+                    </div>
+                    <div class="col-md-6 d-none d-md-block">
+                        <div class="register-image">
+                            <div class="image-overlay"></div>
+                            <div class="register-content">
+                                <h3>Join TeachingAI Today</h3>
+                                <p>Transform your learning experience with AI-powered education tools designed for students and teachers.</p>
+                                <div class="features">
+                                    <div class="feature-item">
+                                        <i class="fas fa-check-circle"></i>
+                                        <span>Personalized learning paths</span>
+                                    </div>
+                                    <div class="feature-item">
+                                        <i class="fas fa-check-circle"></i>
+                                        <span>AI-powered study assistants</span>
+                                    </div>
+                                    <div class="feature-item">
+                                        <i class="fas fa-check-circle"></i>
+                                        <span>Real-time progress tracking</span>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0-alpha1/dist/js/bootstrap.bundle.min.js"></script>
+    <script src="https://cdn.jsdelivr.net/npm/particles.js@2.0.0/particles.min.js"></script>
+    <script>
+        document.addEventListener('DOMContentLoaded', function() {
+            particlesJS('particles-js', {
+                "particles": {
+                    "number": {
+                        "value": 80,
+                        "density": {
+                            "enable": true,
+                            "value_area": 800
+                        }
+                    },
+                    "color": {
+                        "value": "#4361ee"
+                    },
+                    "shape": {
+                        "type": "circle",
+                        "stroke": {
+                            "width": 0,
+                            "color": "#000000"
+                        },
+                        "polygon": {
+                            "nb_sides": 5
+                        }
+                    },
+                    "opacity": {
+                        "value": 0.5,
+                        "random": false,
+                        "anim": {
+                            "enable": false,
+                            "speed": 1,
+                            "opacity_min": 0.1,
+                            "sync": false
+                        }
+                    },
+                    "size": {
+                        "value": 3,
+                        "random": true,
+                        "anim": {
+                            "enable": false,
+                            "speed": 40,
+                            "size_min": 0.1,
+                            "sync": false
+                        }
+                    },
+                    "line_linked": {
+                        "enable": true,
+                        "distance": 150,
+                        "color": "#4361ee",
+                        "opacity": 0.4,
+                        "width": 1
+                    },
+                    "move": {
+                        "enable": true,
+                        "speed": 2,
+                        "direction": "none",
+                        "random": false,
+                        "straight": false,
+                        "out_mode": "out",
+                        "bounce": false,
+                        "attract": {
+                            "enable": false,
+                            "rotateX": 600,
+                            "rotateY": 1200
+                        }
+                    }
+                },
+                "interactivity": {
+                    "detect_on": "canvas",
+                    "events": {
+                        "onhover": {
+                            "enable": true,
+                            "mode": "grab"
+                        },
+                        "onclick": {
+                            "enable": true,
+                            "mode": "push"
+                        },
+                        "resize": true
+                    },
+                    "modes": {
+                        "grab": {
+                            "distance": 140,
+                            "line_linked": {
+                                "opacity": 1
+                            }
+                        },
+                        "bubble": {
+                            "distance": 400,
+                            "size": 40,
+                            "duration": 2,
+                            "opacity": 8,
+                            "speed": 3
+                        },
+                        "repulse": {
+                            "distance": 200,
+                            "duration": 0.4
+                        },
+                        "push": {
+                            "particles_nb": 4
+                        },
+                        "remove": {
+                            "particles_nb": 2
+                        }
+                    }
+                },
+                "retina_detect": true
+            });
+        });
+    </script>
+</body>
+</html>

@@ -1,0 +1,425 @@
+@{
+    ViewData["Title"] = "Account Settings";
+    Layout = "_StudentLayout";
+}
+
+<div class="container-fluid px-4 py-4">
+    <!-- Page Header -->
+    <div class="page-header row align-items-center mb-4">
+        <div class="col-md-6">
+            <h1 class="page-title">@ViewData["Title"]</h1>
+            <p class="page-subtitle">Manage your account preferences and settings</p>
+        </div>
+        <div class="col-md-6 text-md-end">
+            <button class="btn btn-primary" id="saveSettingsBtn">
+                <i class="fas fa-save me-2"></i> Save Changes
+            </button>
+        </div>
+    </div>
+
+    <div class="row">
+        <!-- Settings Navigation -->
+        <div class="col-lg-3 mb-4">
+            <div class="dashboard-card p-0">
+                <div class="settings-nav">
+                    <div class="settings-nav-item active" data-target="account">
+                        <i class="fas fa-user-circle me-2"></i> Account
+                    </div>
+                    <div class="settings-nav-item" data-target="preferences">
+                        <i class="fas fa-sliders-h me-2"></i> Preferences
+                    </div>
+                    <div class="settings-nav-item" data-target="notifications">
+                        <i class="fas fa-bell me-2"></i> Notifications
+                    </div>
+                    <div class="settings-nav-item" data-target="privacy">
+                        <i class="fas fa-shield-alt me-2"></i> Privacy
+                    </div>
+                    <div class="settings-nav-item" data-target="appearance">
+                        <i class="fas fa-palette me-2"></i> Appearance
+                    </div>
+                    <div class="settings-nav-item" data-target="accessibility">
+                        <i class="fas fa-universal-access me-2"></i> Accessibility
+                    </div>
+                    <div class="settings-nav-item" data-target="connected">
+                        <i class="fas fa-link me-2"></i> Connected Accounts
+                    </div>
+                </div>
+            </div>
+        </div>
+        
+        <!-- Settings Content -->
+        <div class="col-lg-9">
+            <div class="dashboard-card">
+                <!-- Account Settings -->
+                <div class="settings-section active" id="account">
+                    <h3 class="section-title">Account Settings</h3>
+                    
+                    <div class="mb-4">
+                        <h4 class="settings-subtitle">Personal Information</h4>
+                        <div class="row mb-3">
+                            <div class="col-md-6 mb-3 mb-md-0">
+                                <label for="firstName" class="form-label">First Name</label>
+                                <input type="text" class="form-control" id="firstName" value="John">
+                            </div>
+                            <div class="col-md-6">
+                                <label for="lastName" class="form-label">Last Name</label>
+                                <input type="text" class="form-control" id="lastName" value="Doe">
+                            </div>
+                        </div>
+                        <div class="mb-3">
+                            <label for="email" class="form-label">Email Address</label>
+                            <input type="email" class="form-control" id="email" value="john.doe@example.com">
+                        </div>
+                        <div class="mb-3">
+                            <label for="studentId" class="form-label">Student ID</label>
+                            <input type="text" class="form-control" id="studentId" value="S12345678" readonly>
+                            <div class="form-text">Your student ID cannot be changed</div>
+                        </div>
+                    </div>
+                    
+                    <div class="mb-4">
+                        <h4 class="settings-subtitle">Password</h4>
+                        <div class="mb-3">
+                            <label for="currentPassword" class="form-label">Current Password</label>
+                            <input type="password" class="form-control" id="currentPassword">
+                        </div>
+                        <div class="mb-3">
+                            <label for="newPassword" class="form-label">New Password</label>
+                            <input type="password" class="form-control" id="newPassword">
+                        </div>
+                        <div class="mb-3">
+                            <label for="confirmPassword" class="form-label">Confirm New Password</label>
+                            <input type="password" class="form-control" id="confirmPassword">
+                        </div>
+                        <button type="button" class="btn btn-outline-primary">Change Password</button>
+                    </div>
+                    
+                    <div>
+                        <h4 class="settings-subtitle">Danger Zone</h4>
+                        <div class="alert alert-danger">
+                            <h5 class="alert-heading">Delete Account</h5>
+                            <p>Once you delete your account, there is no going back. Please be certain.</p>
+                            <button type="button" class="btn btn-danger">Delete Account</button>
+                        </div>
+                    </div>
+                </div>
+                
+                <!-- Preferences Settings -->
+                <div class="settings-section" id="preferences">
+                    <h3 class="section-title">Preferences</h3>
+                    
+                    <div class="mb-4">
+                        <h4 class="settings-subtitle">Language</h4>
+                        <div class="mb-3">
+                            <label for="language" class="form-label">Display Language</label>
+                            <select class="form-select" id="language">
+                                <QuizOption value="en" selected>English</QuizOption>
+                                <QuizOption value="es">Spanish</QuizOption>
+                                <QuizOption value="fr">French</QuizOption>
+                                <QuizOption value="de">German</QuizOption>
+                                <QuizOption value="zh">Chinese</QuizOption>
+                            </select>
+                        </div>
+                    </div>
+                    
+                    <div class="mb-4">
+                        <h4 class="settings-subtitle">Time Zone</h4>
+                        <div class="mb-3">
+                            <label for="timezone" class="form-label">Time Zone</label>
+                            <select class="form-select" id="timezone">
+                                <QuizOption value="utc-8" selected>Pacific Time (UTC-8)</QuizOption>
+                                <QuizOption value="utc-7">Mountain Time (UTC-7)</QuizOption>
+                                <QuizOption value="utc-6">Central Time (UTC-6)</QuizOption>
+                                <QuizOption value="utc-5">Eastern Time (UTC-5)</QuizOption>
+                                <QuizOption value="utc+0">Greenwich Mean Time (UTC+0)</QuizOption>
+                            </select>
+                        </div>
+                    </div>
+                    
+                    <div>
+                        <h4 class="settings-subtitle">Date & Time Format</h4>
+                        <div class="mb-3">
+                            <label for="dateFormat" class="form-label">Date Format</label>
+                            <select class="form-select" id="dateFormat">
+                                <QuizOption value="mdy" selected>MM/DD/YYYY</QuizOption>
+                                <QuizOption value="dmy">DD/MM/YYYY</QuizOption>
+                                <QuizOption value="ymd">YYYY/MM/DD</QuizOption>
+                            </select>
+                        </div>
+                        <div class="mb-3">
+                            <label for="timeFormat" class="form-label">Time Format</label>
+                            <select class="form-select" id="timeFormat">
+                                <QuizOption value="12" selected>12-hour (AM/PM)</QuizOption>
+                                <QuizOption value="24">24-hour</QuizOption>
+                            </select>
+                        </div>
+                    </div>
+                </div>
+                
+                <!-- Notifications Settings -->
+                <div class="settings-section" id="notifications">
+                    <h3 class="section-title">Notifications</h3>
+                    
+                    <div class="mb-4">
+                        <h4 class="settings-subtitle">Email Notifications</h4>
+                        <div class="form-check form-switch mb-3">
+                            <input class="form-check-input" type="checkbox" id="emailAssignments" checked>
+                            <label class="form-check-label" for="emailAssignments">Assignment Reminders</label>
+                        </div>
+                        <div class="form-check form-switch mb-3">
+                            <input class="form-check-input" type="checkbox" id="emailGrades" checked>
+                            <label class="form-check-label" for="emailGrades">Grade Updates</label>
+                        </div>
+                        <div class="form-check form-switch mb-3">
+                            <input class="form-check-input" type="checkbox" id="emailAnnouncements" checked>
+                            <label class="form-check-label" for="emailAnnouncements">Course Announcements</label>
+                        </div>
+                        <div class="form-check form-switch mb-3">
+                            <input class="form-check-input" type="checkbox" id="emailMessages">
+                            <label class="form-check-label" for="emailMessages">New Messages</label>
+                        </div>
+                        <div class="form-check form-switch mb-3">
+                            <input class="form-check-input" type="checkbox" id="emailNewCourses">
+                            <label class="form-check-label" for="emailNewCourses">New Course Offerings</label>
+                        </div>
+                    </div>
+                    
+                    <div class="mb-4">
+                        <h4 class="settings-subtitle">Push Notifications</h4>
+                        <div class="form-check form-switch mb-3">
+                            <input class="form-check-input" type="checkbox" id="pushAssignments" checked>
+                            <label class="form-check-label" for="pushAssignments">Assignment Due Soon</label>
+                        </div>
+                        <div class="form-check form-switch mb-3">
+                            <input class="form-check-input" type="checkbox" id="pushGrades" checked>
+                            <label class="form-check-label" for="pushGrades">New Grades Posted</label>
+                        </div>
+                        <div class="form-check form-switch mb-3">
+                            <input class="form-check-input" type="checkbox" id="pushMessages" checked>
+                            <label class="form-check-label" for="pushMessages">New Messages</label>
+                        </div>
+                    </div>
+                    
+                    <div>
+                        <h4 class="settings-subtitle">Notification Frequency</h4>
+                        <div class="mb-3">
+                            <select class="form-select">
+                                <QuizOption>Immediately</QuizOption>
+                                <QuizOption selected>Daily Digest</QuizOption>
+                                <QuizOption>Weekly Summary</QuizOption>
+                            </select>
+                            <div class="form-text">How often you want to receive notification summaries</div>
+                        </div>
+                    </div>
+                </div>
+                
+                <!-- Privacy Settings -->
+                <div class="settings-section" id="privacy">
+                    <h3 class="section-title">Privacy</h3>
+                    
+                    <div class="mb-4">
+                        <h4 class="settings-subtitle">Profile Visibility</h4>
+                        <div class="mb-3">
+                            <label class="form-label">Who can see your profile?</label>
+                            <select class="form-select">
+                                <QuizOption selected>Everyone (Public)</QuizOption>
+                                <QuizOption>Only My Classmates</QuizOption>
+                                <QuizOption>Only My Instructors</QuizOption>
+                                <QuizOption>Nobody (Private)</QuizOption>
+                            </select>
+                        </div>
+                    </div>
+                    
+                    <div class="mb-4">
+                        <h4 class="settings-subtitle">Activity Status</h4>
+                        <div class="form-check form-switch mb-3">
+                            <input class="form-check-input" type="checkbox" id="showActiveStatus" checked>
+                            <label class="form-check-label" for="showActiveStatus">Show when I'm active</label>
+                            <div class="form-text">Others can see when you were last active on the platform</div>
+                        </div>
+                    </div>
+                    
+                    <div>
+                        <h4 class="settings-subtitle">Data & Privacy</h4>
+                        <div class="mb-3">
+                            <button type="button" class="btn btn-outline-primary mb-2">Download My Data</button>
+                            <div class="form-text">Download a copy of your personal data</div>
+                        </div>
+                        <div class="form-check form-switch mb-3">
+                            <input class="form-check-input" type="checkbox" id="dataCollection" checked>
+                            <label class="form-check-label" for="dataCollection">Allow data collection for platform improvement</label>
+                            <div class="form-text">We use this data to improve your learning experience</div>
+                        </div>
+                    </div>
+                </div>
+                
+                <!-- Appearance Settings -->
+                <div class="settings-section" id="appearance">
+                    <h3 class="section-title">Appearance</h3>
+                    
+                    <div class="mb-4">
+                        <h4 class="settings-subtitle">Theme</h4>
+                        <div class="theme-QuizOptions">
+                            <div class="theme-QuizOption active">
+                                <div class="theme-preview light-theme"></div>
+                                <span>Light</span>
+                            </div>
+                            <div class="theme-QuizOption">
+                                <div class="theme-preview dark-theme"></div>
+                                <span>Dark</span>
+                            </div>
+                            <div class="theme-QuizOption">
+                                <div class="theme-preview system-theme"></div>
+                                <span>System</span>
+                            </div>
+                        </div>
+                    </div>
+                    
+                    <div class="mb-4">
+                        <h4 class="settings-subtitle">Font Size</h4>
+                        <div class="mb-3">
+                            <label for="fontSize" class="form-label">Text Size</label>
+                            <select class="form-select" id="fontSize">
+                                <QuizOption value="small">Small</QuizOption>
+                                <QuizOption value="medium" selected>Medium</QuizOption>
+                                <QuizOption value="large">Large</QuizOption>
+                                <QuizOption value="xlarge">Extra Large</QuizOption>
+                            </select>
+                        </div>
+                    </div>
+                    
+                    <div>
+                        <h4 class="settings-subtitle">Dashboard Layout</h4>
+                        <div class="mb-3">
+                            <label for="dashboardLayout" class="form-label">Default View</label>
+                            <select class="form-select" id="dashboardLayout">
+                                <QuizOption value="grid" selected>Grid View</QuizOption>
+                                <QuizOption value="list">List View</QuizOption>
+                            </select>
+                        </div>
+                    </div>
+                </div>
+                
+                <!-- Accessibility Settings -->
+                <div class="settings-section" id="accessibility">
+                    <h3 class="section-title">Accessibility</h3>
+                    
+                    <div class="mb-4">
+                        <h4 class="settings-subtitle">Screen Reader</h4>
+                        <div class="form-check form-switch mb-3">
+                            <input class="form-check-input" type="checkbox" id="screenReader">
+                            <label class="form-check-label" for="screenReader">Optimize for screen readers</label>
+                        </div>
+                    </div>
+                    
+                    <div class="mb-4">
+                        <h4 class="settings-subtitle">Motion</h4>
+                        <div class="form-check form-switch mb-3">
+                            <input class="form-check-input" type="checkbox" id="reduceMotion">
+                            <label class="form-check-label" for="reduceMotion">Reduce motion</label>
+                            <div class="form-text">Minimize animations and transitions</div>
+                        </div>
+                    </div>
+                    
+                    <div>
+                        <h4 class="settings-subtitle">Keyboard Navigation</h4>
+                        <div class="form-check form-switch mb-3">
+                            <input class="form-check-input" type="checkbox" id="keyboardNav" checked>
+                            <label class="form-check-label" for="keyboardNav">Enable keyboard navigation</label>
+                        </div>
+                        <button type="button" class="btn btn-outline-primary">View Keyboard Shortcuts</button>
+                    </div>
+                </div>
+                
+                <!-- Connected Accounts Settings -->
+                <div class="settings-section" id="connected">
+                    <h3 class="section-title">Connected Accounts</h3>
+                    
+                    <div class="connected-accounts">
+                        <div class="connected-account">
+                            <div class="connected-account-logo">
+                                <i class="fab fa-google"></i>
+                            </div>
+                            <div class="connected-account-info">
+                                <h4>Google</h4>
+                                <p class="connected-status">Connected as john.doe@gmail.com</p>
+                            </div>
+                            <div class="connected-account-action">
+                                <button class="btn btn-sm btn-outline-danger">Disconnect</button>
+                            </div>
+                        </div>
+                        
+                        <div class="connected-account">
+                            <div class="connected-account-logo">
+                                <i class="fab fa-microsoft"></i>
+                            </div>
+                            <div class="connected-account-info">
+                                <h4>Microsoft</h4>
+                                <p class="connected-status">Not connected</p>
+                            </div>
+                            <div class="connected-account-action">
+                                <button class="btn btn-sm btn-outline-primary">Connect</button>
+                            </div>
+                        </div>
+                        
+                        <div class="connected-account">
+                            <div class="connected-account-logo">
+                                <i class="fab fa-github"></i>
+                            </div>
+                            <div class="connected-account-info">
+                                <h4>GitHub</h4>
+                                <p class="connected-status">Connected as johndoe</p>
+                            </div>
+                            <div class="connected-account-action">
+                                <button class="btn btn-sm btn-outline-danger">Disconnect</button>
+                            </div>
+                        </div>
+                        
+                        <div class="connected-account">
+                            <div class="connected-account-logo">
+                                <i class="fab fa-linkedin"></i>
+                            </div>
+                            <div class="connected-account-info">
+                                <h4>LinkedIn</h4>
+                                <p class="connected-status">Not connected</p>
+                            </div>
+                            <div class="connected-account-action">
+                                <button class="btn btn-sm btn-outline-primary">Connect</button>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+
+@section Scripts {
+    <script>
+        $(document).ready(function() {
+            // Settings navigation
+            $('.settings-nav-item').click(function() {
+                $('.settings-nav-item').removeClass('active');
+                $(this).addClass('active');
+                
+                var target = $(this).data('target');
+                $('.settings-section').removeClass('active');
+                $('#' + target).addClass('active');
+            });
+            
+            // Theme selection
+            $('.theme-QuizOption').click(function() {
+                $('.theme-QuizOption').removeClass('active');
+                $(this).addClass('active');
+                
+                // Here you would add logic to change the theme
+            });
+            
+            // Save settings button
+            $('#saveSettingsBtn').click(function() {
+                // Here you would add logic to save all settings
+                alert('Settings saved successfully!');
+            });
+        });
+    </script>
+} 

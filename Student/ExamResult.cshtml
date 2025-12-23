@@ -1,0 +1,16 @@
+@model TeachingAI1.ViewModels.ExamResultViewModel
+
+<h2>📝 答案与解析</h2>
+
+@foreach (var (q, idx) in Model.QuizQuestions.Select((q, i) => (q, i)))
+{
+    <div class="QuizQuestion-result">
+        <h4>第 @(idx + 1) 题：@q.QuestionText</h4>
+        <p><strong>你的答案：</strong>@Model.UserAnswers?[idx]</p>
+        <p><strong>正确答案：</strong><span class="correct-answer"></span></p>
+        <p><strong>解析：</strong></p>
+        <div class="ai-explanation">
+            @Html.Raw(Model.AiExplanation.Split($"【第{idx+1}题】").Last().Trim())
+        </div>
+    </div>
+}

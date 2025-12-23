@@ -1,0 +1,521 @@
+﻿@model IEnumerable<TeachingAI1.ViewModels.CourseViewModel>
+
+@{
+    ViewData["Title"] = "Home Page";
+    Layout = null;
+}
+
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>TeachingAI - Empowering Learning with AI</title>
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0-alpha1/dist/css/bootstrap.min.css" rel="stylesheet">
+    <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;500;600;700&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    <link rel="stylesheet" href="~/css/home.css">
+</head>
+<body>
+    <!-- Navigation -->
+    <nav class="navbar navbar-expand-lg navbar-light">
+        <div class="container">
+            <a class="navbar-brand" href="#">TeachingAI</a>
+            <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarNav" aria-controls="navbarNav" aria-expanded="false" aria-label="Toggle navigation">
+                <span class="navbar-toggler-icon"></span>
+            </button>
+            <div class="collapse navbar-collapse" id="navbarNav">
+                <ul class="navbar-nav ms-auto">
+                    <li class="nav-item">
+                        <a class="nav-link active" href="#">Home</a>
+                    </li>
+                    <li class="nav-item">
+                        <a class="nav-link" href="@Url.Action("Login", "Account")">Login</a>
+                    </li>
+                    <li class="nav-item">
+                        <a class="nav-link pulse" href="@Url.Action("Register", "Account")">Sign Up</a>
+                    </li>
+                </ul>
+            </div>
+        </div>
+    </nav>
+
+    <!-- Hero Section -->
+    <div class="hero">
+        <div id="particles-js" class="particles"></div>
+        <div class="container">
+            <h1 class="mb-4 typing-animation">Empowering Learning with AI</h1>
+            <p class="mb-5">TeachingAI transforms education by providing intelligent tools that enhance the learning experience for students, empower teachers, and streamline administration.</p>
+            <div class="d-flex flex-wrap justify-content-center">
+                <a href="@Url.Action("Register", "Account")" class="btn btn-primary btn-lg">Get Started</a>
+                <a href="#features" class="btn btn-outline-light btn-lg">Learn More</a>
+            </div>
+        </div>
+    </div>
+
+    <!-- Features Section -->
+    <section id="features" class="features">
+        <div class="container">
+            <h2 class="section-title reveal fade-bottom">Our Platform Features</h2>
+            <div class="row g-4">
+                <div class="col-md-4">
+                    <div class="feature-card reveal fade-left">
+                        <div class="icon floating">
+                            <i class="fas fa-user-graduate"></i>
+                        </div>
+                        <h4>For Students</h4>
+                        <p>Access personalized learning paths, AI-powered study assistants, and real-time progress tracking to enhance your educational journey.</p>
+                        <a href="#" class="btn btn-sm btn-outline-primary mt-3 hover-lift">Learn More</a>
+                    </div>
+                </div>
+                <div class="col-md-4">
+                    <div class="feature-card reveal fade-bottom">
+                        <div class="icon floating">
+                            <i class="fas fa-chalkboard-teacher"></i>
+                        </div>
+                        <h4>For Teachers</h4>
+                        <p>Create engaging courses with AI assistance, automate grading, and gain valuable insights into student performance to optimize your teaching.</p>
+                        <a href="#" class="btn btn-sm btn-outline-primary mt-3 hover-lift">Learn More</a>
+                    </div>
+                </div>
+                <div class="col-md-4">
+                    <div class="feature-card reveal fade-right">
+                        <div class="icon floating">
+                            <i class="fas fa-cogs"></i>
+                        </div>
+                        <h4>For Admins</h4>
+                        <p>Customize platform settings, monitor usage analytics, and manage user accounts efficiently with our intuitive administrative tools.</p>
+                        <a href="#" class="btn btn-sm btn-outline-primary mt-3 hover-lift">Learn More</a>
+                    </div>
+                </div>
+            </div>
+            
+            <div class="row mt-5 pt-5">
+                <div class="col-lg-6 reveal fade-left">
+                    <div class="card border-0 shadow-sm rounded-4 overflow-hidden">
+                        <div class="card-body p-0">
+                            <img src="https://images.unsplash.com/photo-1523240795612-9a054b0db644?ixlib=rb-1.2.1&auto=format&fit=crop&w=1350&q=80" alt="AI Learning" class="img-fluid">
+                        </div>
+                    </div>
+                </div>
+                <div class="col-lg-6 d-flex align-items-center reveal fade-right">
+                    <div class="p-4">
+                        <h3 class="mb-4">Personalized Learning Experience</h3>
+                        <p class="mb-4">Our AI-powered platform adapts to each student's unique learning style and pace, providing customized content and recommendations to maximize learning outcomes.</p>
+                        <div class="d-flex">
+                            <div class="me-4">
+                                <div class="d-flex align-items-center mb-3">
+                                    <i class="fas fa-check-circle text-primary me-2"></i>
+                                    <span>Adaptive Learning</span>
+                                </div>
+                                <div class="d-flex align-items-center mb-3">
+                                    <i class="fas fa-check-circle text-primary me-2"></i>
+                                    <span>Progress Tracking</span>
+                                </div>
+                            </div>
+                            <div>
+                                <div class="d-flex align-items-center mb-3">
+                                    <i class="fas fa-check-circle text-primary me-2"></i>
+                                    <span>Smart Recommendations</span>
+                                </div>
+                                <div class="d-flex align-items-center mb-3">
+                                    <i class="fas fa-check-circle text-primary me-2"></i>
+                                    <span>Interactive Exercises</span>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
+    
+    <section class="courses-section py-5 bg-light">
+        <div class="container">
+            <h2 class="section-title text-center mb-5 reveal fade-bottom">Featured Courses</h2>
+            <div class="row g-4">
+                @foreach (var course in Model)
+                {
+                    <div class="col-md-6 col-lg-4 reveal fade-bottom">
+                        <div class="card h-100 shadow-sm border-0 rounded-3 overflow-hidden hover-lift">
+                            <img src="/images/course@(course.Id).jpg" 
+                                class="card-img-top" 
+                                alt="@course.Title"
+                                style="height: 180px; object-fit: cover;" />
+                            <div class="card-body d-flex flex-column">
+                                <h5 class="card-title">@course.Title</h5>
+                                <p class="text-muted small">by @course.Instructor</p>
+                                <p class="card-text flex-grow-1">@course.Description</p>
+                                <div class="mt-auto">
+                                    <div class="d-flex justify-content-between small text-muted mb-2">
+                                        <span>@course.LessonsCompleted/@course.LessonsTotal lessons</span>
+                                        <span>@course.TimeLeft</span>
+                                    </div>
+                                    <div class="progress" style="height: 6px;">
+                                        <div class="progress-bar bg-success" role="progressbar" style="width: @(course.Progress)%"></div>
+                                    </div>
+                                    <div class="text-end mt-2">
+                                        <span class="badge @(course.Status == "Completed" ? "bg-success" : "bg-warning")">
+                                            @course.Status
+                                        </span>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                }
+            </div>
+        </div>
+    </section>
+    <!-- Statistics Section -->
+    <section class="statistics py-5">
+        <div class="container">
+            <div class="row text-center">
+                <div class="col-md-3 col-6 mb-4">
+                    <div class="stat-item reveal fade-bottom">
+                        <div class="stat-icon mb-3">
+                            <i class="fas fa-users"></i>
+                        </div>
+                        <h2 class="counter" data-target="15000">0</h2>
+                        <p>Active Users</p>
+                    </div>
+                </div>
+                <div class="col-md-3 col-6 mb-4">
+                    <div class="stat-item reveal fade-bottom" data-delay="200">
+                        <div class="stat-icon mb-3">
+                            <i class="fas fa-book-open"></i>
+                        </div>
+                        <h2 class="counter" data-target="500">0</h2>
+                        <p>Courses</p>
+                    </div>
+                </div>
+                <div class="col-md-3 col-6 mb-4">
+                    <div class="stat-item reveal fade-bottom" data-delay="400">
+                        <div class="stat-icon mb-3">
+                            <i class="fas fa-graduation-cap"></i>
+                        </div>
+                        <h2 class="counter" data-target="10000">0</h2>
+                        <p>Graduates</p>
+                    </div>
+                </div>
+                <div class="col-md-3 col-6 mb-4">
+                    <div class="stat-item reveal fade-bottom" data-delay="600">
+                        <div class="stat-icon mb-3">
+                            <i class="fas fa-school"></i>
+                        </div>
+                        <h2 class="counter" data-target="250">0</h2>
+                        <p>Institutions</p>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
+    
+    <!-- Testimonials Section -->
+    <section class="testimonials">
+        <div class="container">
+            <h2 class="section-title reveal fade-bottom">Why Choose TeachingAI</h2>
+            <div class="row justify-content-center">
+                <div class="col-lg-10 reveal fade-bottom">
+                    <div id="testimonialCarousel" class="carousel slide testimonial-carousel" data-bs-ride="carousel">
+                        <div class="carousel-inner">
+                            <div class="carousel-item active">
+                                <div class="testimonial-card">
+                                    <div class="row align-items-center">
+                                        <div class="col-md-4 text-center">
+                                            <div class="testimonial-img-wrapper mx-auto">
+                                                <img src="https://randomuser.me/api/portraits/women/44.jpg" alt="Sarah Johnson" class="img-fluid rounded-circle testimonial-img">
+                                            </div>
+                                        </div>
+                                        <div class="col-md-8">
+                                            <div class="testimonial-content">
+                                                <div class="mb-3">
+                                                    <i class="fas fa-star text-warning"></i>
+                                                    <i class="fas fa-star text-warning"></i>
+                                                    <i class="fas fa-star text-warning"></i>
+                                                    <i class="fas fa-star text-warning"></i>
+                                                    <i class="fas fa-star text-warning"></i>
+                                                </div>
+                                                <p class="lead mb-4">"TeachingAI has revolutionized how I teach my classes. The AI-powered grading system saves me hours each week, and the insights help me better understand my students' needs."</p>
+                                                <h5>Sarah Johnson</h5>
+                                                <p class="text-muted">High School Teacher</p>
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                            <div class="carousel-item">
+                                <div class="testimonial-card">
+                                    <div class="row align-items-center">
+                                        <div class="col-md-4 text-center">
+                                            <div class="testimonial-img-wrapper mx-auto">
+                                                <img src="https://randomuser.me/api/portraits/men/32.jpg" alt="Michael Chen" class="img-fluid rounded-circle testimonial-img">
+                                            </div>
+                                        </div>
+                                        <div class="col-md-8">
+                                            <div class="testimonial-content">
+                                                <div class="mb-3">
+                                                    <i class="fas fa-star text-warning"></i>
+                                                    <i class="fas fa-star text-warning"></i>
+                                                    <i class="fas fa-star text-warning"></i>
+                                                    <i class="fas fa-star text-warning"></i>
+                                                    <i class="fas fa-star text-warning"></i>
+                                                </div>
+                                                <p class="lead mb-4">"As a student, I love how TeachingAI adapts to my learning style. The personalized recommendations have helped me improve my grades significantly."</p>
+                                                <h5>Michael Chen</h5>
+                                                <p class="text-muted">University Student</p>
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                            <div class="carousel-item">
+                                <div class="testimonial-card">
+                                    <div class="row align-items-center">
+                                        <div class="col-md-4 text-center">
+                                            <div class="testimonial-img-wrapper mx-auto">
+                                                <img src="https://randomuser.me/api/portraits/women/68.jpg" alt="Emily Rodriguez" class="img-fluid rounded-circle testimonial-img">
+                                            </div>
+                                        </div>
+                                        <div class="col-md-8">
+                                            <div class="testimonial-content">
+                                                <div class="mb-3">
+                                                    <i class="fas fa-star text-warning"></i>
+                                                    <i class="fas fa-star text-warning"></i>
+                                                    <i class="fas fa-star text-warning"></i>
+                                                    <i class="fas fa-star text-warning"></i>
+                                                    <i class="fas fa-star text-warning"></i>
+                                                </div>
+                                                <p class="lead mb-4">"As an administrator, TeachingAI has streamlined our entire educational process. The analytics dashboard gives us valuable insights we never had before."</p>
+                                                <h5>Emily Rodriguez</h5>
+                                                <p class="text-muted">School Administrator</p>
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="carousel-indicators testimonial-indicators">
+                            <button type="button" data-bs-target="#testimonialCarousel" data-bs-slide-to="0" class="active" aria-current="true" aria-label="Slide 1"></button>
+                            <button type="button" data-bs-target="#testimonialCarousel" data-bs-slide-to="1" aria-label="Slide 2"></button>
+                            <button type="button" data-bs-target="#testimonialCarousel" data-bs-slide-to="2" aria-label="Slide 3"></button>
+                        </div>
+                    </div>
+                    <div class="d-grid gap-2 d-md-flex justify-content-md-center mt-5">
+                        <a href="@Url.Action("Register", "Account")" class="btn btn-primary btn-lg px-4 me-md-2">Join Today</a>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
+    
+    <!-- Footer -->
+    <footer class="footer">
+        <div class="container">
+            <div class="row">
+                <div class="col-md-12">
+                    <h4>TeachingAI</h4>
+                    <div class="social-icons">
+                        <a href="#"><i class="fab fa-facebook-f"></i></a>
+                        <a href="#"><i class="fab fa-twitter"></i></a>
+                        <a href="#"><i class="fab fa-instagram"></i></a>
+                        <a href="#"><i class="fab fa-linkedin-in"></i></a>
+                    </div>
+                    <p>© 2023 TeachingAI. All rights reserved.</p>
+                </div>
+            </div>
+        </div>
+    </footer>
+    
+    <!-- Chat Button -->
+    <div class="chat-button">
+        <button class="btn btn-primary rounded-circle" id="chatButton">
+            <i class="fas fa-comments"></i>
+        </button>
+    </div>
+    
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0-alpha1/dist/js/bootstrap.bundle.min.js"></script>
+    <script src="https://cdn.jsdelivr.net/npm/particles.js@2.0.0/particles.min.js"></script>
+    <script src="https://cdn.jsdelivr.net/npm/typed.js@2.0.12"></script>
+    <script>
+        // Particles.js configuration
+        document.addEventListener('DOMContentLoaded', function() {
+            particlesJS('particles-js', {
+                "particles": {
+                    "number": {
+                        "value": 80,
+                        "density": {
+                            "enable": true,
+                            "value_area": 800
+                        }
+                    },
+                    "color": {
+                        "value": "#ffffff"
+                    },
+                    "shape": {
+                        "type": "circle",
+                        "stroke": {
+                            "width": 0,
+                            "color": "#000000"
+                        },
+                        "polygon": {
+                            "nb_sides": 5
+                        }
+                    },
+                    "opacity": {
+                        "value": 0.5,
+                        "random": false,
+                        "anim": {
+                            "enable": false,
+                            "speed": 1,
+                            "opacity_min": 0.1,
+                            "sync": false
+                        }
+                    },
+                    "size": {
+                        "value": 3,
+                        "random": true,
+                        "anim": {
+                            "enable": false,
+                            "speed": 40,
+                            "size_min": 0.1,
+                            "sync": false
+                        }
+                    },
+                    "line_linked": {
+                        "enable": true,
+                        "distance": 150,
+                        "color": "#ffffff",
+                        "opacity": 0.4,
+                        "width": 1
+                    },
+                    "move": {
+                        "enable": true,
+                        "speed": 2,
+                        "direction": "none",
+                        "random": false,
+                        "straight": false,
+                        "out_mode": "out",
+                        "bounce": false,
+                        "attract": {
+                            "enable": false,
+                            "rotateX": 600,
+                            "rotateY": 1200
+                        }
+                    }
+                },
+                "interactivity": {
+                    "detect_on": "canvas",
+                    "events": {
+                        "onhover": {
+                            "enable": true,
+                            "mode": "grab"
+                        },
+                        "onclick": {
+                            "enable": true,
+                            "mode": "push"
+                        },
+                        "resize": true
+                    },
+                    "modes": {
+                        "grab": {
+                            "distance": 140,
+                            "line_linked": {
+                                "opacity": 1
+                            }
+                        },
+                        "bubble": {
+                            "distance": 400,
+                            "size": 40,
+                            "duration": 2,
+                            "opacity": 8,
+                            "speed": 3
+                        },
+                        "repulse": {
+                            "distance": 200,
+                            "duration": 0.4
+                        },
+                        "push": {
+                            "particles_nb": 4
+                        },
+                        "remove": {
+                            "particles_nb": 2
+                        }
+                    }
+                },
+                "retina_detect": true
+            });
+        });
+        
+        // Typing animation
+        document.addEventListener('DOMContentLoaded', function() {
+            new Typed('.typing-animation', {
+                strings: ['Empowering Learning with AI', 'Transform Education with AI', 'Revolutionize Learning'],
+                typeSpeed: 50,
+                backSpeed: 30,
+                backDelay: 2000,
+                startDelay: 500,
+                loop: true
+            });
+        });
+        
+        // Counter animation
+        document.addEventListener('DOMContentLoaded', function() {
+            const counters = document.querySelectorAll('.counter');
+            const speed = 200;
+            
+            const counterObserver = new IntersectionObserver((entries) => {
+                entries.forEach(entry => {
+                    if (entry.isIntersecting) {
+                        const counter = entry.target;
+                        const target = parseInt(counter.getAttribute('data-target'));
+                        let count = 0;
+                        const updateCount = () => {
+                            const increment = target / speed;
+                            if (count < target) {
+                                count += increment;
+                                counter.innerText = Math.ceil(count);
+                                setTimeout(updateCount, 1);
+                            } else {
+                                counter.innerText = target;
+                            }
+                        };
+                        updateCount();
+                        counterObserver.unobserve(counter);
+                    }
+                });
+            }, { threshold: 0.5 });
+            
+            counters.forEach(counter => {
+                counterObserver.observe(counter);
+            });
+        });
+        
+        // Scroll reveal animation
+        window.addEventListener('scroll', reveal);
+        
+        function reveal() {
+            var reveals = document.querySelectorAll('.reveal');
+            
+            for (var i = 0; i < reveals.length; i++) {
+                var windowHeight = window.innerHeight;
+                var revealTop = reveals[i].getBoundingClientRect().top;
+                var revealPoint = 150;
+                
+                if (revealTop < windowHeight - revealPoint) {
+                    reveals[i].classList.add('active');
+                }
+            }
+        }
+        
+        // Initialize reveal on page load
+        reveal();
+        
+        // Chat button functionality
+        document.getElementById('chatButton').addEventListener('click', function() {
+            alert('Chat functionality coming soon!');
+        });
+    </script>
+</body>
+</html>
+

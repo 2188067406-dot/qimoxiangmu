@@ -1,0 +1,256 @@
+@{
+    ViewData["Title"] = "Assignment Feedback";
+    Layout = "_StudentLayout";
+}
+
+<div class="container-fluid px-4 py-4">
+    <!-- Page Header -->
+    <div class="page-header row align-items-center mb-4">
+        <div class="col-md-6">
+            <h1 class="page-title">@ViewData["Title"]</h1>
+            <p class="page-subtitle">Assignment: @ViewData["AssignmentName"]</p>
+        </div>
+        <div class="col-md-6 text-md-end">
+            <a href="@Url.Action("Assignments", "Student")" class="btn btn-outline-secondary">
+                <i class="fas fa-arrow-left me-2"></i>Back to Assignments
+            </a>
+        </div>
+    </div>
+
+    <!-- Feedback Content -->
+    <div class="row">
+        <div class="col-lg-8">
+            <!-- Assignment Details -->
+            <div class="card mb-4">
+                <div class="card-header d-flex justify-content-between align-items-center">
+                    <h4 class="mb-0">Submission Details</h4>
+                    <span class="badge bg-success">Grade: @ViewData["Grade"]</span>
+                </div>
+                <div class="card-body">
+                    <div class="mb-4">
+                        <h5>@ViewData["AssignmentName"]</h5>
+                        <p class="text-muted">@ViewData["CourseName"]</p>
+                        <div class="d-flex align-items-center mt-2">
+                            <div class="me-4">
+                                <small class="text-muted d-block">Submitted</small>
+                                <span>@ViewData["SubmittedDate"]</span>
+                            </div>
+                            <div class="me-4">
+                                <small class="text-muted d-block">Worth</small>
+                                <span>@ViewData["Worth"]</span>
+                            </div>
+                        </div>
+                    </div>
+                    
+                    <hr class="my-4">
+                    
+                    <!-- Instructor Feedback -->
+                    <div class="mb-4">
+                        <h5>Instructor Feedback</h5>
+                        <div class="instructor-feedback p-3 border rounded bg-light my-3">
+                            <p>
+                                <strong>Great work on this assignment!</strong> You've demonstrated a solid understanding of the core concepts and applied them effectively.
+                            </p>
+                            <p>
+                                Your approach to problem solving was methodical and your implementation was clean and well-documented. I particularly appreciated your attention to detail in the analysis section.
+                            </p>
+                            <p>
+                                For future assignments, consider exploring more advanced techniques as discussed in the later modules of the course. This would help you develop an even deeper understanding of the subject matter.
+                            </p>
+                            <p class="mb-0">
+                                Keep up the excellent work!
+                            </p>
+                            <div class="text-end mt-3">
+                                <small class="text-muted">- @ViewData["InstructorName"]</small>
+                            </div>
+                        </div>
+                    </div>
+                    
+                    <!-- Rubric -->
+                    <div class="mb-4">
+                        <h5>Grading Rubric</h5>
+                        <div class="table-responsive">
+                            <table class="table table-bordered">
+                                <thead class="table-light">
+                                    <tr>
+                                        <th>Criteria</th>
+                                        <th>Points</th>
+                                        <th>Comments</th>
+                                    </tr>
+                                </thead>
+                                <tbody>
+                                    <tr>
+                                        <td>Understanding of Concepts</td>
+                                        <td>25/25</td>
+                                        <td>Excellent grasp of theoretical concepts</td>
+                                    </tr>
+                                    <tr>
+                                        <td>Implementation</td>
+                                        <td>30/30</td>
+                                        <td>Clean, efficient implementation with good documentation</td>
+                                    </tr>
+                                    <tr>
+                                        <td>Analysis</td>
+                                        <td>20/25</td>
+                                        <td>Good analysis, could be more comprehensive</td>
+                                    </tr>
+                                    <tr>
+                                        <td>Presentation</td>
+                                        <td>20/20</td>
+                                        <td>Well-organized and clearly presented</td>
+                                    </tr>
+                                </tbody>
+                                <tfoot class="table-light">
+                                    <tr>
+                                        <th>Total</th>
+                                        <th>95/100</th>
+                                        <th></th>
+                                    </tr>
+                                </tfoot>
+                            </table>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            
+            <!-- Submission Preview -->
+            <div class="card mb-4">
+                <div class="card-header">
+                    <h4 class="mb-0">Your Submission</h4>
+                </div>
+                <div class="card-body">
+                    <div class="mb-3">
+                        <h6>Submitted Files</h6>
+                        <ul class="list-group">
+                            <li class="list-group-item d-flex justify-content-between align-items-center">
+                                <div>
+                                    <i class="fas fa-file-pdf me-2 text-danger"></i>
+                                    Assignment_Submission.pdf
+                                </div>
+                                <a href="#" class="btn btn-sm btn-outline-primary">
+                                    <i class="fas fa-download me-1"></i> Download
+                                </a>
+                            </li>
+                            <li class="list-group-item d-flex justify-content-between align-items-center">
+                                <div>
+                                    <i class="fas fa-file-code me-2 text-primary"></i>
+                                    code_sample.zip
+                                </div>
+                                <a href="#" class="btn btn-sm btn-outline-primary">
+                                    <i class="fas fa-download me-1"></i> Download
+                                </a>
+                            </li>
+                        </ul>
+                    </div>
+                    
+                    <div class="mb-3">
+                        <h6>Submission Text</h6>
+                        <div class="p-3 border rounded bg-light">
+                            <p>
+                                This assignment implements the requested algorithm for data analysis as specified in the requirements. I've included a comprehensive report detailing my approach, challenges faced, and the results of my implementation.
+                            </p>
+                            <p>
+                                The code sample in the ZIP file contains all the necessary components, properly documented with comments. The main file to run is 'main.java', which accepts input parameters as described in the documentation.
+                            </p>
+                            <p class="mb-0">
+                                I've also included test cases to demonstrate the robustness of my implementation across various scenarios, including edge cases.
+                            </p>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+        
+        <div class="col-lg-4">
+            <!-- Assignment Info -->
+            <div class="card mb-4">
+                <div class="card-header">
+                    <h4 class="mb-0">Assignment Information</h4>
+                </div>
+                <div class="card-body">
+                    <div class="mb-3">
+                        <div class="d-flex justify-content-between">
+                            <span>Course:</span>
+                            <span class="text-muted">@ViewData["CourseName"]</span>
+                        </div>
+                    </div>
+                    <div class="mb-3">
+                        <div class="d-flex justify-content-between">
+                            <span>Instructor:</span>
+                            <span class="text-muted">@ViewData["InstructorName"]</span>
+                        </div>
+                    </div>
+                    <div class="mb-3">
+                        <div class="d-flex justify-content-between">
+                            <span>Due Date:</span>
+                            <span class="text-muted">@ViewData["DueDate"]</span>
+                        </div>
+                    </div>
+                    <div class="mb-3">
+                        <div class="d-flex justify-content-between">
+                            <span>Submission Date:</span>
+                            <span class="text-muted">@ViewData["SubmittedDate"]</span>
+                        </div>
+                    </div>
+                    <div class="mb-3">
+                        <div class="d-flex justify-content-between">
+                            <span>Grade:</span>
+                            <span class="text-success fw-bold">@ViewData["Grade"]</span>
+                        </div>
+                    </div>
+                    <div class="mb-3">
+                        <div class="d-flex justify-content-between">
+                            <span>Status:</span>
+                            <span class="badge bg-success">Graded</span>
+                        </div>
+                    </div>
+                    <hr />
+                    <div class="d-grid">
+                        <a href="#" class="btn btn-outline-primary">
+                            <i class="fas fa-comment-alt me-2"></i>Request Clarification
+                        </a>
+                    </div>
+                </div>
+            </div>
+            
+            <!-- Course Progress -->
+            <div class="card">
+                <div class="card-header">
+                    <h4 class="mb-0">Course Progress</h4>
+                </div>
+                <div class="card-body">
+                    <div class="mb-3">
+                        <label class="form-label d-flex justify-content-between">
+                            <span>Overall Progress</span>
+                            <span>75%</span>
+                        </label>
+                        <div class="progress">
+                            <div class="progress-bar bg-success" role="progressbar" style="width: 75%" aria-valuenow="75" aria-valuemin="0" aria-valuemax="100"></div>
+                        </div>
+                    </div>
+                    <div class="mb-3">
+                        <label class="form-label d-flex justify-content-between">
+                            <span>Assignments</span>
+                            <span>85%</span>
+                        </label>
+                        <div class="progress">
+                            <div class="progress-bar bg-primary" role="progressbar" style="width: 85%" aria-valuenow="85" aria-valuemin="0" aria-valuemax="100"></div>
+                        </div>
+                    </div>
+                    <div class="mb-3">
+                        <label class="form-label d-flex justify-content-between">
+                            <span>Quizzes</span>
+                            <span>90%</span>
+                        </label>
+                        <div class="progress">
+                            <div class="progress-bar bg-info" role="progressbar" style="width: 90%" aria-valuenow="90" aria-valuemin="0" aria-valuemax="100"></div>
+                        </div>
+                    </div>
+                    <div class="mb-3">
+                        <a href="#" class="btn btn-sm btn-link p-0">View All Grades</a>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</div> 

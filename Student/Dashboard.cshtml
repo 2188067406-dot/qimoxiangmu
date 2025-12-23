@@ -1,0 +1,759 @@
+﻿@model IEnumerable<TeachingAI1.ViewModels.CourseViewModel>
+@{
+    ViewData["Title"] = "Student Dashboard";
+    Layout = "_StudentLayout";
+}
+
+<!-- Welcome Section -->
+<div class="dashboard-welcome mb-4">
+    <div class="row align-items-center">
+        <div class="col-md-8">
+            <h1 class="welcome-title">Welcome back, <span class="text-primary">@User.Identity.Name</span></h1>
+            <p class="welcome-subtitle">Track your progress and continue your learning journey</p>
+        </div>
+        <div class="col-md-4 text-md-end">
+            <a href="@Url.Action("Courses", "Student")" class="btn btn-primary"><i class="fas fa-graduation-cap me-2"></i>Browse Courses</a>
+        </div>
+    </div>
+</div>
+
+<!-- Stats Overview -->
+<div class="row mb-4">
+    <div class="col-md-3 col-sm-6 mb-4 mb-md-0">
+        <a href="@Url.Action("Courses", "Student")" class="text-decoration-none">
+            <div class="dashboard-card clickable">
+                <div class="icon" style="background: var(--gradient-1);">
+                    <i class="fas fa-book-open"></i>
+                </div>
+                <h3>4</h3>
+                <p>Active Courses</p>
+                <div class="progress">
+                    <div class="progress-bar" role="progressbar" style="width: 75%;" aria-valuenow="75" aria-valuemin="0" aria-valuemax="100"></div>
+                </div>
+            </div>
+        </a>
+    </div>
+    <div class="col-md-3 col-sm-6 mb-4 mb-md-0">
+        <a href="@Url.Action("Assignments", "Student")" class="text-decoration-none">
+            <div class="dashboard-card clickable">
+                <div class="icon" style="background: var(--gradient-2);">
+                    <i class="fas fa-tasks"></i>
+                </div>
+                <h3>8</h3>
+                <p>Assignments</p>
+                <div class="progress">
+                    <div class="progress-bar" role="progressbar" style="width: 65%;" aria-valuenow="65" aria-valuemin="0" aria-valuemax="100"></div>
+                </div>
+            </div>
+        </a>
+    </div>
+    <div class="col-md-3 col-sm-6 mb-4 mb-md-0">
+        <a href="#learningTimeSection" class="text-decoration-none" onclick="scrollToSection('learningTimeSection')">
+            <div class="dashboard-card clickable">
+                <div class="icon" style="background: var(--gradient-3);">
+                    <i class="fas fa-clock"></i>
+                </div>
+                <h3>24h</h3>
+                <p>Learning Time</p>
+                <div class="progress">
+                    <div class="progress-bar" role="progressbar" style="width: 45%;" aria-valuenow="45" aria-valuemin="0" aria-valuemax="100"></div>
+                </div>
+            </div>
+        </a>
+    </div>
+    <div class="col-md-3 col-sm-6">
+        <a href="@Url.Action("Certificates", "Student")" class="text-decoration-none">
+            <div class="dashboard-card clickable">
+                <div class="icon" style="background: var(--gradient-4);">
+                    <i class="fas fa-certificate"></i>
+                </div>
+                <h3>2</h3>
+                <p>Certificates</p>
+                <div class="progress">
+                    <div class="progress-bar" role="progressbar" style="width: 85%;" aria-valuenow="85" aria-valuemin="0" aria-valuemax="100"></div>
+                </div>
+            </div>
+        </a>
+    </div>
+</div>
+
+<!-- Main Dashboard Content -->
+<div class="row">
+    <!-- Left Column -->
+    <div class="col-lg-8">
+        <!-- Continue Learning -->
+        <!-- Continue Learning -->
+        <div class="card mb-4">
+            <div class="card-header d-flex justify-content-between align-items-center">
+                <h5 class="mb-0">Continue Learning</h5>
+                <a href="@Url.Action("Courses", "Student", new { filter = "inprogress" })" class="btn btn-sm btn-outline-primary">View All</a>
+            </div>
+            <div class="card-body">
+                @if (Model != null && Model.Any())
+                {
+                    <div class="row">
+                        @foreach (var course in Model.Take(2)) // 只显示前2个作为“继续学习”
+                        {
+                            <div class="col-md-6 mb-4">
+                                <a href="@Url.Action("CourseDetails", "Student", new { id = course.Id })" class="text-decoration-none">
+                                    <div class="course-card">
+                                        <div class="course-card-image">
+                                            <img src="@course.ImageUrl" alt="@course.Title" />
+                                            <h3>@course.Title</h3>
+                                            @if (course.ProgressPercentage > 0)
+                                            {
+                                                <span class="course-progress-badge">@course.ProgressPercentage% Complete</span>
+                                            }
+                                        </div>
+                                        <div class="course-card-content">
+                                            <h4 class="course-card-title">@course.Title</h4>
+                                            @if (course.ProgressPercentage > 0)
+                                            {
+                                                <div class="course-progress-bar">
+                                                    <div class="progress-fill" style="width: @(course.ProgressPercentage)%;"></div>
+                                                </div>
+                                                <div class="course-stats">
+                                                    <span>@(course.CompletedLessons)/@(course.TotalLessons) lessons completed</span>
+                                                    @if (!string.IsNullOrEmpty(course.EstimatedTimeLeft?.ToString() ?? ""))
+                                                    {
+                                                        <span>@course.EstimatedTimeLeft?.ToString() ?? "" left</span>
+                                                    }
+                                                </div>
+                                            }
+                                            <a href="/Student/CourseDetails/@course.Id" class="continue-btn mt-3">
+                                                <i class="fas fa-play-circle me-2"></i>Continue Learning
+                                            </a>
+                                        </div>
+                                    </div>
+                                </a>
+                            </div>
+                        }
+                    </div>
+                }
+                else
+                {
+                    <p class="text-muted">No courses in progress.</p>
+                }
+            </div>
+        </div>
+
+        <!-- Upcoming Assignments -->
+        <div class="dashboard-section mb-4">
+            <div class="section-header d-flex justify-content-between align-items-center mb-4">
+                <h2 class="section-title">Upcoming Assignments</h2>
+                <a href="#" class="btn btn-sm btn-outline-primary">View All</a>
+            </div>
+            <div class="assignment-list">
+                <div class="assignment-card">
+                    <div class="d-flex justify-content-between align-items-center">
+                        <h3 class="assignment-title">AI Ethics Case Study</h3>
+                        <span class="badge bg-warning">Due Tomorrow</span>
+                    </div>
+                    <p class="assignment-course"><i class="fas fa-book-open me-2"></i>AI Fundamentals</p>
+                    <p class="assignment-due"><i class="far fa-calendar-alt me-2"></i>Due: May 15, 2023</p>
+                    <div class="d-flex justify-content-between align-items-center">
+                        <div class="assignment-meta">
+                            <span><i class="fas fa-file-alt me-1"></i> Essay</span>
+                            <span class="ms-3"><i class="fas fa-clock me-1"></i> Est. 2 hours</span>
+                        </div>
+                        <a href="#" class="btn btn-sm btn-primary">Start Assignment</a>
+                    </div>
+                </div>
+                <div class="assignment-card overdue">
+                    <div class="d-flex justify-content-between align-items-center">
+                        <h3 class="assignment-title">Data Visualization Project</h3>
+                        <span class="badge bg-danger">Overdue</span>
+                    </div>
+                    <p class="assignment-course"><i class="fas fa-book-open me-2"></i>Machine Learning Basics</p>
+                    <p class="assignment-due overdue"><i class="far fa-calendar-alt me-2"></i>Due: May 10, 2023</p>
+                    <div class="d-flex justify-content-between align-items-center">
+                        <div class="assignment-meta">
+                            <span><i class="fas fa-project-diagram me-1"></i> Project</span>
+                            <span class="ms-3"><i class="fas fa-clock me-1"></i> Est. 4 hours</span>
+                        </div>
+                        <a href="#" class="btn btn-sm btn-danger">Submit Now</a>
+                    </div>
+                </div>
+                <div class="assignment-card">
+                    <div class="d-flex justify-content-between align-items-center">
+                        <h3 class="assignment-title">Neural Networks Quiz</h3>
+                        <span class="badge bg-info">Due in 3 days</span>
+                    </div>
+                    <p class="assignment-course"><i class="fas fa-book-open me-2"></i>Machine Learning Basics</p>
+                    <p class="assignment-due"><i class="far fa-calendar-alt me-2"></i>Due: May 18, 2023</p>
+                    <div class="d-flex justify-content-between align-items-center">
+                        <div class="assignment-meta">
+                            <span><i class="fas fa-QuizQuestion-circle me-1"></i> Quiz</span>
+                            <span class="ms-3"><i class="fas fa-clock me-1"></i> Est. 1 hour</span>
+                        </div>
+                        <a href="#" class="btn btn-sm btn-outline-primary">Prepare</a>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <!-- Learning Progress -->
+        <div class="dashboard-section mb-4">
+            <div class="section-header d-flex justify-content-between align-items-center mb-4">
+                <h2 class="section-title">Learning Progress</h2>
+                <div class="dropdown">
+                    <button class="btn btn-sm btn-outline-secondary dropdown-toggle" type="button" id="progressDropdown" data-bs-toggle="dropdown" aria-expanded="false">
+                        Last 30 Days
+                    </button>
+                    <ul class="dropdown-menu" aria-labelledby="progressDropdown">
+                        <li><a class="dropdown-item" href="#">Last 7 Days</a></li>
+                        <li><a class="dropdown-item" href="#">Last 30 Days</a></li>
+                        <li><a class="dropdown-item" href="#">Last 90 Days</a></li>
+                    </ul>
+                </div>
+            </div>
+            <div class="chart-container">
+                <canvas id="learningProgressChart"></canvas>
+            </div>
+        </div>
+    </div>
+
+    <!-- Right Column -->
+    <div class="col-lg-4">
+        <!-- Student Profile Card -->
+        <div class="profile-card mb-4">
+            <div class="profile-header">
+                <div class="profile-avatar">
+                    <img src="https://randomuser.me/api/portraits/men/32.jpg" alt="Student Profile" class="rounded-circle">
+                </div>
+                <div class="profile-info">
+                    <h3 class="mb-1">trial2</h3>
+                    <p class="text-muted">AI & Machine Learning Student</p>
+                </div>
+            </div>
+            <hr>
+            <div class="profile-stats d-flex justify-content-around text-center">
+                <div class="stat-item">
+                    <h4 class="mb-0 text-primary">4</h4>
+                    <p class="text-muted small">Courses</p>
+                </div>
+                <div class="stat-item">
+                    <h4 class="mb-0 text-primary">85%</h4>
+                    <p class="text-muted small">Avg. Grade</p>
+                </div>
+                <div class="stat-item">
+                    <h4 class="mb-0 text-primary">24h</h4>
+                    <p class="text-muted small">Learning</p>
+                </div>
+            </div>
+            <hr>
+            <div class="profile-actions d-flex justify-content-center mt-3">
+                <a href="@Url.Action("Profile", "Student")" class="btn btn-primary me-2">
+                    <i class="fas fa-user me-1"></i> View Profile
+                </a>
+                <a href="@Url.Action("EditProfile", "Student")" class="btn btn-outline-secondary">
+                    <i class="fas fa-pencil-alt me-1"></i> Edit Profile
+                </a>
+            </div>
+
+            <!-- Certificate Link -->
+            <div class="mt-3 text-center">
+                <a href="@Url.Action("Certificates", "Student")" class="text-decoration-none">
+                    <i class="fas fa-certificate text-warning me-1"></i> My Certificates
+                </a>
+            </div>
+        </div>
+
+        <!-- Learning Streak -->
+        <div class="dashboard-section mb-4">
+            <div class="section-header mb-3">
+                <h2 class="section-title">Learning Streak</h2>
+            </div>
+            <div class="streak-container text-center">
+                <div class="streak-circle">
+                    <div class="streak-number">7</div>
+                    <div class="streak-text">days</div>
+                </div>
+                <p class="streak-message mt-3">You're on a roll! Keep learning daily to maintain your streak.</p>
+                <div class="streak-calendar mt-3">
+                    <div class="streak-week">
+                        <div class="streak-day completed">M</div>
+                        <div class="streak-day completed">T</div>
+                        <div class="streak-day completed">W</div>
+                        <div class="streak-day completed">T</div>
+                        <div class="streak-day completed">F</div>
+                        <div class="streak-day completed">S</div>
+                        <div class="streak-day completed">S</div>
+                    </div>
+                </div>
+                <a href="#" class="btn btn-sm btn-primary mt-3">Today's Goal</a>
+            </div>
+        </div>
+
+        <!-- Recommended Courses -->
+        <div class="card mb-4">
+            <div class="card-header d-flex justify-content-between align-items-center">
+                <h5 class="mb-0">Recommended For You</h5>
+                <a href="@Url.Action("Courses", "Student", new { filter = "recommended" })" class="btn btn-sm btn-outline-primary">View All</a>
+            </div>
+            <div class="card-body">
+                @if (Model != null && Model.Any())
+                {
+                    <div class="row">
+                        @foreach (var course in Model.Skip(2).Take(3)) // 跳过前2个（已在“继续学习”中），取接下来3个
+                        {
+                            <div class="col-md-4 mb-4">
+                                <a href="@Url.Action("CourseDetails", "Student", new { id = course.CourseId })" class="text-decoration-none">
+                                    <div class="recommended-course-item">
+                                        <div class="recommended-course-image">
+                                            @{
+                                                var coverUrl = string.IsNullOrEmpty(course.CoverImageUrl)
+                                                    ? "https://via.placeholder.com/300x150/e9ecef/6c757d?text=No+Image"
+                                                    : course.CoverImageUrl;
+                                            }
+                                            <img src="@coverUrl" alt="@course.Title">
+                                        </div>
+                                        <div class="recommended-course-content">
+                                            <h4>@course.Title</h4>
+                                            @if (!string.IsNullOrEmpty(course.InstructorName))
+                                            {
+                                                <div class="course-instructor">by @course.InstructorName</div>
+                                            }
+                                            <div class="d-flex justify-content-between align-items-center mt-2">
+                                                @if (course.Rating > 0)
+                                                {
+                                                    <div class="course-rating">
+                                                        @{ 
+                                                            var fullStars = (int)Math.Floor(course.Rating);
+                                                            var hasHalf = course.Rating - fullStars >= 0.5;
+                                                            for (int i = 0; i < fullStars; i++)
+                                                            {
+                                                                <i class="fas fa-star text-warning"></i>
+                                                            }
+                                                            if (hasHalf)
+                                                            {
+                                                                <i class="fas fa-star-half-alt text-warning"></i>
+                                                            }
+                                                            var emptyStars = 5 - fullStars - (hasHalf ? 1 : 0);
+                                                            for (int i = 0; i < emptyStars; i++)
+                                                            {
+                                                                <i class="far fa-star text-warning"></i>
+                                                            }
+                                                        }
+                                                        <span>@course.Rating.ToString("0.0")</span>
+                                                    </div>
+                                                }
+                                                @if (course.StudentCount > 0)
+                                                {
+                                                    <div class="course-students">
+                                                        <small>@course.StudentCount.ToString("N0")+ students</small>
+                                                    </div>
+                                                }
+                                            </div>
+                                        </div>
+                                    </div>
+                                </a>
+                            </div>
+                        }
+                    </div>
+                }
+                else
+                {
+                    <p class="text-muted">No recommended courses available.</p>
+                }
+            </div>
+        </div>
+
+        <!-- Upcoming Events -->
+        <div class="dashboard-section">
+            <div class="section-header mb-3">
+                <h2 class="section-title">Upcoming Events</h2>
+            </div>
+            <div class="calendar-events">
+                <div class="calendar-event">
+                    <div class="event-date">
+                        <span class="event-day">15</span>
+                        <span class="event-month">May</span>
+                    </div>
+                    <div class="event-info">
+                        <h4 class="event-title">AI Study Group</h4>
+                        <p class="event-time"><i class="far fa-clock me-2"></i>7:00 PM - 9:00 PM</p>
+                    </div>
+                </div>
+                <div class="calendar-event">
+                    <div class="event-date">
+                        <span class="event-day">18</span>
+                        <span class="event-month">May</span>
+                    </div>
+                    <div class="event-info">
+                        <h4 class="event-title">Machine Learning Workshop</h4>
+                        <p class="event-time"><i class="far fa-clock me-2"></i>2:00 PM - 5:00 PM</p>
+                    </div>
+                </div>
+                <div class="calendar-event">
+                    <div class="event-date">
+                        <span class="event-day">22</span>
+                        <span class="event-month">May</span>
+                    </div>
+                    <div class="event-info">
+                        <h4 class="event-title">Guest Lecture: AI Ethics</h4>
+                        <p class="event-time"><i class="far fa-clock me-2"></i>11:00 AM - 12:30 PM</p>
+                    </div>
+                </div>
+            </div>
+            <div class="text-center mt-3">
+                <a href="#" class="btn btn-sm btn-link">View Full Calendar</a>
+            </div>
+        </div>
+    </div>
+</div>
+
+<div id="learningTimeSection" class="dashboard-section mb-4">
+    <div class="section-header d-flex justify-content-between align-items-center mb-4">
+        <h2 class="section-title">Learning Time Breakdown</h2>
+        <div class="dropdown">
+            <button class="btn btn-sm btn-outline-secondary dropdown-toggle" type="button" id="timeDropdown" data-bs-toggle="dropdown" aria-expanded="false">
+                Last 30 Days
+            </button>
+            <ul class="dropdown-menu" aria-labelledby="timeDropdown">
+                <li><a class="dropdown-item" href="#">Last 7 Days</a></li>
+                <li><a class="dropdown-item" href="#">Last 30 Days</a></li>
+                <li><a class="dropdown-item" href="#">Last 90 Days</a></li>
+            </ul>
+        </div>
+    </div>
+    <div class="row">
+        <div class="col-md-8">
+            <div class="chart-container">
+                <canvas id="learningTimeChart"></canvas>
+            </div>
+        </div>
+        <div class="col-md-4">
+            <div class="learning-time-stats">
+                <div class="time-stat-item">
+                    <div class="d-flex justify-content-between">
+                        <span>AI Fundamentals</span>
+                        <span>10h</span>
+                    </div>
+                    <div class="progress mt-1 mb-3">
+                        <div class="progress-bar bg-primary" role="progressbar" style="width: 42%;" aria-valuenow="42" aria-valuemin="0" aria-valuemax="100"></div>
+                    </div>
+                </div>
+                <div class="time-stat-item">
+                    <div class="d-flex justify-content-between">
+                        <span>Machine Learning Basics</span>
+                        <span>8h</span>
+                    </div>
+                    <div class="progress mt-1 mb-3">
+                        <div class="progress-bar bg-success" role="progressbar" style="width: 33%;" aria-valuenow="33" aria-valuemin="0" aria-valuemax="100"></div>
+                    </div>
+                </div>
+                <div class="time-stat-item">
+                    <div class="d-flex justify-content-between">
+                        <span>Deep Learning</span>
+                        <span>4h</span>
+                    </div>
+                    <div class="progress mt-1 mb-3">
+                        <div class="progress-bar bg-info" role="progressbar" style="width: 17%;" aria-valuenow="17" aria-valuemin="0" aria-valuemax="100"></div>
+                    </div>
+                </div>
+                <div class="time-stat-item">
+                    <div class="d-flex justify-content-between">
+                        <span>Neural Networks</span>
+                        <span>2h</span>
+                    </div>
+                    <div class="progress mt-1 mb-3">
+                        <div class="progress-bar bg-warning" role="progressbar" style="width: 8%;" aria-valuenow="8" aria-valuemin="0" aria-valuemax="100"></div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+
+@section Styles {
+    <style>
+        /* Continue Learning Cards */
+        .course-card {
+            background-color: #fff;
+            border-radius: 12px;
+            box-shadow: 0 4px 12px rgba(0, 0, 0, 0.05);
+            margin-bottom: 20px;
+            overflow: hidden;
+            transition: transform 0.3s ease, box-shadow 0.3s ease;
+        }
+        
+        .course-card:hover {
+            transform: translateY(-5px);
+            box-shadow: 0 10px 20px rgba(0, 0, 0, 0.1);
+        }
+        
+        .course-card-image {
+            height: 160px;
+            overflow: hidden;
+            position: relative;
+        }
+        
+        .course-card-image img {
+            width: 100%;
+            height: 100%;
+            object-fit: cover;
+        }
+        
+        .course-progress-badge {
+            position: absolute;
+            top: 10px;
+            right: 10px;
+            background-color: rgba(67, 97, 238, 0.9);
+            color: white;
+            padding: 4px 8px;
+            border-radius: 20px;
+            font-size: 0.75rem;
+        }
+        
+        .course-card-content {
+            padding: 16px;
+        }
+        
+        .course-card-title {
+            font-size: 1.1rem;
+            font-weight: 600;
+            margin-bottom: 8px;
+            color: #333;
+        }
+        
+        .course-progress-bar {
+            height: 8px;
+            background-color: #e9ecef;
+            border-radius: 4px;
+            margin: 12px 0;
+            overflow: hidden;
+        }
+        
+        .progress-fill {
+            height: 100%;
+            background-color: #4361ee;
+            border-radius: 4px;
+        }
+        
+        .course-stats {
+            display: flex;
+            justify-content: space-between;
+            color: #6c757d;
+            font-size: 0.85rem;
+        }
+        
+        .continue-btn {
+            margin-top: 12px;
+            padding: 8px 16px;
+            background-color: #4361ee;
+            color: white;
+            border: none;
+            border-radius: 6px;
+            font-weight: 500;
+            transition: background-color 0.2s;
+            width: 100%;
+        }
+        
+        .continue-btn:hover {
+            background-color: #3a56d4;
+        }
+        
+        .dashboard-card.clickable {
+            transition: transform 0.3s ease, box-shadow 0.3s ease;
+            cursor: pointer;
+        }
+        
+        .dashboard-card.clickable:hover {
+            transform: translateY(-5px);
+            box-shadow: 0 10px 20px rgba(0, 0, 0, 0.1);
+        }
+        
+        .learning-time-stats {
+            background-color: #f8f9fa;
+            border-radius: 8px;
+            padding: 20px;
+        }
+        
+        .time-stat-item {
+            margin-bottom: 10px;
+        }
+        
+        /* Profile Card Styles */
+        .profile-card {
+            background-color: #fff;
+            border-radius: 10px;
+            box-shadow: 0 5px 15px rgba(0, 0, 0, 0.05);
+            padding: 20px;
+            text-align: center;
+        }
+        
+        .profile-avatar {
+            margin: 0 auto 15px;
+            width: 100px;
+            height: 100px;
+            overflow: hidden;
+            border: 3px solid #f1f1f1;
+        }
+        
+        .profile-avatar img {
+            width: 100%;
+            height: 100%;
+            object-fit: cover;
+        }
+        
+        .profile-info h3 {
+            font-size: 1.5rem;
+            font-weight: 600;
+            color: #4361ee;
+        }
+        
+        .profile-stats {
+            margin: 15px 0;
+        }
+        
+        .stat-item h4 {
+            font-size: 1.5rem;
+            font-weight: 700;
+        }
+        
+        hr {
+            margin: 15px 0;
+            opacity: 0.1;
+        }
+        
+        /* Recommended Courses Styles */
+        .recommended-course-item {
+            background-color: #fff;
+            border-radius: 10px;
+            box-shadow: 0 3px 10px rgba(0, 0, 0, 0.05);
+            margin-bottom: 15px;
+            transition: transform 0.3s ease, box-shadow 0.3s ease;
+            overflow: hidden;
+        }
+        
+        .recommended-course-item:hover {
+            transform: translateY(-3px);
+            box-shadow: 0 8px 15px rgba(0, 0, 0, 0.1);
+        }
+        
+        .recommended-course-image img {
+            width: 100%;
+            height: 120px;
+            object-fit: cover;
+        }
+        
+        .recommended-course-content {
+            padding: 15px;
+        }
+        
+        .recommended-course-content h4 {
+            font-size: 1.1rem;
+            margin-bottom: 5px;
+            color: #333;
+        }
+        
+        .course-instructor {
+            font-size: 0.9rem;
+            color: #666;
+            margin-bottom: 10px;
+        }
+        
+        .course-rating {
+            font-size: 0.85rem;
+        }
+        
+        .course-students {
+            font-size: 0.85rem;
+            color: #666;
+        }
+    </style>
+}
+
+@section Scripts {
+    <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+    <script>
+        document.addEventListener('DOMContentLoaded', function() {
+            // Learning Progress Chart
+            const ctx = document.getElementById('learningProgressChart').getContext('2d');
+            const learningProgressChart = new Chart(ctx, {
+                type: 'line',
+                data: {
+                    labels: ['Week 1', 'Week 2', 'Week 3', 'Week 4'],
+                    datasets: [
+                        {
+                            label: 'Hours Spent',
+                            data: [5, 8, 6, 9],
+                            borderColor: '#4361ee',
+                            backgroundColor: 'rgba(67, 97, 238, 0.1)',
+                            tension: 0.4,
+                            fill: true
+                        },
+                        {
+                            label: 'Assignments Completed',
+                            data: [2, 3, 1, 4],
+                            borderColor: '#f72585',
+                            backgroundColor: 'rgba(247, 37, 133, 0.1)',
+                            tension: 0.4,
+                            fill: true
+                        }
+                    ]
+                },
+                QuizOptions: {
+                    responsive: true,
+                    maintainAspectRatio: false,
+                    plugins: {
+                        legend: {
+                            position: 'top',
+                        }
+                    },
+                    scales: {
+                        y: {
+                            beginAtZero: true,
+                            ticks: {
+                                stepSize: 2
+                            }
+                        }
+                    }
+                }
+            });
+            
+            // Learning Time Chart
+            var timeCtx = document.getElementById('learningTimeChart').getContext('2d');
+            var learningTimeChart = new Chart(timeCtx, {
+                type: 'doughnut',
+                data: {
+                    labels: ['AI Fundamentals', 'Machine Learning Basics', 'Deep Learning', 'Neural Networks'],
+                    datasets: [{
+                        data: [10, 8, 4, 2],
+                        backgroundColor: [
+                            '#4361ee',
+                            '#2ecc71',
+                            '#3498db',
+                            '#f39c12'
+                        ]
+                    }]
+                },
+                QuizOptions: {
+                    responsive: true,
+                    plugins: {
+                        legend: {
+                            position: 'bottom'
+                        },
+                        title: {
+                            display: true,
+                            text: 'Learning Time Distribution'
+                        }
+                    }
+                }
+            });
+        });
+        
+        function scrollToSection(sectionId) {
+            event.preventDefault();
+            const section = document.getElementById(sectionId);
+            if (section) {
+                window.scrollTo({
+                    top: section.offsetTop - 80, // Offset for header
+                    behavior: 'smooth'
+                });
+            }
+        }
+    </script>
+}
+

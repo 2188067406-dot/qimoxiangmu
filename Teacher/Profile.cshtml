@@ -1,0 +1,396 @@
+@{
+    ViewData["Title"] = "Profile";
+    ViewData["ShowSearch"] = true;
+}
+
+<div class="profile-container">
+    <div class="section-header d-flex justify-content-between align-items-center mb-4">
+        <h1 class="section-title">My Profile</h1>
+        <div>
+            <a asp-controller="Teacher" asp-action="Dashboard" class="btn btn-outline-primary">
+                <i class="fas fa-arrow-left me-2"></i>Back to Dashboard
+            </a>
+        </div>
+    </div>
+
+    <div class="row">
+        <!-- Left column - Profile Information -->
+        <div class="col-lg-8">
+            <div class="card border-0 shadow-sm mb-4">
+                <div class="card-body">
+                    <h4 class="card-title mb-4">Profile Information</h4>
+                    <form id="profileForm">
+                        <div class="row mb-3">
+                            <div class="col-md-6">
+                                <label for="name" class="form-label">Full Name</label>
+                                <input type="text" class="form-control" id="name" value="Dr. John Smith" required>
+                            </div>
+                            <div class="col-md-6">
+                                <label for="title" class="form-label">Title/Position</label>
+                                <input type="text" class="form-control" id="title" value="AI & Machine Learning Professor">
+                            </div>
+                        </div>
+                        <div class="row mb-3">
+                            <div class="col-md-6">
+                                <label for="email" class="form-label">Email Address</label>
+                                <input type="email" class="form-control" id="email" value="john.smith@university.edu" required>
+                            </div>
+                            <div class="col-md-6">
+                                <label for="phone" class="form-label">Phone Number</label>
+                                <input type="tel" class="form-control" id="phone" value="(555) 123-4567">
+                            </div>
+                        </div>
+                        <div class="mb-3">
+                            <label for="bio" class="form-label">Biography</label>
+                            <textarea class="form-control" id="bio" rows="4">Dr. John Smith is a professor of AI and Machine Learning with over 15 years of experience in the field. He has published numerous research papers on neural networks, deep learning, and their applications in various domains. Dr. Smith has received several awards for his contributions to AI research and education.</textarea>
+                        </div>
+                        <div class="row mb-3">
+                            <div class="col-md-6">
+                                <label for="department" class="form-label">Department</label>
+                                <input type="text" class="form-control" id="department" value="Computer Science">
+                            </div>
+                            <div class="col-md-6">
+                                <label for="officehours" class="form-label">Office Hours</label>
+                                <input type="text" class="form-control" id="officehours" value="Mon & Wed 2:00 PM - 4:00 PM">
+                            </div>
+                        </div>
+                        <div class="mb-3">
+                            <label for="specialization" class="form-label">Specialization Areas</label>
+                            <select class="form-select" id="specialization" multiple>
+                                <QuizOption selected>Artificial Intelligence</QuizOption>
+                                <QuizOption selected>Machine Learning</QuizOption>
+                                <QuizOption selected>Neural Networks</QuizOption>
+                                <QuizOption>Natural Language Processing</QuizOption>
+                                <QuizOption>Computer Vision</QuizOption>
+                                <QuizOption>Reinforcement Learning</QuizOption>
+                            </select>
+                            <small class="text-muted">Hold Ctrl/Cmd to select multiple areas</small>
+                        </div>
+                        <button type="submit" class="btn btn-primary">Save Changes</button>
+                    </form>
+                </div>
+            </div>
+
+            <div class="card border-0 shadow-sm mb-4">
+                <div class="card-body">
+                    <h4 class="card-title mb-4">Change Password</h4>
+                    <form id="passwordForm">
+                        <div class="mb-3">
+                            <label for="currentPassword" class="form-label">Current Password</label>
+                            <input type="password" class="form-control" id="currentPassword" required>
+                        </div>
+                        <div class="mb-3">
+                            <label for="newPassword" class="form-label">New Password</label>
+                            <input type="password" class="form-control" id="newPassword" required>
+                        </div>
+                        <div class="mb-3">
+                            <label for="confirmPassword" class="form-label">Confirm New Password</label>
+                            <input type="password" class="form-control" id="confirmPassword" required>
+                        </div>
+                        <button type="submit" class="btn btn-primary">Update Password</button>
+                    </form>
+                </div>
+            </div>
+
+            <div class="card border-0 shadow-sm mb-4">
+                <div class="card-body">
+                    <h4 class="card-title mb-4">Notification Preferences</h4>
+                    <form id="notificationForm">
+                        <div class="form-check form-switch mb-3">
+                            <input class="form-check-input" type="checkbox" id="emailNotifications" checked>
+                            <label class="form-check-label" for="emailNotifications">
+                                Email Notifications
+                            </label>
+                            <div class="text-muted small">Receive notifications via email</div>
+                        </div>
+                        <div class="form-check form-switch mb-3">
+                            <input class="form-check-input" type="checkbox" id="assignmentNotifications" checked>
+                            <label class="form-check-label" for="assignmentNotifications">
+                                Assignment Submissions
+                            </label>
+                            <div class="text-muted small">Get notified when students submit assignments</div>
+                        </div>
+                        <div class="form-check form-switch mb-3">
+                            <input class="form-check-input" type="checkbox" id="messageNotifications" checked>
+                            <label class="form-check-label" for="messageNotifications">
+                                New Messages
+                            </label>
+                            <div class="text-muted small">Get notified when you receive new messages</div>
+                        </div>
+                        <div class="form-check form-switch mb-3">
+                            <input class="form-check-input" type="checkbox" id="courseEnrollment">
+                            <label class="form-check-label" for="courseEnrollment">
+                                Course Enrollment
+                            </label>
+                            <div class="text-muted small">Get notified when students enroll in your courses</div>
+                        </div>
+                        <div class="form-check form-switch mb-3">
+                            <input class="form-check-input" type="checkbox" id="systemUpdates">
+                            <label class="form-check-label" for="systemUpdates">
+                                System Updates
+                            </label>
+                            <div class="text-muted small">Receive updates about the platform</div>
+                        </div>
+                        <button type="submit" class="btn btn-primary">Save Preferences</button>
+                    </form>
+                </div>
+            </div>
+        </div>
+
+        <!-- Right column - Profile Picture and Public Profile -->
+        <div class="col-lg-4">
+            <div class="card border-0 shadow-sm mb-4">
+                <div class="card-body text-center">
+                    <h4 class="card-title mb-4">Profile Picture</h4>
+                    <div class="profile-picture-container mb-3">
+                        <img src="https://randomuser.me/api/portraits/men/42.jpg" alt="Profile Picture" class="img-fluid rounded-circle profile-picture">
+                        <div class="profile-picture-overlay">
+                            <button class="btn btn-sm btn-light" id="changeProfilePicture">
+                                <i class="fas fa-camera"></i>
+                            </button>
+                        </div>
+                    </div>
+                    <div class="mb-3">
+                        <input type="file" class="form-control" id="profilePictureUpload" accept="image/*" style="display: none;">
+                        <button class="btn btn-outline-primary" id="uploadProfilePicture">
+                            <i class="fas fa-upload me-2"></i>Upload New Picture
+                        </button>
+                    </div>
+                    <div class="text-muted small">
+                        Recommended: Square image, at least 400x400 pixels
+                    </div>
+                </div>
+            </div>
+
+            <div class="card border-0 shadow-sm mb-4">
+                <div class="card-body">
+                    <h4 class="card-title mb-4">Social Profiles</h4>
+                    <form id="socialProfilesForm">
+                        <div class="input-group mb-3">
+                            <span class="input-group-text bg-light">
+                                <i class="fab fa-linkedin text-primary"></i>
+                            </span>
+                            <input type="url" class="form-control" id="linkedin" placeholder="LinkedIn URL" value="https://linkedin.com/in/johnsmith">
+                        </div>
+                        <div class="input-group mb-3">
+                            <span class="input-group-text bg-light">
+                                <i class="fab fa-twitter text-info"></i>
+                            </span>
+                            <input type="url" class="form-control" id="twitter" placeholder="Twitter URL" value="https://twitter.com/drjohnsmith">
+                        </div>
+                        <div class="input-group mb-3">
+                            <span class="input-group-text bg-light">
+                                <i class="fab fa-researchgate text-danger"></i>
+                            </span>
+                            <input type="url" class="form-control" id="researchgate" placeholder="ResearchGate URL" value="https://researchgate.net/profile/John-Smith">
+                        </div>
+                        <div class="input-group mb-3">
+                            <span class="input-group-text bg-light">
+                                <i class="fas fa-globe text-success"></i>
+                            </span>
+                            <input type="url" class="form-control" id="website" placeholder="Personal Website URL" value="https://johnsmith.edu">
+                        </div>
+                        <button type="submit" class="btn btn-primary">Save Social Profiles</button>
+                    </form>
+                </div>
+            </div>
+
+            <div class="card border-0 shadow-sm">
+                <div class="card-body">
+                    <h4 class="card-title mb-4">Public Profile</h4>
+                    <p class="text-muted">Your public profile is visible to students and colleagues.</p>
+                    <div class="d-grid gap-2 mb-4">
+                        <a href="@Url.Action("PublicProfile", "Teacher")" class="btn btn-outline-primary rounded-pill">
+                            <i class="fas fa-eye me-2"></i>View Public Profile
+                        </a>
+                    </div>
+                    <hr>
+                    <div class="form-check form-switch">
+                        <input class="form-check-input" type="checkbox" id="profileVisibility" checked style="background-color: #4361ee; border-color: #4361ee;">
+                        <label class="form-check-label" for="profileVisibility">
+                            Public Profile Enabled
+                        </label>
+                    </div>
+                    <div class="text-muted small mt-2">
+                        Toggle to enable or disable your public profile visibility
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+
+@section Scripts {
+    <script>
+        document.addEventListener('DOMContentLoaded', function() {
+            // Profile picture upload functionality
+            const uploadProfilePictureBtn = document.getElementById('uploadProfilePicture');
+            const profilePictureUpload = document.getElementById('profilePictureUpload');
+            const changeProfilePictureBtn = document.getElementById('changeProfilePicture');
+            
+            uploadProfilePictureBtn.addEventListener('click', function() {
+                profilePictureUpload.click();
+            });
+            
+            changeProfilePictureBtn.addEventListener('click', function() {
+                profilePictureUpload.click();
+            });
+            
+            profilePictureUpload.addEventListener('change', function(e) {
+                if (e.target.files.length > 0) {
+                    const file = e.target.files[0];
+                    const reader = new FileReader();
+                    
+                    reader.onload = function(e) {
+                        document.querySelector('.profile-picture').src = e.target.result;
+                    };
+                    
+                    reader.readAsDataURL(file);
+                    
+                    // In a real app, you would upload the file to the server here
+                    showToast('Profile picture updated successfully!', 'success');
+                }
+            });
+            
+            // Public Profile Toggle functionality
+            const profileVisibilityToggle = document.getElementById('profileVisibility');
+            
+            profileVisibilityToggle.addEventListener('change', function() {
+                const isEnabled = this.checked;
+                
+                // In a real app, you would send an AJAX request to update the setting
+                fetch('/Teacher/UpdateProfileVisibility', {
+                    method: 'POST',
+                    headers: {
+                        'Content-Type': 'application/json',
+                    },
+                    body: JSON.stringify({ isEnabled: isEnabled })
+                })
+                .then(response => {
+                    // This is just simulating the response for demo purposes
+                    const message = isEnabled ? 
+                        'Public profile has been enabled.' : 
+                        'Public profile has been disabled.';
+                    showToast(message, 'success');
+                })
+                .catch(error => {
+                    console.error('Error:', error);
+                    showToast('An error occurred while updating your profile visibility.', 'error');
+                    // Revert the toggle if there was an error
+                    this.checked = !isEnabled;
+                });
+            });
+            
+            // Form submission handlers
+            document.getElementById('profileForm').addEventListener('submit', function(e) {
+                e.preventDefault();
+                // In a real app, you would send an AJAX request to update the profile
+                showToast('Profile information updated successfully!', 'success');
+            });
+            
+            document.getElementById('passwordForm').addEventListener('submit', function(e) {
+                e.preventDefault();
+                // In a real app, you would validate and update the password
+                const newPassword = document.getElementById('newPassword').value;
+                const confirmPassword = document.getElementById('confirmPassword').value;
+                
+                if (newPassword !== confirmPassword) {
+                    showToast('New password and confirm password do not match.', 'error');
+                    return;
+                }
+                
+                showToast('Password updated successfully!', 'success');
+                this.reset();
+            });
+            
+            document.getElementById('notificationForm').addEventListener('submit', function(e) {
+                e.preventDefault();
+                // In a real app, you would send an AJAX request to update notification preferences
+                showToast('Notification preferences updated successfully!', 'success');
+            });
+            
+            document.getElementById('socialProfilesForm').addEventListener('submit', function(e) {
+                e.preventDefault();
+                // In a real app, you would send an AJAX request to update social profiles
+                showToast('Social profiles updated successfully!', 'success');
+            });
+            
+            // Toast notification helper function
+            function showToast(message, type) {
+                const toastId = 'toast-' + Date.now();
+                const toastHtml = `
+                    <div class="position-fixed top-0 end-0 p-3" style="z-index: 1050">
+                        <div id="${toastId}" class="toast align-items-center text-white bg-${type === 'success' ? 'success' : 'danger'}" role="alert" aria-live="assertive" aria-atomic="true">
+                            <div class="d-flex">
+                                <div class="toast-body">
+                                    ${message}
+                                </div>
+                                <button type="button" class="btn-close btn-close-white me-2 m-auto" data-bs-dismiss="toast" aria-label="Close"></button>
+                            </div>
+                        </div>
+                    </div>
+                `;
+                
+                document.body.insertAdjacentHTML('beforeend', toastHtml);
+                const toastElement = document.getElementById(toastId);
+                const toast = new bootstrap.Toast(toastElement, { delay: 3000 });
+                toast.show();
+                
+                // Remove toast from DOM after it's hidden
+                toastElement.addEventListener('hidden.bs.toast', function() {
+                    toastElement.parentNode.remove();
+                });
+            }
+        });
+    </script>
+}
+
+<style>
+    .profile-picture-container {
+        position: relative;
+        width: 150px;
+        height: 150px;
+        margin: 0 auto;
+    }
+    
+    .profile-picture {
+        width: 100%;
+        height: 100%;
+        object-fit: cover;
+    }
+    
+    .profile-picture-overlay {
+        position: absolute;
+        bottom: 0;
+        right: 0;
+        display: none;
+    }
+    
+    .profile-picture-container:hover .profile-picture-overlay {
+        display: block;
+    }
+    
+    /* Toast styles */
+    .toast {
+        opacity: 1 !important;
+    }
+    
+    /* Form validation feedback */
+    .was-validated .form-control:invalid,
+    .form-control.is-invalid {
+        border-color: var(--bs-danger);
+        background-image: url("data:image/svg+xml,%3csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 12 12' width='12' height='12' fill='none' stroke='%23dc3545'%3e%3ccircle cx='6' cy='6' r='4.5'/%3e%3cpath stroke-linejoin='round' d='M5.8 3.6h.4L6 6.5z'/%3e%3ccircle cx='6' cy='8.2' r='.6' fill='%23dc3545' stroke='none'/%3e%3c/svg%3e");
+        background-repeat: no-repeat;
+        background-position: right calc(0.375em + 0.1875rem) center;
+        background-size: calc(0.75em + 0.375rem) calc(0.75em + 0.375rem);
+    }
+    
+    .was-validated .form-control:valid,
+    .form-control.is-valid {
+        border-color: var(--bs-success);
+        background-image: url("data:image/svg+xml,%3csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 8 8'%3e%3cpath fill='%23198754' d='M2.3 6.73.6 4.53c-.4-1.04.46-1.4 1.1-.8l1.1 1.4 3.4-3.8c.6-.63 1.6-.27 1.2.7l-4 4.6c-.43.5-.8.4-1.1.1z'/%3e%3c/svg%3e");
+        background-repeat: no-repeat;
+        background-position: right calc(0.375em + 0.1875rem) center;
+        background-size: calc(0.75em + 0.375rem) calc(0.75em + 0.375rem);
+    }
+</style> 

@@ -1,0 +1,144 @@
+@model TeachingAI1.ViewModels.CourseViewModel
+
+@{
+    ViewData["Title"] = "Create New Course";
+    Layout = "~/Views/Shared/_TeacherLayout.cshtml";
+}
+
+<div class="container-fluid pt-4 px-4">
+    <div class="row mb-4">
+        <div class="col-12">
+            <div class="d-flex justify-content-between align-items-center mb-3">
+                <h2 class="mb-0">@ViewData["Title"]</h2>
+                <a asp-controller="Teacher" asp-action="Courses" class="btn btn-outline-primary">
+                    <i class="fa fa-arrow-left me-2"></i>Back to Courses
+                </a>
+            </div>
+        </div>
+    </div>
+
+    @if (!ViewData.ModelState.IsValid)
+    {
+        <div class="alert alert-danger">
+            <h4>Error</h4>
+            <div asp-validation-summary="All" class="text-danger"></div>
+        </div>
+    }
+
+    <div class="row">
+        <div class="col-12">
+            <div class="bg-light rounded p-4">
+                <form asp-controller="Teacher" asp-action="CreateCourse" method="post">
+                    <div class="row mb-3">
+                        <div class="col-md-6">
+                            <div class="form-group mb-3">
+                                <label asp-for="CourseName" class="form-label">Course Name</label>
+                                <input asp-for="CourseName" class="form-control" placeholder="Enter course name" id="courseName" />
+                                <span asp-validation-for="CourseName" class="text-danger"></span>
+                                <input asp-for="Title" type="hidden" id="courseTitle" />
+                            </div>
+                            
+                            <div class="form-group mb-3">
+                                <label asp-for="Description" class="form-label">Description</label>
+                                <textarea asp-for="Description" class="form-control" rows="5" placeholder="Enter course description"></textarea>
+                                <span asp-validation-for="Description" class="text-danger"></span>
+                            </div>
+                            
+                            <div class="form-group mb-3">
+                                <label asp-for="Duration" class="form-label">Duration</label>
+                                <input asp-for="Duration" class="form-control" placeholder="e.g. 12 Weeks" value="12 Weeks" />
+                                <span asp-validation-for="Duration" class="text-danger"></span>
+                            </div>
+                            
+                            <div class="form-group mb-3">
+                                <label asp-for="Status" class="form-label">Status</label>
+                                <select asp-for="Status" class="form-select">
+                                    <QuizOption value="Active">Active</QuizOption>
+                                    <QuizOption value="Draft">Draft</QuizOption>
+                                    <QuizOption value="Archived">Archived</QuizOption>
+                                </select>
+                                <span asp-validation-for="Status" class="text-danger"></span>
+                            </div>
+
+                            <div class="form-group">
+                                <label asp-for="Content" class="form-label">课程内容</label>
+                                <textarea asp-for="Content" 
+                                        class="form-control" 
+                                        rows="10" 
+                                        placeholder="请输入课程详细内容..."></textarea>
+                                <span asp-validation-for="Content" class="text-danger"></span>
+                            </div>
+                        </div>
+                        
+                        <div class="col-md-6">
+                            <div class="row mb-3">
+                                <div class="col-md-6">
+                                    <div class="form-group">
+                                        <label asp-for="StartDate" class="form-label">Start Date</label>
+                                        <input asp-for="StartDate" class="form-control" type="date" />
+                                        <span asp-validation-for="StartDate" class="text-danger"></span>
+                                    </div>
+                                </div>
+                                <div class="col-md-6">
+                                    <div class="form-group">
+                                        <label asp-for="EndDate" class="form-label">End Date</label>
+                                        <input asp-for="EndDate" class="form-control" type="date" />
+                                        <span asp-validation-for="EndDate" class="text-danger"></span>
+                                    </div>
+                                </div>
+                            </div>
+                            
+                            <div class="form-group mb-3">
+                                <label asp-for="Syllabus" class="form-label">Syllabus (QuizOptional)</label>
+                                <textarea asp-for="Syllabus" class="form-control" rows="7" placeholder="Enter course syllabus"></textarea>
+                                <span asp-validation-for="Syllabus" class="text-danger"></span>
+                            </div>
+                        </div>
+                    </div>
+                    
+                    <div class="form-check mb-3">
+                        <input asp-for="PublishImmediately" class="form-check-input" type="checkbox" id="publishCheckbox" checked />
+                        <label class="form-check-label" for="publishCheckbox">
+                            Publish this course immediately
+                        </label>
+                    </div>
+                    
+                    <div class="d-flex justify-content-end">
+                        <a asp-controller="Teacher" asp-action="Courses" class="btn btn-outline-secondary me-2">Cancel</a>
+                        <button type="submit" class="btn btn-primary">Create Course</button>
+                    </div>
+                </form>
+            </div>
+        </div>
+    </div>
+</div>
+
+@section Scripts {
+    <script>
+        $(document).ready(function() {
+            // Sync the Name field with the Title field
+            $('#courseName').on('input', function() {
+                $('#courseTitle').val($(this).val());
+            });
+            
+            // Initialize Title with Name value on page load
+            $('#courseTitle').val($('#courseName').val());
+            
+            // Validate end date is after start date
+            $('form').on('submit', function(e) {
+                // Make sure Title is set before submitting
+                if ($('#courseName').val()) {
+                    $('#courseTitle').val($('#courseName').val());
+                }
+                
+                const startDate = new Date($('#StartDate').val());
+                const endDate = new Date($('#EndDate').val());
+                
+                if (endDate <= startDate) {
+                    e.preventDefault();
+                    alert('End date must be after start date');
+                }
+            });
+        });
+    </script>
+} 

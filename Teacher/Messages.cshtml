@@ -1,0 +1,1065 @@
+@{
+    ViewData["Title"] = "Messages";
+    ViewData["ShowSearch"] = true;
+}
+
+<div class="messages-container">
+    <!-- Header Section -->
+    <div class="section-header d-flex justify-content-between align-items-center mb-4">
+        <h1 class="section-title">Messages <span class="badge bg-primary ms-2">24</span></h1>
+        <button class="btn btn-primary" data-bs-toggle="modal" data-bs-target="#composeMessageModal">
+            <i class="fas fa-envelope me-2"></i>Compose New
+        </button>
+    </div>
+
+    <!-- Messages Container -->
+    <div class="row">
+        <!-- Left Sidebar - Message Folders -->
+        <div class="col-md-3 mb-4 mb-md-0">
+            <div class="card border-0 shadow-sm">
+                <div class="list-group list-group-flush rounded-3">
+                    <a href="#" class="list-group-item list-group-item-action d-flex justify-content-between align-items-center active">
+                        <span><i class="fas fa-inbox me-2"></i>Inbox</span>
+                        <span class="badge bg-white text-primary rounded-pill">24</span>
+                    </a>
+                    <a href="#" class="list-group-item list-group-item-action d-flex justify-content-between align-items-center">
+                        <span><i class="fas fa-paper-plane me-2"></i>Sent</span>
+                    </a>
+                    <a href="#" class="list-group-item list-group-item-action d-flex justify-content-between align-items-center">
+                        <span><i class="fas fa-star me-2"></i>Starred</span>
+                        <span class="badge bg-light text-dark rounded-pill">3</span>
+                    </a>
+                    <a href="#" class="list-group-item list-group-item-action d-flex justify-content-between align-items-center">
+                        <span><i class="fas fa-exclamation-circle me-2"></i>Important</span>
+                        <span class="badge bg-light text-dark rounded-pill">5</span>
+                    </a>
+                    <a href="#" class="list-group-item list-group-item-action">
+                        <span><i class="fas fa-trash me-2"></i>Trash</span>
+                    </a>
+                </div>
+            </div>
+            
+            <!-- Filters -->
+            <div class="card border-0 shadow-sm mt-4">
+                <div class="card-header bg-transparent">
+                    <h5 class="mb-0"><i class="fas fa-filter me-2"></i>Filters</h5>
+                </div>
+                <div class="card-body">
+                    <div class="mb-3">
+                        <label class="form-label">Courses</label>
+                        <select class="form-select form-select-sm">
+                            <QuizOption selected>All Courses</QuizOption>
+                            <QuizOption>Introduction to AI</QuizOption>
+                            <QuizOption>Machine Learning Fundamentals</QuizOption>
+                            <QuizOption>Deep Learning Applications</QuizOption>
+                        </select>
+                    </div>
+                    <div class="mb-3">
+                        <label class="form-label">Time Range</label>
+                        <select class="form-select form-select-sm">
+                            <QuizOption selected>Any Time</QuizOption>
+                            <QuizOption>Today</QuizOption>
+                            <QuizOption>This Week</QuizOption>
+                            <QuizOption>This Month</QuizOption>
+                        </select>
+                    </div>
+                    <div class="mb-0">
+                        <div class="form-check">
+                            <input class="form-check-input" type="checkbox" id="unreadOnly">
+                            <label class="form-check-label" for="unreadOnly">
+                                Unread only
+                            </label>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+        
+        <!-- Right Content - Message List and Preview -->
+        <div class="col-md-9">
+            <div class="card border-0 shadow-sm">
+                <div class="card-body p-0">
+                    <!-- Message Toolbar -->
+                    <div class="message-toolbar p-3 border-bottom">
+                        <div class="d-flex justify-content-between align-items-center">
+                            <div>
+                                <div class="form-check d-inline-block me-2">
+                                    <input class="form-check-input" type="checkbox" id="selectAll">
+                                    <label class="form-check-label" for="selectAll"></label>
+                                </div>
+                                <div class="btn-group me-2">
+                                    <button class="btn btn-sm btn-outline-secondary">
+                                        <i class="fas fa-trash"></i>
+                                    </button>
+                                    <button class="btn btn-sm btn-outline-secondary">
+                                        <i class="fas fa-archive"></i>
+                                    </button>
+                                    <button class="btn btn-sm btn-outline-secondary">
+                                        <i class="fas fa-exclamation-circle"></i>
+                                    </button>
+                                </div>
+                            </div>
+                            <div class="d-flex align-items-center">
+                                <span class="text-muted me-3">1-10 of 24</span>
+                                <div class="btn-group">
+                                    <button class="btn btn-sm btn-outline-secondary">
+                                        <i class="fas fa-chevron-left"></i>
+                                    </button>
+                                    <button class="btn btn-sm btn-outline-secondary">
+                                        <i class="fas fa-chevron-right"></i>
+                                    </button>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                    
+                    <!-- Message List -->
+                    <div class="message-list">
+                        <!-- Unread Messages -->
+                        <div class="message-item unread" data-message-id="1">
+                            <div class="form-check">
+                                <input class="form-check-input" type="checkbox">
+                            </div>
+                            <div class="message-star">
+                                <i class="far fa-star"></i>
+                            </div>
+                            <div class="message-sender fw-bold">Emma Johnson</div>
+                            <div class="message-subject fw-bold">
+                                <span class="badge bg-info me-2">Assignment</span>
+                                QuizQuestion about the Neural Networks homework
+                            </div>
+                            <div class="message-snippet">Hi Professor, I'm having trouble with the backpropagation algorithm in QuizQuestion 3. Could you provide some clarification on...</div>
+                            <div class="message-time">10:45 AM</div>
+                        </div>
+                        
+                        <div class="message-item unread" data-message-id="2">
+                            <div class="form-check">
+                                <input class="form-check-input" type="checkbox">
+                            </div>
+                            <div class="message-star">
+                                <i class="fas fa-star text-warning"></i>
+                            </div>
+                            <div class="message-sender fw-bold">Michael Chen</div>
+                            <div class="message-subject fw-bold">
+                                <span class="badge bg-danger me-2">Urgent</span>
+                                Extension request for AI Ethics paper
+                            </div>
+                            <div class="message-snippet">Dear Professor Smith, Due to unforeseen medical circumstances, I need to request an extension for the AI Ethics paper due tomorrow...</div>
+                            <div class="message-time">Yesterday</div>
+                        </div>
+                        
+                        <!-- Read Messages -->
+                        <div class="message-item" data-message-id="3">
+                            <div class="form-check">
+                                <input class="form-check-input" type="checkbox">
+                            </div>
+                            <div class="message-star">
+                                <i class="far fa-star"></i>
+                            </div>
+                            <div class="message-sender">Academic Department</div>
+                            <div class="message-subject">
+                                Schedule for next semester now available
+                            </div>
+                            <div class="message-snippet">Dear Faculty, The tentative schedule for the upcoming semester is now available for review. Please check your assigned courses...</div>
+                            <div class="message-time">May 12</div>
+                        </div>
+                        
+                        <div class="message-item" data-message-id="4">
+                            <div class="form-check">
+                                <input class="form-check-input" type="checkbox">
+                            </div>
+                            <div class="message-star">
+                                <i class="far fa-star"></i>
+                            </div>
+                            <div class="message-sender">Robert Johnson</div>
+                            <div class="message-subject">
+                                <span class="badge bg-success me-2">Feedback</span>
+                                Thank you for the recommendation letter
+                            </div>
+                            <div class="message-snippet">Professor Smith, I wanted to express my sincere gratitude for writing the recommendation letter for my graduate school application...</div>
+                            <div class="message-time">May 10</div>
+                        </div>
+                        
+                        <div class="message-item" data-message-id="5">
+                            <div class="form-check">
+                                <input class="form-check-input" type="checkbox">
+                            </div>
+                            <div class="message-star">
+                                <i class="fas fa-star text-warning"></i>
+                            </div>
+                            <div class="message-sender">AI Research Conference</div>
+                            <div class="message-subject">
+                                Invitation to speak at AI Innovation Summit
+                            </div>
+                            <div class="message-snippet">Dear Dr. Smith, We would be honored to have you as a keynote speaker at the upcoming AI Innovation Summit scheduled for...</div>
+                            <div class="message-time">May 8</div>
+                        </div>
+                        
+                        <div class="message-item" data-message-id="6">
+                            <div class="form-check">
+                                <input class="form-check-input" type="checkbox">
+                            </div>
+                            <div class="message-star">
+                                <i class="far fa-star"></i>
+                            </div>
+                            <div class="message-sender">Sarah Williams</div>
+                            <div class="message-subject">
+                                Dataset for the machine learning project
+                            </div>
+                            <div class="message-snippet">Hello Professor, I've compiled the dataset for our final project on image recognition. You can access it through the shared drive...</div>
+                            <div class="message-time">May 5</div>
+                        </div>
+                        
+                        <div class="message-item" data-message-id="7">
+                            <div class="form-check">
+                                <input class="form-check-input" type="checkbox">
+                            </div>
+                            <div class="message-star">
+                                <i class="far fa-star"></i>
+                            </div>
+                            <div class="message-sender">David Thompson</div>
+                            <div class="message-subject">
+                                Office hours appointment request
+                            </div>
+                            <div class="message-snippet">Professor Smith, I would like to schedule an appointment during your office hours next Wednesday to discuss potential research opportunities...</div>
+                            <div class="message-time">May 3</div>
+                        </div>
+                        
+                        <div class="message-item" data-message-id="8">
+                            <div class="form-check">
+                                <input class="form-check-input" type="checkbox">
+                            </div>
+                            <div class="message-star">
+                                <i class="fas fa-star text-warning"></i>
+                            </div>
+                            <div class="message-sender">Academic Publishing</div>
+                            <div class="message-subject">
+                                Your manuscript review is due
+                            </div>
+                            <div class="message-snippet">Dear Reviewer, This is a friendly reminder that your review for manuscript ID AI-2023-0142 "Advances in Reinforcement Learning" is due in one week...</div>
+                            <div class="message-time">May 1</div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+
+<!-- Compose Message Modal -->
+<div class="modal fade" id="composeMessageModal" tabindex="-1" aria-labelledby="composeMessageModalLabel" aria-hidden="true">
+    <div class="modal-dialog modal-lg">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h5 class="modal-title" id="composeMessageModalLabel">Compose New Message</h5>
+                <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+            </div>
+            <div class="modal-body">
+                <form>
+                    <div class="mb-3">
+                        <label for="messageRecipients" class="form-label">To</label>
+                        <select class="form-select" id="messageRecipients" multiple>
+                            <QuizOption value="all">All Students</QuizOption>
+                            <QuizOption value="course1">Introduction to AI Students</QuizOption>
+                            <QuizOption value="course2">Machine Learning Students</QuizOption>
+                            <QuizOption value="student1">Emma Johnson</QuizOption>
+                            <QuizOption value="student2">Michael Chen</QuizOption>
+                            <QuizOption value="student3">Sarah Williams</QuizOption>
+                            <QuizOption value="student4">Robert Johnson</QuizOption>
+                        </select>
+                        <small class="text-muted">Hold Ctrl/Cmd to select multiple recipients</small>
+                    </div>
+                    <div class="mb-3">
+                        <label for="messageSubject" class="form-label">Subject</label>
+                        <input type="text" class="form-control" id="messageSubject">
+                    </div>
+                    <div class="mb-3">
+                        <label for="messageContent" class="form-label">Message</label>
+                        <textarea class="form-control" id="messageContent" rows="6"></textarea>
+                    </div>
+                    <div class="mb-3">
+                        <div class="form-check form-check-inline">
+                            <input class="form-check-input" type="checkbox" id="sendEmail" checked>
+                            <label class="form-check-label" for="sendEmail">Send as email</label>
+                        </div>
+                        <div class="form-check form-check-inline">
+                            <input class="form-check-input" type="checkbox" id="markUrgent">
+                            <label class="form-check-label" for="markUrgent">Mark as urgent</label>
+                        </div>
+                    </div>
+                </form>
+            </div>
+            <div class="modal-footer">
+                <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Cancel</button>
+                <button type="button" class="btn btn-primary">Send Message</button>
+            </div>
+        </div>
+    </div>
+</div>
+
+<!-- Message Read Modal -->
+<div class="modal fade" id="readMessageModal" tabindex="-1" aria-labelledby="readMessageModalLabel" aria-hidden="true">
+    <div class="modal-dialog modal-lg">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h5 class="modal-title" id="readMessageModalLabel">Message</h5>
+                <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+            </div>
+            <div class="modal-body">
+                <div class="message-details">
+                    <div class="mb-3 d-flex justify-content-between align-items-start">
+                        <div>
+                            <div class="d-flex align-items-center">
+                                <img src="https://randomuser.me/api/portraits/women/12.jpg" class="rounded-circle me-3" width="40" height="40" alt="Sender">
+                                <div>
+                                    <h6 class="mb-0" id="modalMessageSender">Emma Johnson</h6>
+                                    <small class="text-muted" id="modalMessageEmail">emma.johnson@university.edu</small>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="text-muted" id="modalMessageTime">May 15, 2023, 10:45 AM</div>
+                    </div>
+                    <div class="mb-4">
+                        <h5 id="modalMessageSubject">QuizQuestion about the Neural Networks homework</h5>
+                        <div class="badge bg-info mb-2" id="modalMessageCategory">Assignment</div>
+                    </div>
+                    <div class="message-content mb-4" id="modalMessageContent">
+                        <p>Hi Professor,</p>
+                        <p>I'm having trouble with the backpropagation algorithm in QuizQuestion 3 of the Neural Networks homework. Could you provide some clarification on how to calculate the gradient for the hidden layer?</p>
+                        <p>I understand how to compute the output layer gradients, but I'm confused about propagating the error backwards to the hidden layers. Specifically, I'm not sure how to handle the activation functions during backpropagation.</p>
+                        <p>Is there a specific resource you recommend for understanding this concept better?</p>
+                        <p>Thank you for your help!</p>
+                        <p>Best regards,<br>Emma Johnson</p>
+                    </div>
+                    <div class="message-attachments mb-4" id="modalMessageAttachments">
+                        <h6>Attachments (1)</h6>
+                        <div class="attachment-item">
+                            <i class="fas fa-file-pdf me-2 text-danger"></i>
+                            <span>Neural_Networks_HW3_Attempt.pdf</span>
+                            <a href="#" class="ms-2 text-decoration-none"><i class="fas fa-download"></i> Download</a>
+                        </div>
+                    </div>
+                </div>
+                <hr>
+                <div class="reply-section">
+                    <h6>Reply</h6>
+                    <textarea class="form-control mb-3" rows="4" placeholder="Type your reply here..."></textarea>
+                    <div class="d-flex justify-content-between">
+                        <div>
+                            <button class="btn btn-sm btn-outline-secondary me-2">
+                                <i class="fas fa-paperclip me-1"></i> Attach
+                            </button>
+                            <button class="btn btn-sm btn-outline-secondary">
+                                <i class="fas fa-smile me-1"></i> Emoji
+                            </button>
+                        </div>
+                        <button class="btn btn-primary">Send Reply</button>
+                    </div>
+                </div>
+            </div>
+            <div class="modal-footer">
+                <div class="btn-group me-auto">
+                    <button type="button" class="btn btn-outline-secondary">
+                        <i class="fas fa-reply"></i> Reply
+                    </button>
+                    <button type="button" class="btn btn-outline-secondary">
+                        <i class="fas fa-reply-all"></i> Reply All
+                    </button>
+                    <button type="button" class="btn btn-outline-secondary">
+                        <i class="fas fa-forward"></i> Forward
+                    </button>
+                </div>
+                <button type="button" class="btn btn-outline-danger">
+                    <i class="fas fa-trash"></i> Delete
+                </button>
+            </div>
+        </div>
+    </div>
+</div>
+
+@section Scripts {
+    <script>
+        document.addEventListener('DOMContentLoaded', function() {
+            // Message data by folder
+            const messageFolders = {
+                inbox: [
+                    {
+                        id: '1',
+                        sender: 'Emma Johnson',
+                        email: 'emma.johnson@university.edu',
+                        subject: 'QuizQuestion about the Neural Networks homework',
+                        category: 'Assignment',
+                        snippet: "Hi Professor, I'm having trouble with the backpropagation algorithm in QuizQuestion 3. Could you provide some clarification on...",
+                        time: '10:45 AM',
+                        fullTime: 'May 15, 2023, 10:45 AM',
+                        isUnread: true,
+                        isStarred: false,
+                        isImportant: false,
+                        content: `<p>Hi Professor,</p>
+                                <p>I'm having trouble with the backpropagation algorithm in QuizQuestion 3 of the Neural Networks homework. Could you provide some clarification on how to calculate the gradient for the hidden layer?</p>
+                                <p>I understand how to compute the output layer gradients, but I'm confused about propagating the error backwards to the hidden layers. Specifically, I'm not sure how to handle the activation functions during backpropagation.</p>
+                                <p>Is there a specific resource you recommend for understanding this concept better?</p>
+                                <p>Thank you for your help!</p>
+                                <p>Best regards,<br>Emma Johnson</p>`,
+                        hasAttachments: true
+                    },
+                    {
+                        id: '2',
+                        sender: 'Michael Chen',
+                        email: 'michael.chen@university.edu',
+                        subject: 'Extension request for AI Ethics paper',
+                        category: 'Urgent',
+                        snippet: "Dear Professor Smith, Due to unforeseen medical circumstances, I need to request an extension for the AI Ethics paper due tomorrow...",
+                        time: 'Yesterday',
+                        fullTime: 'May 14, 2023, 4:30 PM',
+                        isUnread: true,
+                        isStarred: true,
+                        isImportant: true,
+                        content: `<p>Dear Professor Smith,</p>
+                                <p>Due to unforeseen medical circumstances, I need to request an extension for the AI Ethics paper due tomorrow. I have been dealing with a severe migraine for the past three days that has made it difficult to focus on completing the assignment.</p>
+                                <p>I have attached a doctor's note confirming my condition. I would greatly appreciate if I could have until Friday to complete the paper.</p>
+                                <p>Thank you for your understanding.</p>
+                                <p>Sincerely,<br>Michael Chen</p>`,
+                        hasAttachments: true
+                    },
+                    {
+                        id: '3',
+                        sender: 'Academic Department',
+                        email: 'academic@university.edu',
+                        subject: 'Schedule for next semester now available',
+                        category: '',
+                        snippet: "Dear Faculty, The tentative schedule for the upcoming semester is now available for review. Please check your assigned courses...",
+                        time: 'May 12',
+                        fullTime: 'May 12, 2023, 2:15 PM',
+                        isUnread: false,
+                        isStarred: false,
+                        isImportant: false,
+                        content: `<p>Dear Faculty,</p>
+                                <p>The tentative schedule for the upcoming semester is now available for review. Please check your assigned courses and let us know if there are any conflicts or issues.</p>
+                                <p>The department meeting to discuss the schedule will be held on May 20th at 3:00 PM in Room 301.</p>
+                                <p>Regards,<br>Academic Department</p>`,
+                        hasAttachments: false
+                    },
+                    {
+                        id: '4',
+                        sender: 'Robert Johnson',
+                        email: 'robert.johnson@gmail.com',
+                        subject: 'Thank you for the recommendation letter',
+                        category: 'Feedback',
+                        snippet: "Professor Smith, I wanted to express my sincere gratitude for writing the recommendation letter for my graduate school application...",
+                        time: 'May 10',
+                        fullTime: 'May 10, 2023, 11:30 AM',
+                        isUnread: false,
+                        isStarred: false,
+                        isImportant: false,
+                        content: `<p>Professor Smith,</p>
+                                <p>I wanted to express my sincere gratitude for writing the recommendation letter for my graduate school application. I'm pleased to inform you that I've been accepted to the PhD program at Stanford University!</p>
+                                <p>Your guidance and support throughout my undergraduate studies have been invaluable, and I wouldn't have achieved this without your mentorship.</p>
+                                <p>Thank you again for everything.</p>
+                                <p>Best regards,<br>Robert Johnson</p>`,
+                        hasAttachments: false
+                    },
+                    {
+                        id: '5',
+                        sender: 'AI Research Conference',
+                        email: 'conference@airesearch.org',
+                        subject: 'Invitation to speak at AI Innovation Summit',
+                        category: '',
+                        snippet: "Dear Dr. Smith, We would be honored to have you as a keynote speaker at the upcoming AI Innovation Summit scheduled for...",
+                        time: 'May 8',
+                        fullTime: 'May 8, 2023, 9:15 AM',
+                        isUnread: false,
+                        isStarred: true,
+                        isImportant: true,
+                        content: `<p>Dear Dr. Smith,</p>
+                                <p>We would be honored to have you as a keynote speaker at the upcoming AI Innovation Summit scheduled for September 15-17, 2023, in San Francisco.</p>
+                                <p>Given your expertise in neural networks and deep learning applications, we believe your insights would be invaluable to our audience. The keynote session would be 45 minutes, followed by a 15-minute Q&A.</p>
+                                <p>Please let us know your availability and if you would be interested in this opportunity.</p>
+                                <p>Best regards,<br>AI Research Conference Team</p>`,
+                        hasAttachments: false
+                    }
+                ],
+                sent: [
+                    {
+                        id: 's1',
+                        sender: 'You',
+                        recipient: 'All Students - Introduction to AI',
+                        email: 'your.email@university.edu',
+                        subject: 'Updated syllabus and next week\'s assignment',
+                        category: '',
+                        snippet: "Dear students, I've updated the course syllabus to reflect some changes in the upcoming weeks. Please review the updated document...",
+                        time: 'Today',
+                        fullTime: 'May 15, 2023, 9:00 AM',
+                        content: `<p>Dear students,</p>
+                                <p>I've updated the course syllabus to reflect some changes in the upcoming weeks. Please review the updated document attached to this message.</p>
+                                <p>Additionally, the assignment for next week will focus on neural network architectures and will be posted by tomorrow.</p>
+                                <p>Let me know if you have any QuizQuizQuestions.</p>
+                                <p>Best regards,<br>Dr. John Smith</p>`,
+                        hasAttachments: true
+                    },
+                    {
+                        id: 's2',
+                        sender: 'You',
+                        recipient: 'Sarah Williams',
+                        email: 'your.email@university.edu',
+                        subject: 'Re: Dataset for the machine learning project',
+                        category: '',
+                        snippet: "Hi Sarah, Thank you for compiling the dataset. I've reviewed it and it looks good. However, I noticed a few outliers in the...",
+                        time: 'Yesterday',
+                        fullTime: 'May 14, 2023, 3:45 PM',
+                        content: `<p>Hi Sarah,</p>
+                                <p>Thank you for compiling the dataset. I've reviewed it and it looks good. However, I noticed a few outliers in the training set that might affect model performance.</p>
+                                <p>Could you check the data points I've highlighted in the attached document and consider whether they should be kept or removed?</p>
+                                <p>Great work overall!</p>
+                                <p>Regards,<br>Dr. John Smith</p>`,
+                        hasAttachments: true
+                    }
+                ],
+                starred: [],
+                important: [],
+                trash: [
+                    {
+                        id: 't1',
+                        sender: 'University IT Department',
+                        email: 'it@university.edu',
+                        subject: 'System Maintenance Notification',
+                        category: '',
+                        snippet: "Dear Faculty, The university's IT systems will undergo scheduled maintenance this weekend. Services will be unavailable from...",
+                        time: 'April 28',
+                        fullTime: 'April 28, 2023, 10:00 AM',
+                        isUnread: false,
+                        isStarred: false,
+                        isImportant: false,
+                        content: `<p>Dear Faculty,</p>
+                                <p>The university's IT systems will undergo scheduled maintenance this weekend. Services will be unavailable from Saturday 10:00 PM to Sunday 6:00 AM.</p>
+                                <p>This includes email, the learning management system, and other online university services.</p>
+                                <p>Thank you for your understanding.</p>
+                                <p>Best regards,<br>University IT Department</p>`,
+                        hasAttachments: false
+                    }
+                ]
+            };
+            
+            // Initialize by populating starred and important folders based on inbox messages
+            updateFolderCounts();
+            
+            // Current active folder
+            let currentFolder = 'inbox';
+            
+            // Handle folder navigation
+            const folderLinks = document.querySelectorAll('.list-group-item');
+            folderLinks.forEach(link => {
+                link.addEventListener('click', function(e) {
+                    e.preventDefault();
+                    
+                    // Remove active class from all folder links
+                    folderLinks.forEach(item => item.classList.remove('active'));
+                    
+                    // Add active class to clicked folder
+                    this.classList.add('active');
+                    
+                    // Determine which folder was clicked
+                    const folderText = this.querySelector('span:first-child').textContent.trim().toLowerCase();
+                    
+                    if (folderText.includes('inbox')) {
+                        currentFolder = 'inbox';
+                    } else if (folderText.includes('sent')) {
+                        currentFolder = 'sent';
+                    } else if (folderText.includes('starred')) {
+                        currentFolder = 'starred';
+                    } else if (folderText.includes('important')) {
+                        currentFolder = 'important';
+                    } else if (folderText.includes('trash')) {
+                        currentFolder = 'trash';
+                    }
+                    
+                    // Load messages for the selected folder
+                    loadFolderMessages(currentFolder);
+                });
+            });
+            
+            // Function to update folder counts
+            function updateFolderCounts() {
+                // Clear the starred and important folders
+                messageFolders.starred = [];
+                messageFolders.important = [];
+                
+                // Add starred messages from inbox to starred folder
+                messageFolders.inbox.forEach(msg => {
+                    if (msg.isStarred) {
+                        messageFolders.starred.push(msg);
+                    }
+                    if (msg.isImportant) {
+                        messageFolders.important.push(msg);
+                    }
+                });
+                
+                // Update badge counts
+                document.querySelector('.list-group-item:nth-child(1) .badge').textContent = 
+                    messageFolders.inbox.filter(msg => msg.isUnread).length;
+                document.querySelector('.list-group-item:nth-child(3) .badge').textContent = 
+                    messageFolders.starred.length;
+                document.querySelector('.list-group-item:nth-child(4) .badge').textContent = 
+                    messageFolders.important.length;
+            }
+            
+            // Function to load messages for a specific folder
+            function loadFolderMessages(folder) {
+                const messageList = document.querySelector('.message-list');
+                let messagesHTML = '';
+                
+                if (messageFolders[folder] && messageFolders[folder].length > 0) {
+                    messageFolders[folder].forEach(message => {
+                        const unreadClass = message.isUnread ? 'unread' : '';
+                        const starredIcon = message.isStarred ? 
+                            '<i class="fas fa-star text-warning"></i>' : 
+                            '<i class="far fa-star"></i>';
+                        const categoryBadge = message.category ? 
+                            `<span class="badge ${getCategoryBadgeClass(message.category)} me-2">${message.category}</span>` : 
+                            '';
+                        
+                        messagesHTML += `
+                            <div class="message-item ${unreadClass}" data-message-id="${message.id}">
+                                <div class="form-check">
+                                    <input class="form-check-input" type="checkbox">
+                                </div>
+                                <div class="message-star">
+                                    ${starredIcon}
+                                </div>
+                                <div class="message-sender ${message.isUnread ? 'fw-bold' : ''}">
+                                    ${folder === 'sent' ? message.recipient : message.sender}
+                                </div>
+                                <div class="message-subject ${message.isUnread ? 'fw-bold' : ''}">
+                                    ${categoryBadge}
+                                    ${message.subject}
+                                </div>
+                                <div class="message-snippet">${message.snippet}</div>
+                                <div class="message-time">${message.time}</div>
+                            </div>
+                        `;
+                    });
+                } else {
+                    messagesHTML = `
+                        <div class="p-5 text-center text-muted">
+                            <i class="fas fa-inbox fa-3x mb-3"></i>
+                            <p>No messages in this folder</p>
+                        </div>
+                    `;
+                }
+                
+                messageList.innerHTML = messagesHTML;
+                
+                // Update message count in toolbar
+                const totalMessages = messageFolders[folder] ? messageFolders[folder].length : 0;
+                document.querySelector('.message-toolbar .text-muted').textContent = 
+                    totalMessages > 0 ? `1-${Math.min(totalMessages, 10)} of ${totalMessages}` : '0 messages';
+                
+                // Reattach event listeners to new elements
+                attachMessageEventListeners();
+            }
+            
+            // Function to get badge class based on category
+            function getCategoryBadgeClass(category) {
+                switch(category.toLowerCase()) {
+                    case 'assignment':
+                        return 'bg-info';
+                    case 'urgent':
+                        return 'bg-danger';
+                    case 'feedback':
+                        return 'bg-success';
+                    default:
+                        return 'bg-secondary';
+                }
+            }
+            
+            // Function to attach event listeners to message items
+            function attachMessageEventListeners() {
+                // Handle message item click
+                const messageItems = document.querySelectorAll('.message-item');
+                messageItems.forEach(item => {
+                    item.addEventListener('click', function(e) {
+                        // If checkbox or star is clicked, don't open the message
+                        if (e.target.closest('.form-check') || e.target.closest('.message-star')) {
+                            return;
+                        }
+                        
+                        // Get message ID and open modal
+                        const messageId = this.dataset.messageId;
+                        const modal = new bootstrap.Modal(document.getElementById('readMessageModal'));
+                        
+                        // Mark message as read
+                        if (this.classList.contains('unread')) {
+                            this.classList.remove('unread');
+                            this.querySelector('.message-sender').classList.remove('fw-bold');
+                            this.querySelector('.message-subject').classList.remove('fw-bold');
+                            
+                            // Update message data
+                            updateMessageReadStatus(messageId, currentFolder);
+                            
+                            // Update folder counts
+                            updateFolderCounts();
+                        }
+                        
+                        // Update modal content based on message ID
+                        updateMessageModal(messageId, currentFolder);
+                        
+                        modal.show();
+                    });
+                });
+                
+                // Handle star click
+                const messageStars = document.querySelectorAll('.message-star i');
+                messageStars.forEach(star => {
+                    star.addEventListener('click', function(e) {
+                        e.stopPropagation(); // Prevent message from opening
+                        
+                        // Get message ID
+                        const messageItem = this.closest('.message-item');
+                        const messageId = messageItem.dataset.messageId;
+                        
+                        // Toggle star in UI
+                        this.classList.toggle('fas');
+                        this.classList.toggle('far');
+                        this.classList.toggle('text-warning');
+                        
+                        // Update message data
+                        toggleMessageStarred(messageId, currentFolder);
+                        
+                        // Update folder counts
+                        updateFolderCounts();
+                        
+                        // Reload current folder if we're in starred folder and unstarring a message
+                        if (currentFolder === 'starred' && !this.classList.contains('text-warning')) {
+                            loadFolderMessages('starred');
+                        }
+                    });
+                });
+            }
+            
+            // Function to update message read status
+            function updateMessageReadStatus(messageId, folder) {
+                // Find the message in the appropriate folder
+                const folderData = messageFolders[folder];
+                if (!folderData) return;
+                
+                const message = folderData.find(m => m.id === messageId);
+                if (message) {
+                    message.isUnread = false;
+                }
+            }
+            
+            // Function to toggle message starred status
+            function toggleMessageStarred(messageId, folder) {
+                // Find the message in the appropriate folder
+                const folderData = messageFolders[folder];
+                if (!folderData) return;
+                
+                const message = folderData.find(m => m.id === messageId);
+                if (message) {
+                    message.isStarred = !message.isStarred;
+                }
+            }
+            
+            // Handle select all checkbox
+            const selectAllCheckbox = document.getElementById('selectAll');
+            selectAllCheckbox.addEventListener('change', function() {
+                const messageCheckboxes = document.querySelectorAll('.message-item .form-check-input');
+                messageCheckboxes.forEach(checkbox => {
+                    checkbox.checked = this.checked;
+                });
+            });
+            
+            // Handle unread only filter
+            const unreadOnlyCheckbox = document.getElementById('unreadOnly');
+            unreadOnlyCheckbox.addEventListener('change', function() {
+                if (this.checked) {
+                    // Display only unread messages
+                    document.querySelectorAll('.message-item:not(.unread)').forEach(item => {
+                        item.style.display = 'none';
+                    });
+                } else {
+                    // Display all messages
+                    document.querySelectorAll('.message-item').forEach(item => {
+                        item.style.display = 'grid';
+                    });
+                }
+            });
+            
+            // Handle course filter
+            const courseFilter = document.querySelector('.card-body .form-select:first-of-type');
+            courseFilter.addEventListener('change', function() {
+                // In a real application, you would filter messages based on course
+                // For demo purposes, we'll just reload the current folder
+                loadFolderMessages(currentFolder);
+            });
+            
+            // Handle time range filter
+            const timeRangeFilter = document.querySelector('.card-body .form-select:nth-of-type(2)');
+            timeRangeFilter.addEventListener('change', function() {
+                // In a real application, you would filter messages based on time range
+                // For demo purposes, we'll just reload the current folder
+                loadFolderMessages(currentFolder);
+            });
+            
+            // Function to update message modal content
+            function updateMessageModal(messageId, folder) {
+                // Find the message in the appropriate folder
+                let message = null;
+                let folderData = messageFolders[folder];
+                
+                if (!folderData) {
+                    // Try to find the message in other folders
+                    for (const f in messageFolders) {
+                        const found = messageFolders[f].find(m => m.id === messageId);
+                        if (found) {
+                            message = found;
+                            break;
+                        }
+                    }
+                } else {
+                    message = folderData.find(m => m.id === messageId);
+                }
+                
+                if (!message) {
+                    console.error('Message not found');
+                    return;
+                }
+                
+                // Update modal elements
+                document.getElementById('modalMessageSender').textContent = 
+                    folder === 'sent' ? 'To: ' + message.recipient : message.sender;
+                document.getElementById('modalMessageEmail').textContent = message.email;
+                document.getElementById('modalMessageTime').textContent = message.fullTime;
+                document.getElementById('modalMessageSubject').textContent = message.subject;
+                
+                const categoryBadge = document.getElementById('modalMessageCategory');
+                if (message.category) {
+                    categoryBadge.textContent = message.category;
+                    categoryBadge.style.display = 'inline-block';
+                    
+                    // Set appropriate badge color
+                    categoryBadge.className = 'badge mb-2';
+                    if (message.category === 'Assignment') {
+                        categoryBadge.classList.add('bg-info');
+                    } else if (message.category === 'Urgent') {
+                        categoryBadge.classList.add('bg-danger');
+                    } else if (message.category === 'Feedback') {
+                        categoryBadge.classList.add('bg-success');
+                    }
+                } else {
+                    categoryBadge.style.display = 'none';
+                }
+                
+                document.getElementById('modalMessageContent').innerHTML = message.content;
+                
+                // Show/hide attachments section
+                const attachmentsSection = document.getElementById('modalMessageAttachments');
+                attachmentsSection.style.display = message.hasAttachments ? 'block' : 'none';
+                
+                // Update the reply buttons visibility for sent messages
+                const replyAllButton = document.querySelector('.modal-footer button:nth-child(2)');
+                if (folder === 'sent') {
+                    replyAllButton.style.display = 'none';
+                } else {
+                    replyAllButton.style.display = 'block';
+                }
+            }
+            
+            // Handle message action buttons
+            // Delete button
+            document.querySelector('.modal-footer .btn-outline-danger').addEventListener('click', function() {
+                const messageId = document.querySelector('.message-item.active')?.dataset.messageId;
+                if (!messageId) return;
+                
+                // In a real app, you would send a request to the server to move the message to trash
+                // For demo purposes, we'll just reload the current folder
+                
+                // Close the modal
+                bootstrap.Modal.getInstance(document.getElementById('readMessageModal')).hide();
+                
+                // Show success toast
+                showToast('Message moved to trash', 'success');
+            });
+            
+            // Compose form submission
+            document.querySelector('#composeMessageModal .modal-footer .btn-primary').addEventListener('click', function() {
+                const recipients = document.getElementById('messageRecipients').value;
+                const subject = document.getElementById('messageSubject').value;
+                const content = document.getElementById('messageContent').value;
+                
+                if (!recipients || !subject || !content) {
+                    showToast('Please fill in all fields', 'danger');
+                    return;
+                }
+                
+                // In a real app, you would send a request to the server to send the message
+                // For demo purposes, we'll just simulate sending the message
+                
+                // Create a new message object
+                const newMessage = {
+                    id: 's' + (messageFolders.sent.length + 1),
+                    sender: 'You',
+                    recipient: Array.from(document.getElementById('messageRecipients').selectedQuizOptions)
+                              .map(QuizOption => QuizOption.text)
+                              .join(', '),
+                    email: 'your.email@university.edu',
+                    subject: subject,
+                    category: document.getElementById('markUrgent').checked ? 'Urgent' : '',
+                    snippet: content.substring(0, 100) + '...',
+                    time: 'Just now',
+                    fullTime: new Date().toLocaleString(),
+                    content: `<p>${content.replace(/\n/g, '</p><p>')}</p>`,
+                    hasAttachments: false
+                };
+                
+                // Add the message to the sent folder
+                messageFolders.sent.unshift(newMessage);
+                
+                // Clear the form
+                document.getElementById('messageRecipients').value = '';
+                document.getElementById('messageSubject').value = '';
+                document.getElementById('messageContent').value = '';
+                document.getElementById('markUrgent').checked = false;
+                
+                // Close the modal
+                bootstrap.Modal.getInstance(document.getElementById('composeMessageModal')).hide();
+                
+                // If we're in the sent folder, reload the messages
+                if (currentFolder === 'sent') {
+                    loadFolderMessages('sent');
+                }
+                
+                // Show success toast
+                showToast('Message sent successfully', 'success');
+            });
+            
+            // Helper function to show toast notifications
+            function showToast(message, type = 'info') {
+                // Remove any existing toasts
+                const existingToasts = document.querySelectorAll('.toast-container');
+                if (existingToasts.length > 0) {
+                    existingToasts.forEach(toast => toast.remove());
+                }
+                
+                const toastHTML = `
+                <div class="toast-container position-fixed top-0 end-0 p-3" style="z-index: 1070;">
+                    <div class="toast show bg-${type} text-white" role="alert" aria-live="assertive" aria-atomic="true">
+                        <div class="toast-header bg-${type} text-white">
+                            <strong class="me-auto">Notification</strong>
+                            <button type="button" class="btn-close btn-close-white" data-bs-dismiss="toast" aria-label="Close"></button>
+                        </div>
+                        <div class="toast-body">
+                            ${message}
+                        </div>
+                    </div>
+                </div>
+                `;
+                
+                document.body.insertAdjacentHTML('beforeend', toastHTML);
+                
+                // Auto-hide after 3 seconds
+                setTimeout(() => {
+                    const toastElement = document.querySelector('.toast-container .toast');
+                    if (toastElement) {
+                        const bsToast = new bootstrap.Toast(toastElement);
+                        bsToast.hide();
+                    }
+                }, 3000);
+            }
+            
+            // Initial load of inbox messages
+            loadFolderMessages('inbox');
+        });
+    </script>
+}
+
+<style>
+    .messages-container {
+        margin-bottom: 30px;
+    }
+    
+    .message-list {
+        max-height: 600px;
+        overflow-y: auto;
+    }
+    
+    .message-item {
+        display: grid;
+        grid-template-columns: 30px 30px 150px 1fr 100px;
+        align-items: center;
+        padding: 12px 15px;
+        border-bottom: 1px solid #eee;
+        cursor: pointer;
+        gap: 10px;
+    }
+    
+    .message-item:hover {
+        background-color: #f8f9fa;
+    }
+    
+    .message-item.unread {
+        background-color: #f0f7ff;
+    }
+    
+    .message-item.unread:hover {
+        background-color: #e5f1ff;
+    }
+    
+    .message-star {
+        cursor: pointer;
+    }
+    
+    .message-sender {
+        white-space: nowrap;
+        overflow: hidden;
+        text-overflow: ellipsis;
+    }
+    
+    .message-subject {
+        white-space: nowrap;
+        overflow: hidden;
+        text-overflow: ellipsis;
+    }
+    
+    .message-snippet {
+        color: #666;
+        white-space: nowrap;
+        overflow: hidden;
+        text-overflow: ellipsis;
+        font-size: 0.85rem;
+    }
+    
+    .message-time {
+        text-align: right;
+        color: #666;
+        font-size: 0.85rem;
+    }
+    
+    /* Message Details Modal */
+    .message-details {
+        font-size: 0.95rem;
+    }
+    
+    .message-content {
+        line-height: 1.6;
+    }
+    
+    .attachment-item {
+        padding: 8px;
+        border: 1px solid #eee;
+        border-radius: 5px;
+        display: inline-flex;
+        align-items: center;
+        margin-right: 10px;
+    }
+    
+    @@media (max-width: 768px) {
+        .message-item {
+            grid-template-columns: 25px 25px 1fr 80px;
+        }
+        
+        .message-snippet {
+            display: none;
+        }
+    }
+</style> 

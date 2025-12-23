@@ -1,0 +1,56 @@
+@model IEnumerable<TeachingAI1.ViewModels.CourseViewModel>
+
+@{
+    ViewData["Title"] = "我的课程";
+}
+
+<h2>我的课程</h2>
+
+@if (!Model.Any())
+{
+    <p>暂无课程。</p>
+}
+else
+{
+    @foreach (var course in Model)
+    {
+        <div class="course-card" style="border: 1px solid #ddd; padding: 1rem; margin-bottom: 1rem;">
+            <h3>@course.Title</h3>
+            <p><strong>讲师：</strong> @course.Instructor</p>
+            <p><strong>开始时间：</strong> @(course.StartDate?.ToString("yyyy-MM-dd") ?? "未设置")</p>
+            <p><strong>结束时间：</strong> @(course.EndDate?.ToString("yyyy-MM-dd") ?? "未设置")</p>
+            <p><strong>时长：</strong> @(course.Duration?.ToString() ?? "未设置")</p>
+            <p><strong>大纲：</strong> @course.Syllabus</p>
+
+            <h4>模块列表：</h4>
+            @if (course.Modules?.Any() == true)
+            {
+                <ul>
+                    @foreach (var module in course.Modules)
+                    {
+                        <li>
+                            @module.Title - @module.Description 
+                            (@module.CompletedLessons / @module.LessonCount 已完成)
+                        </li>
+                    }
+                </ul>
+            }
+            else
+            {
+                <p>暂无模块。</p>
+            }
+
+            <!-- 示例：统计区（每个模块一个 stat-item） -->
+            @if (course.Modules?.Any() == true)
+            {
+                foreach (var module in course.Modules)
+                {
+                    <div class="stat-item" style="display: inline-block; margin-right: 1rem;">
+                        <p>Rating</p>
+                    </div>
+                }
+            }
+        </div>
+        <hr />
+    }
+}
