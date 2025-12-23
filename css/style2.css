@@ -1,0 +1,67 @@
+.dashboard-container {
+    display: flex;
+    margin-top: 20px;
+}
+
+.sidebar {
+    width: 20%;
+    background-color: #f8f9fa;
+    padding: 15px;
+    border-right: 1px solid #ddd;
+}
+
+.sidebar-menu {
+    list-style: none;
+    padding: 0;
+}
+
+.sidebar-menu li {
+    margin-bottom: 10px;
+}
+
+.sidebar-menu a {
+    text-decoration: none;
+    color: #007bff;
+}
+
+.sidebar-menu a:hover {
+    text-decoration: underline;
+}
+
+.dashboard-main {
+    width: 80%;
+    padding: 20px;
+}
+
+.dashboard-section {
+    margin-bottom: 20px;
+}
+
+.lesson-card, .course-card {
+    border: 1px solid #ddd;
+    border-radius: 5px;
+    padding: 15px;
+    margin-bottom: 10px;
+}
+
+.progress-bar {
+    background-color: #f1f1f1;
+    border-radius: 5px;
+    overflow: hidden;
+    height: 10px;
+    margin-top: 10px;
+}
+
+.progress {
+    background-color: #007bff;
+    height: 100%;
+}
+
+.user-header {
+    background-color: #f8f9fa;
+    padding: 10px;
+    text-align: center;
+    font-size: 25px;
+    font-weight: bold;
+    color: #000;
+}

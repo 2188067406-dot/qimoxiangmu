@@ -1,0 +1,265 @@
+/* Admin Portal specific styles */
+.dashboard-card {
+    background-color: white;
+    border-radius: 15px;
+    box-shadow: var(--box-shadow);
+    padding: 25px;
+    margin-bottom: 25px;
+    transition: all 0.3s ease;
+}
+
+.dashboard-card:hover {
+    transform: translateY(-5px);
+    box-shadow: var(--box-shadow-hover);
+}
+
+.dashboard-card h3 {
+    color: var(--secondary-color);
+    font-weight: 600;
+    margin-bottom: 20px;
+    font-size: 1.5rem;
+}
+
+.dashboard-card .icon {
+    width: 60px;
+    height: 60px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    background: var(--gradient-2);
+    border-radius: 50%;
+    color: white;
+    font-size: 1.5rem;
+    margin-bottom: 20px;
+    box-shadow: 0 10px 20px rgba(76, 201, 240, 0.3);
+    transition: all 0.3s ease;
+}
+
+.dashboard-card:hover .icon {
+    transform: scale(1.1) rotate(5deg);
+    background: var(--gradient-1);
+    box-shadow: 0 15px 30px rgba(247, 37, 133, 0.3);
+}
+
+/* Stats cards */
+.stats-row {
+    display: flex;
+    flex-wrap: wrap;
+    margin: 0 -10px 30px;
+}
+
+.stat-card {
+    flex: 1;
+    min-width: 200px;
+    background-color: white;
+    border-radius: 15px;
+    box-shadow: var(--box-shadow);
+    padding: 20px;
+    margin: 0 10px 20px;
+    transition: all 0.3s ease;
+    position: relative;
+    overflow: hidden;
+}
+
+.stat-card:hover {
+    transform: translateY(-5px);
+    box-shadow: var(--box-shadow-hover);
+}
+
+.stat-card::before {
+    content: '';
+    position: absolute;
+    top: 0;
+    left: 0;
+    width: 5px;
+    height: 100%;
+    background: var(--gradient-2);
+}
+
+.stat-card.users::before {
+    background: var(--gradient-2);
+}
+
+.stat-card.courses::before {
+    background: var(--gradient-1);
+}
+
+.stat-card.revenue::before {
+    background: linear-gradient(135deg, #00b09b, #96c93d);
+}
+
+.stat-card.activity::before {
+    background: linear-gradient(135deg, #ff9a9e, #fad0c4);
+}
+
+.stat-card .stat-value {
+    font-size: 2.5rem;
+    font-weight: 700;
+    color: var(--secondary-color);
+    margin-bottom: 5px;
+}
+
+.stat-card .stat-label {
+    color: #6c757d;
+    font-size: 1rem;
+    margin-bottom: 15px;
+}
+
+.stat-card .stat-change {
+    font-size: 0.9rem;
+    display: flex;
+    align-items: center;
+}
+
+.stat-card .stat-change.positive {
+    color: #28a745;
+}
+
+.stat-card .stat-change.negative {
+    color: #dc3545;
+}
+
+.stat-card .stat-change i {
+    margin-right: 5px;
+}
+
+/* User management */
+.user-management-card {
+    background-color: white;
+    border-radius: 15px;
+    box-shadow: var(--box-shadow);
+    overflow: hidden;
+    margin-bottom: 25px;
+}
+
+.user-management-header {
+    padding: 20px;
+    background: var(--gradient-2);
+    color: white;
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+}
+
+.user-management-header h3 {
+    margin-bottom: 0;
+    font-weight: 600;
+}
+
+.user-management-content {
+    padding: 20px;
+}
+
+.user-table {
+    width: 100%;
+    border-collapse: collapse;
+}
+
+.user-table th {
+    text-align: left;
+    padding: 12px 15px;
+    border-bottom: 1px solid #e9ecef;
+    color: var(--secondary-color);
+    font-weight: 600;
+}
+
+.user-table td {
+    padding: 12px 15px;
+    border-bottom: 1px solid #e9ecef;
+}
+
+.user-table tr:last-child td {
+    border-bottom: none;
+}
+
+.user-table tr:hover {
+    background-color: #f8f9fa;
+}
+
+.user-avatar {
+    width: 40px;
+    height: 40px;
+    border-radius: 50%;
+    overflow: hidden;
+    margin-right: 10px;
+}
+
+.user-avatar img {
+    width: 100%;
+    height: 100%;
+    object-fit: cover;
+}
+
+.user-name {
+    font-weight: 600;
+    color: var(--secondary-color);
+}
+
+.user-email {
+    color: #6c757d;
+    font-size: 0.9rem;
+}
+
+.user-role {
+    display: inline-block;
+    padding: 5px 10px;
+    border-radius: 20px;
+    font-size: 0.8rem;
+    font-weight: 500;
+}
+
+.user-role.admin {
+    background-color: rgba(220, 53, 69, 0.1);
+    color: #dc3545;
+}
+
+.user-role.teacher {
+    background-color: rgba(255, 193, 7, 0.1);
+    color: #ffc107;
+}
+
+.user-role.student {
+    background-color: rgba(40, 167, 69, 0.1);
+    color: #28a745;
+}
+
+.user-status {
+    display: inline-block;
+    width: 10px;
+    height: 10px;
+    border-radius: 50%;
+    margin-right: 5px;
+}
+
+.user-status.active {
+    background-color: #28a745;
+}
+
+.user-status.inactive {
+    background-color: #dc3545;
+}
+
+.user-actions {
+    display: flex;
+}
+
+.user-actions .btn {
+    padding: 5px 10px;
+    font-size: 0.8rem;
+    margin-right: 5px;
+}
+
+/* Responsive adjustments */
+@media (max-width: 768px) {
+    .stats-row {
+        flex-direction: column;
+    }
+    
+    .stat-card {
+        width: calc(100% - 20px);
+        margin-bottom: 15px;
+    }
+    
+    .user-table {
+        display: block;
+ 
